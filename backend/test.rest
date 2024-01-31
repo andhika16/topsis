@@ -1,0 +1,13 @@
+###
+POST http://localhost:4000/kriteria
+Content-Type: application/json
+
+{
+    "nama_kriteria": "Lantai",
+    "sifat": "tanah",
+    "bobot": 5
+}
+
+###
+GET http://localhost:4000/kriteria
+
