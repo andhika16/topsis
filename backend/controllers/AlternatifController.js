@@ -1,4 +1,6 @@
 const Alternatif = require("../model/alternatifModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
+const Kriteria = require("../model/kriteriaModel");
+const Matriks = require("../model/matriksModel");
 
 const ambilSemuaAlternatif = async (req, res) => {
   try {
@@ -11,6 +13,27 @@ const ambilSemuaAlternatif = async (req, res) => {
     res
       .status(500)
       .json({ success: false, error: "Gagal mendapatkan data Alternatif" });
+  }
+};
+
+const ambilAlternatifDanKriteria = async (req, res) => {
+  const id = req.params.id;
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ error: "ID parameter tidak valid" });
+  } else {
+    try {
+      // Ambil semua data alternatif dari database
+      const alternatif = await Alternatif.findByPk(id, {
+        include: [{ model: Kriteria, include: Matriks }],
+      });
+
+      res.json({ success: true, data: alternatif });
+    } catch (error) {
+      console.error("Gagal mendapatkan data Alternatif:", error);
+      res
+        .status(500)
+        .json({ success: false, error: "Gagal mendapatkan data Alternatif" });
+    }
   }
 };
 
@@ -99,4 +122,5 @@ module.exports = {
   tambahAlternatif,
   hapusAlternatif,
   ambilSemuaAlternatif,
+  ambilAlternatifDanKriteria,
 };

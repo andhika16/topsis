@@ -5,42 +5,37 @@ const db = require("../config/Database");
 
 // Fungsi untuk menambahkan data matriks
 
-// const hubunganMatriksAlternatif = async () => {
-//   // Mengambil satu alternatif (menggantinya dengan alternatif yang sesuai)
-//   const alternatifId = 1;
-//   const alternatif = await Alternatif.findByPk(alternatifId);
+const ambilSemuaMatriks = async (req, res) => {
+  try {
+    const response = await Matriks.findAll();
+    res.status(201).json({ success: true, data: response });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-//   if (alternatif) {
-//     // Mengakses nilai matriks melalui asosiasi
-//     const nilaiMatriks = await alternatif.getMatriks();
-//     console.log(nilaiMatriks);
-//     // Menampilkan nilai matriks
-//     console.log(
-//       "Nilai Matriks untuk Alternatif",
-//       alternatifId,
-//       ":",
-//       nilaiMatriks
-//     );
-//   } else {
-//     console.log("Alternatif tidak ditemukan.");
-//   }
-// };
-
+const ambilMatriks = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await Matriks.findByPk(id);
+    res.status(201).json({ success: true, data: response });
+  } catch (error) {
+    console.error(error);
+  }
+};
 const tambahMatriks = async (req, res) => {
   try {
-    const { nilai, id_alternatif, id_kriteria } = req.body;
-
-    if (!nilai || !id_alternatif || !id_kriteria) {
+    const { nilai, AlternatifId, KriteriaId } = req.body;
+    if (!nilai || !AlternatifId || !KriteriaId) {
       return res
         .status(400)
         .json({ success: false, error: "Semua field harus diisi" });
     }
     const matriksBaru = await Matriks.create({
       nilai,
-      id_alternatif,
-      id_kriteria,
+      KriteriaId,
+      AlternatifId,
     });
-
     res.status(201).json({ success: true, data: matriksBaru });
   } catch (error) {
     console.error("Gagal menambahkan data Matriks:", error);
@@ -87,4 +82,6 @@ const hapusMatriks = async (req, res) => {
 module.exports = {
   tambahMatriks,
   hapusMatriks,
+  ambilSemuaMatriks,
+  ambilMatriks
 };

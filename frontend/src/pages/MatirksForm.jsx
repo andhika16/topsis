@@ -1,31 +1,43 @@
 import React, { useState, useEffect } from "react";
+
 const KriteriaForm = ({ alternatif }) => {
   const [selectedAlternatif, setSelectedAlternatif] = useState("");
   const [selectedCriteria, setSelectedCriteria] = useState("");
-  const [dataKriteria, setDataKriteria] = useState("");
+  const [kriteriaAlternatif, setKriteriaAlternatif] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
+
   useEffect(() => {
-    const kriteria = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/kriteria");
+        const response = await fetch(
+          `http://localhost:4000/alternatifKriteria/${selectedAlternatif}`
+        );
+
         if (response.ok) {
           const { data } = await response.json();
-          setDataKriteria(data);
+          setKriteriaAlternatif(data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    kriteria();
-  }, []);
+
+    if (selectedAlternatif !== "") {
+      fetchData();
+    }
+  }, [selectedAlternatif]);
+
   const handleSubmit = async () => {
     if (selectedValue !== "") {
       const data = {
         nilai: selectedValue,
-        id_alternatif: selectedAlternatif,
-        id_kriteria: selectedCriteria,
+        AlternatifId: selectedAlternatif,
+        KriteriaId: selectedCriteria,
       };
+
       // Kirim data ke server
+      console.log(data);
+
       try {
         const response = await fetch("http://localhost:4000/matriks", {
           method: "POST",
@@ -45,52 +57,59 @@ const KriteriaForm = ({ alternatif }) => {
       }
     }
   };
+
   const handleAlternatifChange = (e) => {
     const selectedAlternatif = e.target.value;
     setSelectedAlternatif(selectedAlternatif);
   };
+
   const handleCriteriaChange = (e) => {
     const selectedCriteria = e.target.value;
     setSelectedCriteria(selectedCriteria);
   };
+
   const handleDropdownChange = (e) => {
     setSelectedValue(e.target.value);
   };
 
   return (
-    <div className="m-5 p-4 rounded-lg  w-auto bg-slate-200">
+    <div className="m-5 p-4 rounded-lg w-auto bg-slate-200">
       <label htmlFor="">Pilih Alternatif:</label>
       <select
-        className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
-        value={selectedCriteria}
-        onChange={handleCriteriaChange}
+        className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+        value={selectedAlternatif}
+        onChange={handleAlternatifChange}
       >
-        <option value="">-- Pilih Kriteria --</option>
+        <option value="">-- Pilih Alternatif --</option>
         {alternatif &&
-          alternatif.map((nama) => (
-            <option key={nama.id} value={nama.id}>
+          alternatif.map((nama, i) => (
+            <option key={i} value={nama.id}>
               {nama.nama_alternatif}
             </option>
           ))}
       </select>
+
       <label htmlFor="">Pilih Kriteria:</label>
       <select
-        value={selectedAlternatif}
-        onChange={handleAlternatifChange}
-        className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+        value={selectedCriteria}
+        onChange={handleCriteriaChange}
+        className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
       >
         <option value="">-- Pilih Kriteria yang dinilai --</option>
-        {dataKriteria &&
-          dataKriteria.map((criteria, i) => (
+        {kriteriaAlternatif ? (
+          kriteriaAlternatif.Kriteria.map((criteria, i) => (
             <option key={i} value={criteria.id}>
-              {criteria.nama_kriteria}
+               {criteria.nama_kriteria}
             </option>
-          ))}
+          ))
+        ) : (
+          <option value="">kosong</option>
+        )}
       </select>
 
       <label>Pilih Nilai (1-5):</label>
       <select
-        className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+        className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
         value={selectedValue}
         onChange={handleDropdownChange}
       >

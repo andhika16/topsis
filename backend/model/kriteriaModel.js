@@ -8,6 +8,10 @@ const Kriteria = db.define(
       type: DataTypes.STRING(35),
       allowNull: false,
     },
+    AlternatifId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
     bobot: {
       type: DataTypes.DOUBLE,
       allowNull: false,
@@ -40,13 +44,13 @@ const Kriteria = db.define(
   {
     tableName: "kriteria",
     timestamps: false,
+    freezeTableName: true,
   }
 );
-
 (async () => {
   await db.sync();
 })();
-
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
+Kriteria.hasMany(db.define("Matriks"), { foreignKey: "KriteriaId" });
 
 module.exports = Kriteria;

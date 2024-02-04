@@ -1,4 +1,5 @@
 const Kriteria = require("../model/kriteriaModel");
+const Matriks = require("../model/matriksModel");
 
 const ambilKriteria = async (req, res) => {
   try {
@@ -9,17 +10,39 @@ const ambilKriteria = async (req, res) => {
   }
 };
 
-const tambahKriteria = async (req, res) => {
-  const { nama_kriteria, bobot, sifat } = req.body;
+const ambilHanyaKriteriaNilai = async (req, res) => {
+  const id = req.params.id;
   try {
-    const kriteriaBaru = await Kriteria.create({
-      nama_kriteria,
-      bobot,
-      sifat,
+    const kriteria = await Kriteria.findByPk(id, {
+      include: [Matriks],
     });
-    res.status(201).json({ success: true, data: kriteriaBaru });
+    res.json({ success: true, data: kriteria });
   } catch (error) {
-    handleError(res, error, "Gagal menambahkan data Kriteria");
+    handleError(res, error, "Gagal mendapatkan data kriteria");
+  }
+};
+
+const tambahKriteria = async (req, res) => {
+  const { nama_kriteria, AlternatifId, bobot, sifat } = req.body;
+  console.log(req.body);
+  if (!nama_kriteria || !AlternatifId || !bobot || !sifat) {
+    return res.status(400).json({
+      success: false,
+      error: "Semua field harus diisi",
+      data: req.body,
+    });
+  } else {
+    try {
+      const kriteriaBaru = await Kriteria.create({
+        nama_kriteria,
+        AlternatifId,
+        bobot,
+        sifat,
+      });
+      res.status(201).json({ success: true, data: kriteriaBaru });
+    } catch (error) {
+      handleError(res, error, "Gagal menambahkan data Kriteria");
+    }
   }
 };
 
@@ -49,4 +72,5 @@ module.exports = {
   tambahKriteria,
   hapusKriteria,
   ambilKriteria,
+  ambilHanyaKriteriaNilai,
 };

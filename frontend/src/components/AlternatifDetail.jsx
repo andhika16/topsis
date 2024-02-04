@@ -1,15 +1,12 @@
-
 /* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
+
 export function AlternatifDetail({ alternatif }) {
-
-
-
   const hapusData = async (id) => {
     try {
       await fetch(`http://localhost:4000/alternatif/${id}`, {
         method: "DELETE",
       });
-      
     } catch (error) {
       console.log(error);
     }
@@ -29,6 +26,11 @@ export function AlternatifDetail({ alternatif }) {
       >
         delete
       </button>
+      <Link to={`/alternatifKriteria/${alternatif.id}`}>
+        <button className="button bg-blue-500 mx-2 p-2 rounded">
+          View Alternatif & Kriteria
+        </button>
+      </Link>
     </div>
   );
 }

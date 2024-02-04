@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/Database");
+const Kriteria = require("./kriteriaModel");
 
 const Alternatif = db.define(
   "Alternatif",
@@ -32,12 +33,16 @@ const Alternatif = db.define(
   {
     tableName: "alternatif", // Nama tabel yang akan digunakan di database
     timestamps: false, // Optional: Nonaktifkan kolom timestamp (createdAt, updatedAt)
+    freezeTableName: true,
   }
 );
-
+{
+  async () => {
+    db.sync();
+  };
+}
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
-(async () => {
-  await db.sync();
-})();
+Alternatif.hasMany(db.define("Kriteria"));
+Alternatif.hasMany(db.define("Matriks"), { foreignKey: "AlternatifId" });
 
 module.exports = Alternatif;

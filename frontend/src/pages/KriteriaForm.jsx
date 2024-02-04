@@ -6,7 +6,7 @@ import {
   criteriaOptions,
   bobotValues,
 } from "../components/atributKriteria";
-const KriteriaForm = ({ alternatifData }) => {
+const KriteriaForm = ({ alternatif }) => {
   const [selectedCriteria, setSelectedCriteria] = useState("");
   const [selectedAttribute, setSelectedAttribute] = useState("");
   const [selectedAlternatif, setSelectedAlternatif] = useState("");
@@ -20,12 +20,10 @@ const KriteriaForm = ({ alternatifData }) => {
     ) {
       const data = {
         nama_kriteria: selectedCriteria,
+        AlternatifId: selectedAlternatif,
         sifat: selectedAttribute,
         bobot: bobot,
-        nama_alternatif: selectedAlternatif,
       };
-
-      // Kirim data ke server
       try {
         const response = await fetch("http://localhost:4000/kriteria", {
           method: "POST",
@@ -77,10 +75,10 @@ const KriteriaForm = ({ alternatifData }) => {
         value={selectedAlternatif}
         onChange={handleAlternatifChange}
       >
-        <option value="">-- Pilih Kriteria --</option>
-        {alternatifData &&
-          alternatifData.map((nama) => (
-            <option key={nama.id} value={nama.nama_alternatif}>
+        <option value="">-- Pilih Alternatif --</option>
+        {alternatif &&
+          alternatif.map((nama, i) => (
+            <option key={i} value={nama.id}>
               {nama.nama_alternatif}
             </option>
           ))}
