@@ -8,7 +8,7 @@ const AlternatifKriteria = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/alternatifKriteria/${id}`
+          `http://localhost:4000/alternatifKriteriaMatriks/${id}`
         );
         if (response.ok) {
           const { data } = await response.json();

@@ -38,7 +38,7 @@ const Alternatif = db.define(
 );
 {
   async () => {
-    db.sync();
+    await db.sync();
   };
 }
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
