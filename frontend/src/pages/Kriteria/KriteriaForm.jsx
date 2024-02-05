@@ -5,7 +5,7 @@ import {
   pendidikanAttributes,
   criteriaOptions,
   bobotValues,
-} from "../components/atributKriteria";
+} from "../../components/atributKriteria";
 const KriteriaForm = ({ alternatif }) => {
   const [selectedCriteria, setSelectedCriteria] = useState("");
   const [selectedAttribute, setSelectedAttribute] = useState("");

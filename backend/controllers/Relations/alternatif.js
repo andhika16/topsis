@@ -12,7 +12,11 @@ const alternatifKriteriaMatriks = async (req, res) => {
         include: [{ model: Kriteria, include: Matriks }],
       });
 
-      res.json({ success: true, data: alternatif });
+      res.json({
+        success: true,
+        data: alternatif,
+        message: "berhasil mengambil data",
+      });
     } catch (error) {
       console.error("Gagal mendapatkan data Alternatif:", error);
       res

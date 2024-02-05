@@ -1,17 +1,23 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export function AlternatifDetail({ alternatif }) {
+  const [isDeleted, setIsDeleted] = useState(false);
+
   const hapusData = async (id) => {
     try {
       await fetch(`http://localhost:4000/alternatif/${id}`, {
         method: "DELETE",
       });
+      setIsDeleted(true);
     } catch (error) {
       console.log(error);
     }
   };
-
+  if (isDeleted) {
+    return true;
+  }
   return (
     <div className="w-auto h-1/2 bg-slate-800 m-2 p-3 rounded-md text-white font-mono">
       <p> nama : {alternatif.nama_alternatif}</p>

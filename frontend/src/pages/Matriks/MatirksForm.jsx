@@ -99,7 +99,7 @@ const KriteriaForm = ({ alternatif }) => {
         {kriteriaAlternatif ? (
           kriteriaAlternatif.Kriteria.map((criteria, i) => (
             <option key={i} value={criteria.id}>
-               {criteria.nama_kriteria}
+              {criteria.nama_kriteria}
             </option>
           ))
         ) : (

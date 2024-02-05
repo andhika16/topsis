@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import AlternatifForm from "./pages/AlternatifForm";
-import KriteriaForm from "./pages/KriteriaForm";
-import MatriksForm from "./pages/MatirksForm";
+import AlternatifForm from "./pages/CRUD/AlternatifForm";
+import KriteriaForm from "./pages/CRUD/KriteriaForm";
+import MatriksForm from "./pages/CRUD/MatirksForm";
+
 import AlternatifKriteria from "./pages/AlternatifKriteria";
 function App() {
   return (

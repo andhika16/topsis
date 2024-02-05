@@ -1,4 +1,4 @@
-const Alternatif = require("../../model/alternatifModel"); 
+const Alternatif = require("../../model/alternatifModel");
 
 const ambilSemuaAlternatif = async (req, res) => {
   try {
@@ -49,7 +49,6 @@ const tambahAlternatif = async (req, res) => {
         .status(400)
         .json({ success: false, error: "Semua field harus diisi" });
     }
-    console.log(req.body);
     // Lakukan validasi atau manipulasi data sesuai kebutuhan
     // ...
 
@@ -69,6 +68,46 @@ const tambahAlternatif = async (req, res) => {
     res
       .status(500)
       .json({ success: false, error: "Gagal menambahkan data Alternatif" });
+  }
+};
+
+const ubahAlternatif = async (req, res) => {
+  const { id } = req.params;
+  const { nama_alternatif, no_kk, jenis_kelamin, alamat, no_telp, pekerjaan } =
+    req.body;
+
+  // Validasi minimal untuk memastikan ID alternatif tersedia
+  if (
+    !nama_alternatif ||
+    !no_kk ||
+    !jenis_kelamin ||
+    !alamat ||
+    !no_telp ||
+    !pekerjaan
+  ) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Semua field harus diisi" });
+  } else {
+    try {
+      const alternatif = await Alternatif.findOne({
+        where: {
+          id,
+        },
+      });
+      if (alternatif) {
+        alternatif.nama_alternatif = nama_alternatif;
+        alternatif.no_kk = no_kk;
+        alternatif.jenis_kelamin = jenis_kelamin;
+        alternatif.alamat = alamat;
+        alternatif.no_telp = no_telp;
+        alternatif.pekerjaan = pekerjaan;
+        alternatif.save();
+        return res.status(201).json({ success: true, data: alternatif });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
@@ -108,6 +147,7 @@ const hapusAlternatif = async (req, res) => {
 
 module.exports = {
   tambahAlternatif,
+  ubahAlternatif,
   hapusAlternatif,
   ambilSemuaAlternatif,
   ambilSatuAlternatif,

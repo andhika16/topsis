@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react";
+import AlternatifForm from "./Alternatif/AlternatifForm";
+import KriteriaForm from "./Kriteria/KriteriaForm";
+import MatriksForm from "./Matriks/MatirksForm";
 import { AlternatifDetail } from "../components/AlternatifDetail";
-import AlternatifForm from "./AlternatifForm";
-import KriteriaForm from "./KriteriaForm";
-import MatriksForm from "./MatirksForm";
-
 const Home = () => {
   const [allData, setAllData] = useState([]); // State untuk menyimpan semua data
+  const url = "http://localhost:4000/alternatif/";
   useEffect(() => {
-    // Fetch semua data pada saat komponen pertama kali dimount
+    const controller = new AbortController();
+    const signal = controller.signal;
 
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/alternatif");
-        if (response.ok) {
-          const { data } = await response.json();
-          setAllData(data);
-        }
+        const response = await fetch(url, { signal });
+        const { data } = await response.json();
+        setAllData(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (error.name === "AbortError") {
+          console.log("Fetching data was cancelled");
+        } else {
+          throw error;
+        }
       }
     };
-
     fetchData();
+    return () => {
+      controller.abort();
+    };
   }, []); // Dependency array kosong agar hanya dijalankan sekali
 
   return (

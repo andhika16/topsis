@@ -52,5 +52,6 @@ const Kriteria = db.define(
 })();
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
 Kriteria.hasMany(db.define("Matriks"), { foreignKey: "KriteriaId" });
+Kriteria.belongsTo(db.define("Alternatif"), { foreignKey: "AlternatifId" });
 
 module.exports = Kriteria;

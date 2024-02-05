@@ -2,34 +2,43 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 const AlternatifKriteria = () => {
-  const { id } = useParams();
-  const [kriteriaAlternatif, setKriteriaAlternatif] = useState([]);
+  const [kriteriaAlternatif, setKriteriaAlternatif] = useState([]); // State untuk menyimpan semua data
+  const id = useParams();
+  const url = `http://localhost:4000/alternatifKriteriMatriks/${id}`;
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:4000/alternatifKriteriaMatriks/${id}`
-        );
-        if (response.ok) {
-          const { data } = await response.json();
-          setKriteriaAlternatif(data);
-        }
+        const response = await fetch(url, { signal });
+        const { data } = await response.json();
+        setKriteriaAlternatif(data);
+        console.log(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (error.name === "AbortError") {
+          console.log("Fetching data was cancelled");
+        } else {
+          throw error;
+        }
       }
     };
-
     fetchData();
-  }, []);
+    return () => {
+      controller.abort();
+    };
+  }, []); //
   const hapusKriteria = async (id) => {
     try {
       await fetch(`http://localhost:4000/kriteria/${id}`, {
         method: "DELETE",
       });
+      setIsDeleted(true);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="container mx-auto ">
       <div className="m-2 text-xl font-semibold">
