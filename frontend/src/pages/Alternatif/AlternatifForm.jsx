@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-
+import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 const AlternatifForm = () => {
+  const { alternatifDispatch } = useAlternatifContext();
+
   const [formData, setFormData] = useState({
     nama_alternatif: "",
     no_kk: "",
@@ -29,8 +31,7 @@ const AlternatifForm = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Data Alternatif berhasil dikirim:", data);
-        // Tambahkan logika atau pembaruan UI sesuai kebutuhan
+        alternatifDispatch({ type: "ADD_ALTERNATIF", payload: data });
       })
       .catch((error) => {
         console.error("Gagal mengirim data Alternatif:", error);
@@ -38,11 +39,14 @@ const AlternatifForm = () => {
   };
 
   return (
-    <div className="w-auto m-5 p-4 rounded-lg  bg-slate-200">
+    <div className=" mt-5 mx-12">
+      <div className="text-lg font-semibold">
+        <h1>Form Alternatif Sistem Pendukung Keputusan</h1>
+      </div>
       <form className="" action="">
         <label htmlFor="nama_alternatif">Nama Alternatif:</label>
         <input
-          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset  w-full h-10 sm:max-w-md"
           type="text"
           id="nama_alternatif"
           name="nama_alternatif"
@@ -53,7 +57,7 @@ const AlternatifForm = () => {
 
         <label htmlFor="no_kk">Nomor KK:</label>
         <input
-          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset  w-full h-10   sm:max-w-md"
           type="text"
           id="no_kk"
           name="no_kk"
@@ -65,7 +69,7 @@ const AlternatifForm = () => {
         <label>Jenis Kelamin :</label>
         <select
           value={formData.jenis_kelamin}
-          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset  w-full h-10  sm:max-w-md"
           onChange={handleChange}
           name="jenis_kelamin"
           id="jenisKelamin"
@@ -76,7 +80,7 @@ const AlternatifForm = () => {
 
         <label htmlFor="alamat">Alamat:</label>
         <input
-          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset  w-full h-10  sm:max-w-md"
           id="alamat"
           name="alamat"
           onChange={handleChange}
@@ -86,7 +90,7 @@ const AlternatifForm = () => {
 
         <label htmlFor="no_telp">Nomor Telepon:</label>
         <input
-          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset  w-full h-10  sm:max-w-md"
           type="text"
           id="no_telp"
           name="no_telp"
@@ -97,7 +101,7 @@ const AlternatifForm = () => {
 
         <label htmlFor="pekerjaan">Pekerjaan:</label>
         <input
-          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"
+          className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset  w-full h-10  sm:max-w-md"
           type="text"
           id="pekerjaan"
           name="pekerjaan"

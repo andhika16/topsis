@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 export function AlternatifDetail({ alternatif }) {
   const [isDeleted, setIsDeleted] = useState(false);
-
   const hapusData = async (id) => {
     try {
       await fetch(`http://localhost:4000/alternatif/${id}`, {
@@ -19,7 +18,7 @@ export function AlternatifDetail({ alternatif }) {
     return true;
   }
   return (
-    <div className="w-auto h-1/2 bg-slate-800 m-2 p-3 rounded-md text-white font-mono">
+    <div className="h-auto bg-slate-800 m-2 p-3 text-xs rounded-md text-white font-mono">
       <p> nama : {alternatif.nama_alternatif}</p>
       <p> Nomor KK :{alternatif.no_kk}</p>
       <p> NIK :{alternatif.no_telp}</p>

@@ -1,10 +1,10 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer } from "react";
 
 // Inisialisasi Context
-const AlternatifContext = createContext();
+export const AlternatifContext = createContext();
 
 // Reducer untuk mengelola state
-const alternatifReducer = (state, action) => {
+export const alternatifReducer = (state, action) => {
   switch (action.type) {
     case "SET_ALTERNATIF":
       return action.payload;
@@ -25,7 +25,7 @@ const alternatifReducer = (state, action) => {
 const initialAlternatifState = [];
 
 // Wrapper untuk menyediakan state dan dispatch ke komponen di bawahnya
-const AlternatifProvider = ({ children }) => {
+export const AlternatifProvider = ({ children }) => {
   const [alternatifState, alternatifDispatch] = useReducer(
     alternatifReducer,
     initialAlternatifState
@@ -37,16 +37,3 @@ const AlternatifProvider = ({ children }) => {
     </AlternatifContext.Provider>
   );
 };
-
-// Custom hook untuk menggunakan Context
-const useAlternatifContext = () => {
-  const context = useContext(AlternatifContext);
-  if (!context) {
-    throw new Error(
-      "useAlternatifContext must be used within an AlternatifProvider"
-    );
-  }
-  return context;
-};
-
-export { AlternatifProvider, useAlternatifContext };

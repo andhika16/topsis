@@ -1,10 +1,10 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer } from "react";
 
 // Inisialisasi Context
-const MatriksContext = createContext();
+export const MatriksContext = createContext();
 
 // Reducer untuk mengelola state
-const matriksReducer = (state, action) => {
+export const matriksReducer = (state, action) => {
   switch (action.type) {
     case "SET_MATRIKS":
       return action.payload;
@@ -25,7 +25,7 @@ const matriksReducer = (state, action) => {
 const initialMatriksState = [];
 
 // Wrapper untuk menyediakan state dan dispatch ke komponen di bawahnya
-const MatriksProvider = ({ children }) => {
+export const MatriksProvider = ({ children }) => {
   const [matriksState, matriksDispatch] = useReducer(
     matriksReducer,
     initialMatriksState
@@ -39,14 +39,3 @@ const MatriksProvider = ({ children }) => {
 };
 
 // Custom hook untuk menggunakan Context
-const useMatriksContext = () => {
-  const context = useContext(MatriksContext);
-  if (!context) {
-    throw new Error(
-      "useMatriksContext must be used within a MatriksProvider"
-    );
-  }
-  return context;
-};
-
-export { MatriksProvider, useMatriksContext };

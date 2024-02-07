@@ -5,7 +5,7 @@ import {
   pendidikanAttributes,
   criteriaOptions,
   bobotValues,
-} from "../../components/atributKriteria";
+} from "../../assets/atributKriteria";
 const KriteriaForm = ({ alternatif }) => {
   const [selectedCriteria, setSelectedCriteria] = useState("");
   const [selectedAttribute, setSelectedAttribute] = useState("");
@@ -68,7 +68,7 @@ const KriteriaForm = ({ alternatif }) => {
   };
 
   return (
-    <div className="m-5 p-4 rounded-lg  w-auto bg-slate-200">
+    <div className="w-1/2 mt-5 mx-12">
       <label htmlFor="">Pilih Alternatif:</label>
       <select
         className="flex rounded-md  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 w-full h-10 sm:max-w-md"

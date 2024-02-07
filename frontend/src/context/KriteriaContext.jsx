@@ -1,10 +1,10 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer } from "react";
 
 // Inisialisasi Context
-const KriteriaContext = createContext();
+export const KriteriaContext = createContext();
 
 // Reducer untuk mengelola state
-const kriteriaReducer = (state, action) => {
+export const kriteriaReducer = (state, action) => {
   switch (action.type) {
     case "SET_KRITERIA":
       return action.payload;
@@ -25,7 +25,7 @@ const kriteriaReducer = (state, action) => {
 const initialKriteriaState = [];
 
 // Wrapper untuk menyediakan state dan dispatch ke komponen di bawahnya
-const KriteriaProvider = ({ children }) => {
+export const KriteriaProvider = ({ children }) => {
   const [kriteriaState, kriteriaDispatch] = useReducer(
     kriteriaReducer,
     initialKriteriaState
@@ -39,14 +39,3 @@ const KriteriaProvider = ({ children }) => {
 };
 
 // Custom hook untuk menggunakan Context
-const useKriteriaContext = () => {
-  const context = useContext(KriteriaContext);
-  if (!context) {
-    throw new Error(
-      "useKriteriaContext must be used within a KriteriaProvider"
-    );
-  }
-  return context;
-};
-
-export { KriteriaProvider, useKriteriaContext };

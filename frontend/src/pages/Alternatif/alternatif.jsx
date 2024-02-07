@@ -1,32 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import AlternatifForm from "./AlternatifForm";
+import { useAlternatifContext } from "../../hooks/useAlternatifContext";
+import { AlternatifDetail } from "./AlternatifDetail";
+const Alternatif = () => {
+  const { alternatifState } = useAlternatifContext();
 
-const alternatif = () => {
-  const [allData, setAllData] = useState([]); // State untuk menyimpan semua data
-  const url = "http://localhost:4000/alternatif/";
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url, { signal });
-        const { data } = await response.json();
-        setAllData(data);
-      } catch (error) {
-        if (error.name === "AbortError") {
-          console.log("Fetching data was cancelled");
-        } else {
-          throw error;
-        }
-      }
-    };
-    fetchData();
-    return () => {
-      controller.abort();
-    };
-  }, []); // Dependency array kosong agar hanya dijalankan sekali
-
-  return <div>alternatif</div>;
+  return (
+    <div>
+      <div className="flex flex-wrap">
+        <AlternatifForm />
+        {alternatifState.map((data, i) => (
+          <AlternatifDetail key={i} alternatif={data} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
-export default alternatif;
+export default Alternatif;
