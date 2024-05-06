@@ -1,18 +1,16 @@
 import LoginForm from "../components/LoginForm";
 import { AlternatifContext } from "../context/AlternatifContext";
 import { useAlternatifContext } from "../hooks/useAlternatifContext";
+import { AlternatifDetail } from "./Alternatif/AlternatifDetail";
 
 const Beranda = () => {
-  const alternatif = useAlternatifContext();
-  console.log(alternatif);
+  const { alternatifState } = useAlternatifContext();
   return (
-    <div className="w-full bg-slate-100 px-20 pt-10">
-      <div className="">
-        <h1 className="font-semibold text-2xl">
-          Selamat Datang Di Sistem Pendukung Keputusan
-        </h1>
-      </div>
-      <div className="">
+    <div className="w-full  bg-slate-200 px-20 pt-10">
+      <div className="flex flex-wrap">
+        {alternatifState.map((data, i) => (
+          <AlternatifDetail key={i} alternatif={data} />
+        ))}
       </div>
     </div>
   );

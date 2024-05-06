@@ -1,20 +1,20 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useAlternatifContext } from "./hooks/useAlternatifContext";
-
 import Beranda from "./pages/Beranda";
 import SideBar from "./components/SideBar";
 import Test from "./pages/Alternatif/Test";
 import KriteriaForm from "./pages/Kriteria/KriteriaForm";
 import MatriksForm from "./pages/Matriks/MatriksForm";
-import Alternatif from "./pages/Alternatif/Alternatif";
+import { useAlternatifContext } from "./hooks/useAlternatifContext";
+import AlternatifForm from "./pages/Alternatif/AlternatifForm";
+import AlternatifKriteria from "./pages/Alternatif/AlternatifKriteria";
+import { useKriteriaContext } from "./hooks/useKriteriaContext";
 function App() {
   const { alternatifDispatch } = useAlternatifContext();
-  const url = "http://localhost:4000/alternatif/";
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataAlternatif = async () => {
       try {
-        const response = await fetch(url);
+        const response = await fetch("http://localhost:4000/alternatif/");
         const { data } = await response.json();
         alternatifDispatch({ type: "SET_ALTERNATIF", payload: data });
       } catch (error) {
@@ -25,8 +25,25 @@ function App() {
         }
       }
     };
-    fetchData();
+    fetchDataAlternatif();
   }, []); // Dependency array kosong agar hanya dijalankan sekali
+  const { kriteriaDispatch } = useKriteriaContext();
+  useEffect(() => {
+    const fetchDataAlternatif = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/kriteria/");
+        const { data } = await response.json();
+        kriteriaDispatch({ type: "SET_KRITERIA", payload: data });
+      } catch (error) {
+        if (error.name === "AbortError") {
+          console.log("Fetching data was cancelled");
+        } else {
+          throw error;
+        }
+      }
+    };
+    fetchDataAlternatif();
+  }, []);
 
   return (
     <div className="App">
@@ -38,8 +55,11 @@ function App() {
             <Route path="/" element={<Beranda />} />
             <Route path="/kriteria_form" element={<KriteriaForm />} />
             <Route path="/matriks_form" element={<MatriksForm />} />
-            <Route path="/test" element={<Test />} />
-            <Route path="/alternatif" element={<Alternatif />} />
+            <Route path="/alternatif_form" element={<AlternatifForm />} />
+            <Route
+              path="/alternatifKriteria/:id"
+              element={<AlternatifKriteria />}
+            />
           </Routes>
         </div>
       </BrowserRouter>

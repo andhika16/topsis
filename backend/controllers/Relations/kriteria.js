@@ -28,9 +28,9 @@ const KriteriaAlternatif = async () => {
     return res.status(400).json({ error: "ID parameter tidak valid" });
   } else {
     try {
-      //   const kriteria = await Kriteria.findByPk(id, {
-      //     include: [Alternatif],
-      //   });
+        const kriteria = await Kriteria.findByPk(id, {
+          include: [Alternatif],
+        });
 
       res.json({ success: true, data: kriteria });
     } catch (error) {

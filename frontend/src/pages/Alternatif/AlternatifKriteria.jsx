@@ -3,8 +3,8 @@ import { useParams, Link } from "react-router-dom";
 
 const AlternatifKriteria = () => {
   const [kriteriaAlternatif, setKriteriaAlternatif] = useState([]); // State untuk menyimpan semua data
-  const id = useParams();
-  const url = `http://localhost:4000/alternatifKriteriMatriks/${id}`;
+  const {id} = useParams();
+  const url = `http://localhost:4000/alternatifKriteriaMatriks/${id}`;
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -13,8 +13,7 @@ const AlternatifKriteria = () => {
       try {
         const response = await fetch(url, { signal });
         const { data } = await response.json();
-        setKriteriaAlternatif(data);
-        console.log(data);
+        setKriteriaAlternatif(data)
       } catch (error) {
         if (error.name === "AbortError") {
           console.log("Fetching data was cancelled");
@@ -83,7 +82,7 @@ const AlternatifKriteria = () => {
                   </button>
                 </td>
               </tr>
-            ))
+            ))  
           ) : (
             <tr>
               <td>tidak ada data</td>

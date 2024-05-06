@@ -1,32 +1,11 @@
 import React, { useState, useEffect } from "react";
-
-const KriteriaForm = ({ alternatif }) => {
+import { useAlternatifContext } from "../../hooks/useAlternatifContext";
+const MatriksForm = () => {
   const [selectedAlternatif, setSelectedAlternatif] = useState("");
   const [selectedCriteria, setSelectedCriteria] = useState("");
   const [kriteriaAlternatif, setKriteriaAlternatif] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:4000/alternatifKriteria/${selectedAlternatif}`
-        );
-
-        if (response.ok) {
-          const { data } = await response.json();
-          setKriteriaAlternatif(data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    if (selectedAlternatif !== "") {
-      fetchData();
-    }
-  }, [selectedAlternatif]);
-
+  const { alternatifState } = useAlternatifContext();
   const handleSubmit = async () => {
     if (selectedValue !== "") {
       const data = {
@@ -34,10 +13,7 @@ const KriteriaForm = ({ alternatif }) => {
         AlternatifId: selectedAlternatif,
         KriteriaId: selectedCriteria,
       };
-
       // Kirim data ke server
-      console.log(data);
-
       try {
         const response = await fetch("http://localhost:4000/matriks", {
           method: "POST",
@@ -81,8 +57,8 @@ const KriteriaForm = ({ alternatif }) => {
         onChange={handleAlternatifChange}
       >
         <option value="">-- Pilih Alternatif --</option>
-        {alternatif &&
-          alternatif.map((nama, i) => (
+        {alternatifState &&
+          alternatifState.map((nama, i) => (
             <option key={i} value={nama.id}>
               {nama.nama_alternatif}
             </option>
@@ -131,4 +107,4 @@ const KriteriaForm = ({ alternatif }) => {
   );
 };
 
-export default KriteriaForm;
+export default MatriksForm;

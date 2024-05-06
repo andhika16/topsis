@@ -28,6 +28,7 @@ export const bobotValues = {
     SD: 3,
     SMP: 2,
     SMA: 1,
+    "Tidak Sekolah": 4,
   },
   Penghasilan: {
     "Rp.1900000": 1,

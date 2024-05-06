@@ -1,5 +1,5 @@
-import { KriteriaContext } from "../context/KriteriaContext";
 import { useContext } from "react";
+import { KriteriaContext } from "../context/KriteriaContext";
 export const useKriteriaContext = () => {
   const context = useContext(KriteriaContext);
   if (!context) {

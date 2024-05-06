@@ -6,11 +6,13 @@ import {
   criteriaOptions,
   bobotValues,
 } from "../../assets/atributKriteria";
+import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 const KriteriaForm = ({ alternatif }) => {
   const [selectedCriteria, setSelectedCriteria] = useState("");
   const [selectedAttribute, setSelectedAttribute] = useState("");
   const [selectedAlternatif, setSelectedAlternatif] = useState("");
   const [bobot, setBobot] = useState("");
+  const { alternatifState } = useAlternatifContext();
   const handleSubmit = async () => {
     if (
       selectedAlternatif &&
@@ -76,8 +78,8 @@ const KriteriaForm = ({ alternatif }) => {
         onChange={handleAlternatifChange}
       >
         <option value="">-- Pilih Alternatif --</option>
-        {alternatif &&
-          alternatif.map((nama, i) => (
+        {alternatifState &&
+          alternatifState.map((nama, i) => (
             <option key={i} value={nama.id}>
               {nama.nama_alternatif}
             </option>

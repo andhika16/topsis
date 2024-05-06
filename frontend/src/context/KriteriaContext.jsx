@@ -37,5 +37,3 @@ export const KriteriaProvider = ({ children }) => {
     </KriteriaContext.Provider>
   );
 };
-
-// Custom hook untuk menggunakan Context

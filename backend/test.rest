@@ -25,6 +25,8 @@ Content-Type: application/json
 
 ###
 GET  http://localhost:4000/alternatifKriteriaMatriks/8
+###
+GET  http://localhost:4000/test
 
 
 

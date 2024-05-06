@@ -17,7 +17,7 @@ const SideBar = () => {
   const Menus = [
     { link: "/", title: "Beranda", src: Chart_fill },
     {
-      link: "/alternatif",
+      link: "/alternatif_form",
       title: "Form Alternatif",
       src: Chat,
       gap: true,
