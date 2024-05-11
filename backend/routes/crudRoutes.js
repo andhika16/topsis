@@ -17,8 +17,9 @@ const {
   tambahMatriks,
   ambilSemuaMatriks,
   hapusMatriks,
-  ambilSatuMatriks,
-} = require("../controllers/CRUD/MatriksController");
+  ambilMatriks,
+} = require("../controllers/MatriksController");
+const {nilaiAlternatif,nilaiSemuaAlternatif} = require("../controllers/nilaiController");
 
 // Rute untuk Kriteria
 router.get("/kriteria", ambilKriteria);
@@ -38,5 +39,7 @@ router.get("/matriks", ambilSemuaMatriks);
 router.get("/matriks/:id", ambilSatuMatriks);
 router.post("/matriks", tambahMatriks);
 router.delete("/matriks/:id_matrik", hapusMatriks);
-
+// rute untuk nilai normalisasi
+router.get("/nilai/:id", nilaiSemuaAlternatif);
+router.get("/nilai", nilaiAlternatif);
 module.exports = router;

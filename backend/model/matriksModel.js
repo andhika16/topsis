@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/Database");
 const Kriteria = require("./kriteriaModel");
+const Alternatif = require("./alternatifModel");
 
 const Matriks = db.define(
   "Matriks",
@@ -24,6 +25,9 @@ const Matriks = db.define(
     freezeTableName: true,
   }
 );
+
+Matriks.belongsTo(Alternatif, { as: "alternatif", foreignKey: "AlternatifId" });
+Matriks.belongsTo(Kriteria, { as: "kriteria", foreignKey: "KriteriaId" });
 
 (async () => {
   await db.sync();

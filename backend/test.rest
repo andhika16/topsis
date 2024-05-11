@@ -10,23 +10,20 @@ Content-Type: application/json
 }
 
 ###
-PATCH  http://localhost:4000/alternatif/2
-Content-Type: application/json
-
-{
-   "nama_alternatif": "Maisaroh",
-    "no_kk": "",
-    "jenis_kelamin": "Perempuan",
-    "alamat": "Pengkol,Kauman,ponorogo jl.sadewo 01/02 ponorogo 63461",
-    "no_telp": "0853499931499",
-    "pekerjaan": "Kuli"
-}
-
+GET http://localhost:4000/alternatif
 
 ###
-GET  http://localhost:4000/alternatifKriteriaMatriks/8
+GET http://localhost:4000/kriteria
 ###
-GET  http://localhost:4000/test
+GET http://localhost:4000/matriks
+###
+GET http://localhost:4000/nilai
+
+###
+GET http://localhost:4000/alternatifKriteria
+
+###
+GET http://localhost:4000/kriteriaMatriks/
 
 
 
