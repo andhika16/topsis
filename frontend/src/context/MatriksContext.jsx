@@ -6,7 +6,7 @@ export const MatriksContext = createContext();
 // Reducer untuk mengelola state
 export const matriksReducer = (state, action) => {
   switch (action.type) {
-    case "SET_MATRIKS":
+    case "SET_DATA_MATRIKS":
       return action.payload;
     case "ADD_MATRIKS":
       return [...state, action.payload];

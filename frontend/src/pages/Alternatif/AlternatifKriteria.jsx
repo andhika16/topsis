@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 const AlternatifKriteria = () => {
-  const [kriteriaAlternatif, setKriteriaAlternatif] = useState([]); // State untuk menyimpan semua data
-  const {id} = useParams();
+  const [kriteriaAlternatif, setKriteriaAlternatif] = useState([]);
+  const { id } = useParams();
   const url = `http://localhost:4000/alternatifKriteriaMatriks/${id}`;
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -13,7 +14,7 @@ const AlternatifKriteria = () => {
       try {
         const response = await fetch(url, { signal });
         const { data } = await response.json();
-        setKriteriaAlternatif(data)
+        setKriteriaAlternatif(data);
       } catch (error) {
         if (error.name === "AbortError") {
           console.log("Fetching data was cancelled");
@@ -22,24 +23,26 @@ const AlternatifKriteria = () => {
         }
       }
     };
+
     fetchData();
+
     return () => {
       controller.abort();
     };
-  }, []); //
+  }, [url]);
+
   const hapusKriteria = async (id) => {
     try {
       await fetch(`http://localhost:4000/kriteria/${id}`, {
         method: "DELETE",
       });
-      setIsDeleted(true);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="container mx-auto ">
+    <div className="container mx-auto">
       <div className="m-2 text-xl font-semibold">
         <p>Nama : {kriteriaAlternatif.nama_alternatif}</p>
       </div>
@@ -49,43 +52,40 @@ const AlternatifKriteria = () => {
           <tr className="bg-blue-500 border text-white">
             <th>Nomor</th>
             <th>Nama Kriteria</th>
-            <th>bobot</th>
-            <th>sifat</th>
+            <th>Bobot</th>
+            <th>Sifat</th>
             <th>Nilai Matriks</th>
-            <th>aksi</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody className="">
           {kriteriaAlternatif.Kriteria ? (
-            kriteriaAlternatif.Kriteria.map((kriteria, i) => (
-              <tr className="space-x-3 text-center" key={i}>
-                <td>{i}</td>
+            kriteriaAlternatif.Kriteria.map((kriteria, index) => (
+              <tr className="space-x-3 text-center" key={index}>
+                <td>{index}</td>
                 <td className="">{kriteria.nama_kriteria}</td>
-                <td className=""> {kriteria.bobot}</td>
+                <td className="">{kriteria.bobot}</td>
                 <td className="">{kriteria.sifat}</td>
                 <td className="">
                   {kriteria.Matriks ? (
-                    kriteria.Matriks.map((m, i) => m.nilai)
+                    kriteria.Matriks.map((matriks, index) => matriks.nilai)
                   ) : (
                     <td>kosong</td>
                   )}
                 </td>
                 <td>
                   <button
-                    className=" font-semibold  w-11 rounded text-red-600"
-                    onClick={() => {
-                      hapusKriteria(kriteria.id);
-                    }}
+                    className="font-semibold w-11 rounded text-red-600"
+                    onClick={() => hapusKriteria(kriteria.id)}
                   >
-                    {" "}
-                    hapus{" "}
+                    Hapus
                   </button>
                 </td>
               </tr>
-            ))  
+            ))
           ) : (
             <tr>
-              <td>tidak ada data</td>
+              <td>Tidak ada data</td>
             </tr>
           )}
         </tbody>

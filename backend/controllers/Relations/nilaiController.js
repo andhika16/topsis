@@ -1,17 +1,17 @@
-const Alternatif = require("../model/alternatifModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
-const Kriteria = require("../model/kriteriaModel");
-const Matriks = require("../model/matriksModel");
+const Alternatif = require("../../model/alternatifModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
+const Kriteria = require("../../model/kriteriaModel");
+const Matriks = require("../../model/matriksModel");
 const nilaiAlternatif = async (req, res) => {
   try {
     const response = await Alternatif.findAll({
-      attributes: ["nama_alternatif"],
+      attributes: ["id","nama_alternatif"],
       include: [
         {
           model: Kriteria,
           as: "Kriteria",
-          attributes: ["nama_kriteria"],
+          attributes: ["nama_kriteria","id","alternatifId"],
         }, // Hanya ambil nama alternatif
-        { model: Matriks, as: "Matriks", attributes: ["nilai"] }, // Hanya ambil nama kriteria
+        { model: Matriks, as: "Matriks", attributes: ["nilai","id","alternatifId","kriteriaId"] }, // Hanya ambil nama kriteria
       ],
     });
     res.status(201).json({ success: true, data: response });

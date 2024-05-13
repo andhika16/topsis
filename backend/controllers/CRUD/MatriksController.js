@@ -1,3 +1,4 @@
+const Kriteria = require("../../model/kriteriaModel");
 const Matriks = require("../../model/matriksModel");
 
 const ambilSemuaMatriks = async (req, res) => {
@@ -26,6 +27,18 @@ const tambahMatriks = async (req, res) => {
         .status(400)
         .json({ success: false, error: "Semua field harus diisi" });
     }
+
+    // Pengecekan apakah nilai sudah ada sebelumnya
+    const existingMatriks = await Kriteria.findOne({
+      where: { nilai, KriteriaId, AlternatifId },
+    });
+    if (existingMatriks) {
+      return res.status(400).json({ 
+        success: false,
+        error: "Data dengan nilai yang sama sudah ada",
+      });
+    }
+
     const matriksBaru = await Matriks.create({
       nilai,
       KriteriaId,

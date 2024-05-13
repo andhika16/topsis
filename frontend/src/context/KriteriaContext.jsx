@@ -6,7 +6,7 @@ export const KriteriaContext = createContext();
 // Reducer untuk mengelola state
 export const kriteriaReducer = (state, action) => {
   switch (action.type) {
-    case "SET_KRITERIA":
+    case "SET_DATA_KRITERIA":
       return action.payload;
     case "ADD_KRITERIA":
       return [...state, action.payload];
@@ -18,6 +18,7 @@ export const kriteriaReducer = (state, action) => {
       return state.filter((item) => item.id !== action.payload);
     default:
       return state;
+      
   }
 };
 

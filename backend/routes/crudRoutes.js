@@ -17,9 +17,12 @@ const {
   tambahMatriks,
   ambilSemuaMatriks,
   hapusMatriks,
-  ambilMatriks,
-} = require("../controllers/MatriksController");
-const {nilaiAlternatif,nilaiSemuaAlternatif} = require("../controllers/nilaiController");
+  ambilSatuMatriks,
+} = require("../controllers/CRUD/MatriksController");
+const {
+  nilaiAlternatif,
+  nilaiSemuaAlternatif,
+} = require("../controllers/Relations/nilaiController");
 
 // Rute untuk Kriteria
 router.get("/kriteria", ambilKriteria);
