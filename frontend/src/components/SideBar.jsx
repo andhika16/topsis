@@ -16,14 +16,14 @@ const SideBar = () => {
   const [open, setOpen] = useState(true);
   const Menus = [
     { link: "/", title: "Beranda", src: Chart_fill },
+    { link: "/nilai_matriks", title: "Nilai ", src: Chart_fill },
     {
       link: "/alternatif_form",
-      title: "Form Alternatif",
+      title: "Form Penduduk",
       src: Chat,
       gap: true,
     },
-    { link: "/kriteria_form", title: "Form Kriteria", src: Chat },
-    { link: "/matriks_form", title: "Form Matriks", src: Chat },
+    { link: "/penilaian", title: "Penilaian", src: Chat },
     // { link: "", title: "Accounts", src: User, gap: true },
     // { link: "", title: "Schedule ", src: Calendar },
     // { link: "", title: "Search", src: Search },

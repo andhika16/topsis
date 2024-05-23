@@ -29,11 +29,11 @@ const tambahMatriks = async (req, res) => {
     }
 
     // Pengecekan apakah nilai sudah ada sebelumnya
-    const existingMatriks = await Kriteria.findOne({
-      where: { nilai, KriteriaId, AlternatifId },
+    const existingMatriks = await Matriks.findOne({
+      where: { KriteriaId, AlternatifId },
     });
     if (existingMatriks) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
         error: "Data dengan nilai yang sama sudah ada",
       });
@@ -50,6 +50,46 @@ const tambahMatriks = async (req, res) => {
     res
       .status(500)
       .json({ success: false, error: "Gagal menambahkan data Matriks" });
+  }
+};
+
+const editMatriks = async (req, res) => {
+  const data = req.body.Matriks; // Assuming data is sent in the request body
+  if (!Array.isArray(data) || data.length === 0) {
+    return res.status(400).json({ message: "Invalid data format" });
+  }
+
+  // Validate each object in the array
+  for (let item of data) {
+    if (
+      typeof item.nilai === "undefined" ||
+      typeof item.id === "undefined" ||
+      typeof item.alternatifId === "undefined" ||
+      typeof item.kriteriaId === "undefined"
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Invalid data format in one or more items" });
+    }
+  }
+
+  const transaction = await Matriks.sequelize.transaction();
+
+  try {
+    // Upsert the records
+
+    await Matriks.bulkCreate(data, {
+      updateOnDuplicate: ["nilai"],
+      transaction,
+    });
+
+    await transaction.commit();
+    res.status(200).json({ message: "Data successfully updated" });
+  } catch (error) {
+    await transaction.rollback();
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 };
 
@@ -91,5 +131,6 @@ module.exports = {
   tambahMatriks,
   hapusMatriks,
   ambilSemuaMatriks,
+  editMatriks,
   ambilSatuMatriks,
 };

@@ -39,7 +39,7 @@ const AlternatifForm = () => {
   };
 
   return (
-    <div className=" mt-5 mx-12">
+    <div className="mx-12 mt-5">
       <div className="text-lg font-semibold">
         <h1>Form Alternatif Sistem Pendukung Keputusan</h1>
       </div>

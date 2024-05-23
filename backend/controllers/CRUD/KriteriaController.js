@@ -1,4 +1,5 @@
 const Kriteria = require("../../model/kriteriaModel");
+const Matriks = require("../../model/matriksModel");
 
 const ambilKriteria = async (req, res) => {
   try {
@@ -45,7 +46,10 @@ const tambahKriteria = async (req, res) => {
 const hapusKriteria = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await Kriteria.destroy({ where: { id } });
+    const result = await Kriteria.destroy({
+      where: { id },
+      include: [{ model: Matriks, where: { kriteriaId: id } }],
+    });
 
     if (result) {
       res.json({ success: true, message: "Data Kriteria berhasil dihapus" });

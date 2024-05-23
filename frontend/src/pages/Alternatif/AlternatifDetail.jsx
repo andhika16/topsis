@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 
 export function AlternatifDetail({ alternatif }) {
   const [isDeleted, setIsDeleted] = useState(false);
