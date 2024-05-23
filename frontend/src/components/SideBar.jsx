@@ -24,6 +24,8 @@ const SideBar = () => {
       gap: true,
     },
     { link: "/penilaian", title: "Penilaian", src: Chat },
+    { link: "/kriteria", title: "Kriteria", src: Chat },
+    { link: "/kriteria_rate", title: "Kriteria rating", src: Chat },
     // { link: "", title: "Accounts", src: User, gap: true },
     // { link: "", title: "Schedule ", src: Calendar },
     // { link: "", title: "Search", src: Search },
