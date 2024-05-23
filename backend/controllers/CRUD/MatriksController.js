@@ -22,6 +22,8 @@ const ambilSatuMatriks = async (req, res) => {
 const tambahMatriks = async (req, res) => {
   try {
     const { nilai, AlternatifId, KriteriaId } = req.body;
+    console.log(req.body);
+
     if (!nilai || !AlternatifId || !KriteriaId) {
       return res
         .status(400)

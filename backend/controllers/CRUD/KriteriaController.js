@@ -21,7 +21,6 @@ const ambilSatuKriteria = async (req, res) => {
 
 const tambahKriteria = async (req, res) => {
   const { nama_kriteria, AlternatifId, bobot, sifat } = req.body;
-  console.log(req.body);
   if (!nama_kriteria || !AlternatifId || !bobot || !sifat) {
     return res.status(400).json({
       success: false,
