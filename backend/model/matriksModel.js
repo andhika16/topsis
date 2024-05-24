@@ -13,6 +13,11 @@ const Matriks = db.define(
     KriteriaId: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
+      references: {
+        model: Kriteria,
+        key: "id",
+      },
+      onDelete: "CASCADE",
     },
     AlternatifId: {
       type: DataTypes.INTEGER(11),
@@ -26,17 +31,11 @@ const Matriks = db.define(
   }
 );
 
-// Definisi hubungan dengan Kriteria dan Alternatif
-Matriks.belongsTo(Alternatif, { as: "alternatif", foreignKey: "AlternatifId" });
 Matriks.belongsTo(Kriteria, {
   as: "kriteria",
   foreignKey: "KriteriaId",
   onDelete: "CASCADE",
-}); // Tambahkan onDelete: 'CASCADE'
-
-// Synchronize database
-(async () => {
-  await db.sync();
-})();
+});
+Matriks.belongsTo(Alternatif, { as: "alternatif", foreignKey: "AlternatifId" });
 
 module.exports = Matriks;

@@ -45,9 +45,12 @@ const tambahKriteria = async (req, res) => {
 const hapusKriteria = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Explicitly delete related Matriks records if cascading is not working
+    await Matriks.destroy({ where: { KriteriaId: id } });
+
     const result = await Kriteria.destroy({
       where: { id },
-      include: [{ model: Matriks, where: { kriteriaId: id } }],
     });
 
     if (result) {
@@ -58,7 +61,10 @@ const hapusKriteria = async (req, res) => {
         .json({ success: false, error: "Data Kriteria tidak ditemukan" });
     }
   } catch (error) {
-    handleError(res, error, "Gagal menghapus data Kriteria");
+    console.error(error);
+    res
+      .status(500)
+      .json({ success: false, error: "Gagal menghapus data Kriteria" });
   }
 };
 

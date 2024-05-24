@@ -7,7 +7,7 @@ import {
   criteriaOptions,
 } from "../../assets/atributKriteria";
 
-const KriteriaForm = ({ alternatif }) => {
+const KriteriaForm = () => {
   const [selectedCriteria, setSelectedCriteria] = useState("");
   const [selectedAttribute, setSelectedAttribute] = useState("");
   const [selectedAlternatif, setSelectedAlternatif] = useState("");

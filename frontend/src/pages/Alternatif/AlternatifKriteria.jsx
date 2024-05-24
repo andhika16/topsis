@@ -31,10 +31,19 @@ const AlternatifKriteria = () => {
     };
   }, [url]);
 
-  const hapusKriteria = async (id) => {
+  const hapusKriteria = async (kriteriaId) => {
     try {
-      await fetch(`http://localhost:4000/kriteria/${id}`, {
+      await fetch(`http://localhost:4000/kriteria/${kriteriaId}`, {
         method: "DELETE",
+      });
+
+      // Setelah penghapusan kriteria berhasil, kita perlu mengupdate state kriteriaAlternatif
+      const updatedKriteria = kriteriaAlternatif.Kriteria.filter(
+        (kriteria) => kriteria.id !== kriteriaId
+      );
+      setKriteriaAlternatif({
+        ...kriteriaAlternatif,
+        Kriteria: updatedKriteria,
       });
     } catch (error) {
       console.log(error);

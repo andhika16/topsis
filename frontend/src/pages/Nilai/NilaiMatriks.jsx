@@ -29,9 +29,11 @@ const NilaiMatriks = () => {
                   </td>
                 ))
               ) : (
-                <td className="border border-gray-400 px-4 py-2" colSpan={3}>
-                  belum ada nilai
-                </td>
+                <>
+                  <td className="border border-gray-400 px-4 py-2">-</td>
+                  <td className="border border-gray-400 px-4 py-2">-</td>
+                  <td className="border border-gray-400 px-4 py-2">-</td>
+                </>
               )}
               <td className="border border-gray-400 px-4 py-2 text-sm">
                 <Link to={`/nilai_matriks/${item.id}`}>ubah</Link>
