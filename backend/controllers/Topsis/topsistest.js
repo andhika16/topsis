@@ -1,8 +1,7 @@
-const Alternatif = require("../../model/alternatifModel");
+const Alternatif = require("../../model/alternatifModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
 const Kriteria = require("../../model/kriteriaModel");
 const Matriks = require("../../model/matriksModel");
-
-// Fungsi untuk normalisasi matriks keputusan
+// Fungsi untuk menjumlahkan nilai secara vertikal setelah dipangkatkan dua
 function normalisasiMatriks(matriks) {
   const jumlah_vertikal = [];
   const jumlah_vertikal_pangkat = []; // Untuk menyimpan jumlah sebelum diakarkan
@@ -56,20 +55,20 @@ function normalisasiMatriks(matriks) {
   return hasil_bagi;
 }
 
-// Fungsi untuk menghitung matriks terbobot
 function matriksTerbobot(matriks, bobot) {
+  console.log(matriks);
+  console.log(bobot);
   const hasil = [];
   for (let i = 0; i < matriks.length; i++) {
     const row = matriks[i];
     const weightedRow = row.map((val, j) => val * bobot[j]);
     hasil.push(weightedRow);
   }
-  console.log("Matriks Terbobot:");
-  console.table(hasil);
+  // console.log("Matriks Terbobot:");
+  // console.table(hasil);
   return hasil;
 }
 
-// // Fungsi untuk mencari solusi ideal positif dan negatif
 function solusiIdeal(matriksTerbobot) {
   const nKriteria = matriksTerbobot[0].length;
   const solusiIdealPositif = Array(nKriteria).fill(-Infinity);
@@ -95,39 +94,7 @@ function solusiIdeal(matriksTerbobot) {
   return { positif: solusiIdealPositif, negatif: solusiIdealNegatif };
 }
 
-// Fungsi untuk menghitung jarak euclidean dari suatu alternatif ke solusi ideal
-function jarakEuclidean(alternatif, solusiIdeal) {
-  const jarakPositif = Math.sqrt(
-    alternatif.reduce(
-      (acc, val, index) => acc + (val - solusiIdeal.positif[index]) ** 2,
-      0
-    )
-  );
-  const jarakNegatif = Math.sqrt(
-    alternatif.reduce(
-      (acc, val, index) => acc + (val - solusiIdeal.negatif[index]) ** 2,
-      0
-    )
-  );
-
-  console.log("Jarak Euclidean ke Solusi Ideal Positif:");
-  console.table({ jarakPositif });
-  console.log("Jarak Euclidean ke Solusi Ideal Negatif:");
-  console.table({ jarakNegatif });
-
-  return { jarakPositif, jarakNegatif };
-}
-
-// Fungsi untuk menghitung skor preferensi relatif
-function skorPreferensiRelatif(jarakPositif, jarakNegatif) {
-  const skor = jarakNegatif / (jarakPositif + jarakNegatif);
-  console.log("Skor Preferensi Relatif:");
-  console.table({ skor });
-  return skor;
-}
-
-// Fungsi utama untuk TOPSIS
-async function topsis() {
+async function testTopsis() {
   try {
     // Ambil data alternatif, kriteria, dan nilai matriks dari database
     const alternatifData = await Alternatif.findAll({
@@ -175,17 +142,12 @@ async function topsis() {
     }
 
     console.log("Matriks Keputusan:");
-    console.table(matriksKeputusan);
-
-    // Normalisasi matriks keputusan
     const matriksNormalisasi = normalisasiMatriks(matriksKeputusan);
-    // Matriks terbobot
     const matriksBobot = matriksTerbobot(matriksNormalisasi, bobot);
-
-    // // Solusi ideal positif dan negatif
     const { positif, negatif } = solusiIdeal(matriksBobot);
 
-    // // Hitung skor preferensi relatif untuk setiap alternatif
+    console.log(positif, negatif);
+
     const skorPreferensi = [];
     for (let i = 0; i < alternatifCount; i++) {
       const alternatifValues = matriksBobot[i];
@@ -209,16 +171,12 @@ async function topsis() {
 
     // Urutkan hasil berdasarkan skor preferensi relatif tertinggi ke terendah
     skorPreferensi.sort((a, b) => b.skor - a.skor);
-
-    // Cetak hasil akhir sebelum dikirim ke database
-    console.log("Hasil perangkingan dengan metode TOPSIS:");
-    console.table(skorPreferensi);
-
-    return { success: true, data: skorPreferensi };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Gagal menghitung TOPSIS." };
   }
 }
 
-module.exports = { topsis };
+module.exports = { testTopsis };
+
+// Panggil fungsi testTopsis untuk melihat hasilnya

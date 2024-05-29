@@ -1,29 +1,9 @@
-###
-POST http://localhost:4000/kriteria
-Content-Type: application/json
 
-{
-    "nama_kriteria": "Pekerjaan",
-    "alternatif_Id":1,
-    "sifat": "pegawai",
-    "bobot": 4
-}
 
-###
-GET http://localhost:4000/alternatif
-
-###
-GET http://localhost:4000/kriteria
-###
-GET http://localhost:4000/matriks
-###
 GET http://localhost:4000/nilai
-
 ###
-GET http://localhost:4000/alternatifKriteriaMatriks/8
-
+GET http://localhost:4000/topsis
 ###
-GET http://localhost:4000/kriteriaMatriks/
-
+GET http://localhost:4000/topsistest                
 
 
