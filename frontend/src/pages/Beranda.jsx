@@ -1,15 +1,19 @@
-import LoginForm from "../components/LoginForm";
+import React from "react";
 import { useAlternatifContext } from "../hooks/useAlternatifContext";
-import { AlternatifDetail } from "./Alternatif/AlternatifDetail";
-
+import { Link } from "react-router-dom";
 const Beranda = () => {
   const { alternatifState } = useAlternatifContext();
+  const totalAlternatif = alternatifState.length;
+
   return (
-    <div className="w-full  bg-slate-200 px-20 pt-10">
-      <div className="flex flex-wrap">
-        {alternatifState.map((data, i) => (
-          <AlternatifDetail key={i} alternatif={data} />
-        ))}
+    <div className="w-full bg-slate-200 px-20 pt-10">
+      <div className="flex space-x-3.5">
+        <Link
+          to={"/data_penduduk"}
+          className="block bg-yellow-500 shadow-md rounded-lg p-6 mb-4 text-xl text-left font-bold  hover:bg-gray-100 transition-colors duration-300"
+        >
+          Total Penduduk: {totalAlternatif}
+        </Link>
       </div>
     </div>
   );

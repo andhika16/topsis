@@ -8,6 +8,7 @@ import NilaiEdit from "./pages/Nilai/NilaiEdit";
 import Penilaian from "./pages/Nilai/Penilaian";
 import AlternatifForm from "./pages/Alternatif/AlternatifForm";
 import KriteriaInput from "./pages/Kriteria/KriteriaInput";
+import { AlternatifDetail } from "./pages/Alternatif/AlternatifDetail";
 
 function App() {
   DispatchData(); // data untuk menjalanakan react context hook
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Beranda />} />
             <Route path="/alternatif_form" element={<AlternatifForm />} />
+            <Route path="/data_penduduk" element={<AlternatifDetail />} />
             <Route path="/nilai_matriks" element={<NilaiMatriks />} />
             <Route path="/penilaian" element={<Penilaian />} />
             <Route path="/kriteria_input" element={<KriteriaInput />} />
