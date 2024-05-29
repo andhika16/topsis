@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 const NilaiMatriks = () => {
   const { nilaiState } = useNilaiContext();
   return (
-    <div className="container overflow-x-auto">
-      <table className="min-w-full table-auto border-collapse border border-gray-300">
+    <div className="container">
+      <table className="min-w-full table-fixed border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
             <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
@@ -43,13 +43,10 @@ const NilaiMatriks = () => {
                 ))
               ) : (
                 <>
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                    -
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                    -
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
+                  <td
+                    className="border border-gray-300 px-4 py-2 text-sm text-gray-700"
+                    colSpan="3"
+                  >
                     -
                   </td>
                 </>
