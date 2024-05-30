@@ -9,7 +9,7 @@ const nilaiAlternatif = async (req, res) => {
         {
           model: Kriteria,
           as: "Kriteria",
-          attributes: ["nama_kriteria", "bobot", "id", "alternatifId"],
+          attributes: ["nama_kriteria", "bobot", "poin1","poin2","poin3","poin4","poin5", "id", "alternatifId"],
         }, // Hanya ambil nama alternatif
         {
           model: Matriks,
@@ -45,34 +45,4 @@ const nilaiSemuaAlternatif = async (req, res) => {
   }
 };
 
-const matriksNormalisasi = async (req, res) => {
-  try {
-    const response = await Kriteria.findAll({
-      attributes: [
-        "id",
-        "nama_kriteria",
-        "bobot",
-        "poin1",
-        "poin2",
-        "poin3",
-        "poin4",
-        "poin5",
-      ],
-    });
-
-    if (!response || response.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Data tidak ditemukan." });
-    }
-
-    res.status(201).json({ success: true, data: response });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ success: false, message: "Gagal mengambil data matriks." });
-  }
-};
-
-module.exports = { matriksNormalisasi, nilaiAlternatif, nilaiSemuaAlternatif };
+module.exports = { nilaiAlternatif, nilaiSemuaAlternatif };

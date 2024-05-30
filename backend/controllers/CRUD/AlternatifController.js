@@ -1,4 +1,5 @@
 const Alternatif = require("../../model/alternatifModel");
+const Kriteria = require("../../model/kriteriaModel");
 
 const ambilSemuaAlternatif = async (req, res) => {
   try {
@@ -122,6 +123,8 @@ const hapusAlternatif = async (req, res) => {
         .status(400)
         .json({ success: false, error: "ID Alternatif harus disertakan" });
     }
+
+    await Kriteria.destroy({ where: { AlternatifId: id } });
 
     // Hapus data dari database menggunakan Sequelize
     const result = await Alternatif.destroy({

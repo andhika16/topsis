@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/Database");
+const Alternatif = require("./alternatifModel");
 
 const Kriteria = db.define(
   "Kriteria",
@@ -47,11 +48,17 @@ const Kriteria = db.define(
     freezeTableName: true,
   }
 );
-(async () => {
-  await db.sync();
-})();
+// (async () => {
+//   await db.sync();
+// })();
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
 Kriteria.hasMany(db.define("Matriks"), { foreignKey: "KriteriaId" });
 Kriteria.belongsTo(db.define("Alternatif"), { foreignKey: "AlternatifId" });
+
+Kriteria.belongsTo(Alternatif, {
+  as: "alternatif",
+  foreignKey: "AlternatifId",
+  onDelete: "CASCADE",
+});
 
 module.exports = Kriteria;

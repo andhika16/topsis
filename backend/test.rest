@@ -2,8 +2,8 @@
 
 GET http://localhost:4000/nilai
 ###
-# GET http://localhost:4000/topsis
+GET http://localhost:4000/topsis
 ###
-GET http://localhost:4000/matriks-normalisasi                
+GET http://localhost:4000/topsistest
 
 
