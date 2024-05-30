@@ -48,7 +48,7 @@ function normalisasiMatriks(matriks) {
     console.log(`Kolom ${index + 1}: ${jumlah}`);
   });
 
-  console.log("\nMatriks setelah dibagi dengan hasil yang telah diakarkan:");
+  console.log("\nNormalisasi Matriks:");
   hasil_bagi.forEach((row) => {
     console.log(row.join("\t"));
   });
@@ -127,7 +127,7 @@ function skorPreferensiRelatif(jarakPositif, jarakNegatif) {
 }
 
 // Fungsi utama untuk TOPSIS
-async function topsis() {
+async function topsis(req,res) {
   try {
     // Ambil data alternatif, kriteria, dan nilai matriks dari database
     const alternatifData = await Alternatif.findAll({

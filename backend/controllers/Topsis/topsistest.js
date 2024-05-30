@@ -1,22 +1,22 @@
-const Alternatif = require("../../model/alternatifModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
+const Alternatif = require("../../model/alternatifModel");
 const Kriteria = require("../../model/kriteriaModel");
 const Matriks = require("../../model/matriksModel");
-// Fungsi untuk menjumlahkan nilai secara vertikal setelah dipangkatkan dua
-function normalisasiMatriks(matriks) {
+
+// Fungsi untuk normalisasi matriks keputusan
+async function normalisasiMatriks(matriks) {
   const jumlah_vertikal = [];
   const jumlah_vertikal_pangkat = []; // Untuk menyimpan jumlah sebelum diakarkan
 
   // Inisialisasi jumlah_vertikal dengan nilai nol
-  for (let col = 0; col < matriks[0].length; col++) {
+  for (let col = 0; col < matriks[0].values.length; col++) {
     jumlah_vertikal[col] = 0;
     jumlah_vertikal_pangkat[col] = 0;
   }
 
   // Pangkatkan masing-masing elemen matriks dua kali sebelum menjumlahkan
-  for (let col = 0; col < matriks[0].length; col++) {
+  for (let col = 0; col < matriks[0].values.length; col++) {
     for (let row = 0; row < matriks.length; row++) {
-      // Pangkatkan nilai sebelum ditambahkan ke jumlah_vertikal
-      const pangkat_nilai = Math.pow(matriks[row][col], 2);
+      const pangkat_nilai = Math.pow(matriks[row].values[col].nilai, 2);
       jumlah_vertikal[col] += pangkat_nilai;
       jumlah_vertikal_pangkat[col] += pangkat_nilai;
     }
@@ -28,55 +28,72 @@ function normalisasiMatriks(matriks) {
   }
 
   // Bagikan nilai matriks dengan hasil yang telah diakarkan
-  const hasil_bagi = [];
-  for (let row = 0; row < matriks.length; row++) {
-    hasil_bagi[row] = [];
-    for (let col = 0; col < matriks[0].length; col++) {
-      hasil_bagi[row][col] = matriks[row][col] / jumlah_vertikal[col];
+  const hasil_bagi = matriks.map(row => {
+    return {
+      id: row.id,
+      nama_alternatif: row.nama_alternatif,
+      values: row.values.map((val, col) => ({
+        nilai: val.nilai / jumlah_vertikal[col],
+        kriteriaId: val.kriteriaId,
+        alternatifId: val.alternatifId
+      }))
+    };
+  });
+
+  // Simpan hasil normalisasi ke database
+  for (let row of hasil_bagi) {
+    for (let i = 0; i < row.values.length; i++) {
+      await Kriteria.update(
+        { [`poin${i + 1}`]: row.values[i].nilai },
+        { where: { id: row.values[i].kriteriaId } }
+      );
     }
   }
 
-  // Tampilkan hasil sebelum dan setelah diakarkan
-  console.log("Jumlah sebelum diakarkan:");
-  jumlah_vertikal_pangkat.forEach((jumlah, index) => {
-    console.log(`Kolom ${index + 1}: ${jumlah}`);
-  });
-
-  console.log("\nJumlah setelah diakarkan:");
-  jumlah_vertikal.forEach((jumlah, index) => {
-    console.log(`Kolom ${index + 1}: ${jumlah}`);
-  });
-
-  console.log("\nMatriks setelah dibagi dengan hasil yang telah diakarkan:");
-  hasil_bagi.forEach((row) => {
-    console.log(row.join("\t"));
-  });
+  console.log("Normalisasi Matriks:");
+  console.table(hasil_bagi);
 
   return hasil_bagi;
 }
 
-function matriksTerbobot(matriks, bobot) {
-  console.log(matriks);
-  console.log(bobot);
-  const hasil = [];
-  for (let i = 0; i < matriks.length; i++) {
-    const row = matriks[i];
-    const weightedRow = row.map((val, j) => val * bobot[j]);
-    hasil.push(weightedRow);
+// Fungsi untuk menghitung matriks terbobot
+async function matriksTerbobot(matriks, bobot) {
+  const hasil = matriks.map(row => {
+    return {
+      id: row.id,
+      nama_alternatif: row.nama_alternatif,
+      values: row.values.map((val, j) => ({
+        nilai: val.nilai * bobot[j],
+        kriteriaId: val.kriteriaId,
+        alternatifId: val.alternatifId
+      }))
+    };
+  });
+
+  // Simpan hasil matriks terbobot ke database
+  for (let row of hasil) {
+    for (let i = 0; i < row.values.length; i++) {
+      await Kriteria.update(
+        { [`poin${i + 1}`]: row.values[i].nilai },
+        { where: { id: row.values[i].kriteriaId } }
+      );
+    }
   }
-  // console.log("Matriks Terbobot:");
-  // console.table(hasil);
+
+  console.log("Matriks Terbobot:");
+  console.table(hasil);
   return hasil;
 }
 
+// Fungsi untuk mencari solusi ideal positif dan negatif
 function solusiIdeal(matriksTerbobot) {
-  const nKriteria = matriksTerbobot[0].length;
+  const nKriteria = matriksTerbobot[0].values.length;
   const solusiIdealPositif = Array(nKriteria).fill(-Infinity);
   const solusiIdealNegatif = Array(nKriteria).fill(Infinity);
 
   for (let j = 0; j < nKriteria; j++) {
     for (let i = 0; i < matriksTerbobot.length; i++) {
-      const val = matriksTerbobot[i][j];
+      const val = matriksTerbobot[i].values[j].nilai;
       if (val > solusiIdealPositif[j]) {
         solusiIdealPositif[j] = val;
       }
@@ -94,7 +111,46 @@ function solusiIdeal(matriksTerbobot) {
   return { positif: solusiIdealPositif, negatif: solusiIdealNegatif };
 }
 
-async function testTopsis() {
+// Fungsi untuk menghitung jarak euclidean dari suatu alternatif ke solusi ideal
+function jarakEuclidean(alternatif, solusiIdeal) {
+  const jarakPositif = Math.sqrt(
+    alternatif.values.reduce(
+      (acc, val, index) => acc + (val.nilai - solusiIdeal.positif[index]) ** 2,
+      0
+    )
+  );
+  const jarakNegatif = Math.sqrt(
+    alternatif.values.reduce(
+      (acc, val, index) => acc + (val.nilai - solusiIdeal.negatif[index]) ** 2,
+      0
+    )
+  );
+
+  console.log("Jarak Euclidean ke Solusi Ideal Positif:");
+  console.table({ jarakPositif });
+  console.log("Jarak Euclidean ke Solusi Ideal Negatif:");
+  console.table({ jarakNegatif });
+
+  return { jarakPositif, jarakNegatif };
+}
+
+// Fungsi untuk menghitung skor preferensi relatif
+async function skorPreferensiRelatif(alternatifId, jarakPositif, jarakNegatif) {
+  const skor = jarakNegatif / (jarakPositif + jarakNegatif);
+
+  // Simpan skor preferensi relatif ke database
+  await Kriteria.update(
+    { poin1: skor },
+    { where: { AlternatifId: alternatifId } }
+  );
+
+  console.log("Skor Preferensi Relatif:");
+  console.table({ skor });
+  return skor;
+}
+
+// Fungsi utama untuk TOPSIS
+async function testTopsis(req, res) {
   try {
     // Ambil data alternatif, kriteria, dan nilai matriks dari database
     const alternatifData = await Alternatif.findAll({
@@ -130,7 +186,11 @@ async function testTopsis() {
 
       for (let j = 0; j < kriteriaCount; j++) {
         const nilai = alternatif.Matriks[j] ? alternatif.Matriks[j].nilai : 0; // Penanganan jika Matriks[j] undefined
-        alternatifValues.push(nilai);
+        alternatifValues.push({
+          nilai,
+          kriteriaId: alternatif.Kriteria[j].id,
+          alternatifId: alternatif.id
+        });
 
         // Simpan bobot dari kriteria ke array bobot
         if (i === 0) {
@@ -138,16 +198,25 @@ async function testTopsis() {
         }
       }
 
-      matriksKeputusan.push(alternatifValues);
+      matriksKeputusan.push({
+        id: alternatif.id,
+        nama_alternatif: alternatif.nama_alternatif,
+        values: alternatifValues
+      });
     }
 
     console.log("Matriks Keputusan:");
-    const matriksNormalisasi = normalisasiMatriks(matriksKeputusan);
-    const matriksBobot = matriksTerbobot(matriksNormalisasi, bobot);
+    console.table(matriksKeputusan);
+
+    // Normalisasi matriks keputusan
+    const matriksNormalisasi = await normalisasiMatriks(matriksKeputusan);
+    // Matriks terbobot
+    const matriksBobot = await matriksTerbobot(matriksNormalisasi, bobot);
+
+    // Solusi ideal positif dan negatif
     const { positif, negatif } = solusiIdeal(matriksBobot);
 
-    console.log(positif, negatif);
-
+    // Hitung skor preferensi relatif untuk setiap alternatif
     const skorPreferensi = [];
     for (let i = 0; i < alternatifCount; i++) {
       const alternatifValues = matriksBobot[i];
@@ -159,7 +228,7 @@ async function testTopsis() {
       });
 
       // Skor preferensi relatif
-      const skor = skorPreferensiRelatif(jarakPositif, jarakNegatif);
+      const skor = await skorPreferensiRelatif(alternatifValues.id, jarakPositif, jarakNegatif);
 
       // Simpan hasil skor preferensi relatif untuk alternatif ini
       skorPreferensi.push({
@@ -171,12 +240,16 @@ async function testTopsis() {
 
     // Urutkan hasil berdasarkan skor preferensi relatif tertinggi ke terendah
     skorPreferensi.sort((a, b) => b.skor - a.skor);
+
+    // Cetak hasil akhir sebelum dikirim ke database
+    console.log("Hasil perangkingan dengan metode TOPSIS:");
+    console.table(skorPreferensi);
+
+    res.status(201).json({ success: true, data: skorPreferensi });
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Gagal menghitung TOPSIS." };
+    res.status(500).json({ success: false, message: "Gagal menghitung TOPSIS." });
   }
 }
 
 module.exports = { testTopsis };
-
-// Panggil fungsi testTopsis untuk melihat hasilnya
