@@ -1,40 +1,108 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 
-// Inisialisasi Context
 export const KriteriaContext = createContext();
 
-// Reducer untuk mengelola state
-export const kriteriaReducer = (state, action) => {
+const kriteriaReducer = (state, action) => {
   switch (action.type) {
     case "SET_DATA_KRITERIA":
-      return action.payload;
-    case "ADD_KRITERIA":
-      return [...state, action.payload];
-    case "UPDATE_KRITERIA":
-      return state.map((item) =>
-        item.id === action.payload.id ? action.payload : item
-      );
-    case "DELETE_KRITERIA":
-      return state.filter((item) => item.id !== action.payload);
+      return { ...state, data: action.payload };
+    case " ADD_DATA_KRITERIA":
+      return { ...state, data: [...state.data, action.payload] };
     default:
       return state;
-      
   }
 };
 
-// Inisialisasi state awal
-const initialKriteriaState = [];
-
-// Wrapper untuk menyediakan state dan dispatch ke komponen di bawahnya
 export const KriteriaProvider = ({ children }) => {
-  const [kriteriaState, kriteriaDispatch] = useReducer(
-    kriteriaReducer,
-    initialKriteriaState
-  );
+  const [state, dispatch] = useReducer(kriteriaReducer, { data: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/kriteria/");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        dispatch({
+          type: "SET_DATA_KRITERIA",
+          payload: result.data,
+        });
+      } catch (error) {
+        console.error("Fetch data error: ", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const addData = async (data) => {
+    try {
+      const response = await fetch("http://localhost:4000/kriteria/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "ADD_DATA_KRITERIA",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Add data error: ", error);
+    }
+  };
+
+  const updateData = async (id, newData) => {
+    try {
+      const response = await fetch(`http://localhost:4000/kriteria/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newData),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "SET_DATA_KRITERIA",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Update data error: ", error);
+    }
+  };
+
+  const deleteData = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:4000/kriteria/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      dispatch({
+        type: "SET_DATA_KRITERIA",
+        payload: state.data.filter((item) => item.id !== id),
+      });
+    } catch (error) {
+      console.error("Delete data error: ", error);
+    }
+  };
 
   return (
-    <KriteriaContext.Provider value={{ kriteriaState, kriteriaDispatch }}>
+    <KriteriaContext.Provider
+      value={{ state, dispatch, addData, updateData, deleteData }}
+    >
       {children}
     </KriteriaContext.Provider>
   );
 };
+
+export const useKriteriaContext = () => useContext(KriteriaContext);

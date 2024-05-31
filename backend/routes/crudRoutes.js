@@ -34,7 +34,7 @@ router.delete("/kriteria/:id", hapusKriteria);
 // Rute untuk Alternatif
 router.get("/alternatif", ambilSemuaAlternatif);
 router.get("/alternatif/:id", ambilSatuAlternatif);
-router.patch("/alternatif/:id", ubahAlternatif);
+router.put("/alternatif/:id", ubahAlternatif);
 router.post("/alternatif", tambahAlternatif);
 router.delete("/alternatif/:id", hapusAlternatif);
 

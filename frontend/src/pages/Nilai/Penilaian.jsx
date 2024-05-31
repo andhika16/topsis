@@ -74,102 +74,128 @@ const KriteriaForm = () => {
 
   return (
     <div className="m-5">
-      <label htmlFor="alternatif" className="block mb-1">
-        Pilih penduduk yang akan dinilai:
-      </label>
-      <select
-        id="alternatif"
-        className="form-select mb-3 w-full px-3 py-2 rounded-md shadow-sm ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-600"
-        value={selectedAlternatif}
-        onChange={handleAlternatifChange}
-      >
-        <option value="">-- Pilih Alternatif --</option>
-        {state.data &&
-          state.data.map((nama) => (
-            <option key={nama.id} value={nama.id}>
-              {nama.nama_alternatif}
-            </option>
-          ))}
-      </select>
-
-      <label htmlFor="kriteria" className="block mb-1">
-        Pilih Kriteria:
-      </label>
-      <select
-        id="kriteria"
-        className="form-select mb-3 w-full px-3 py-2 rounded-md shadow-sm ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-600"
-        value={selectedCriteria}
-        onChange={handleCriteriaChange}
-      >
-        <option value="">-- Pilih Kriteria --</option>
-        {criteriaOptions.map((criteria) => (
-          <option key={criteria} value={criteria}>
-            {criteria}
-          </option>
-        ))}
-      </select>
-
-      {selectedCriteria && (
-        <>
-          <label htmlFor="sifat" className="block mb-1">
-            Pilih Sifat:
-          </label>
-          <select
-            id="sifat"
-            className="form-select mb-3 w-full px-3 py-2 rounded-md shadow-sm ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-600"
-            value={selectedAttribute}
-            onChange={handleAttributeChange}
-          >
-            <option value="">-- Pilih Sifat --</option>
-            {selectedCriteria === "Pekerjaan" &&
-              pekerjaanAttributes.map((attribute) => (
-                <option key={attribute} value={attribute}>
-                  {attribute}
-                </option>
-              ))}
-            {selectedCriteria === "Pendidikan" &&
-              pendidikanAttributes.map((attribute) => (
-                <option key={attribute} value={attribute}>
-                  {attribute}
-                </option>
-              ))}
-            {selectedCriteria === "Penghasilan" &&
-              penghasilanAttributes.map((attribute) => (
-                <option key={attribute} value={attribute}>
-                  {attribute}
-                </option>
-              ))}
-          </select>
-
-          {selectedAttribute && (
-            <>
-              <label htmlFor="nilaiMatriks" className="block mb-1">
-                Pilih Nilai Matriks:
+      <table className="w-full">
+        <tbody>
+          <tr>
+            <td>
+              <label htmlFor="alternatif" className="block mb-1">
+                Pilih penduduk yang akan dinilai:
               </label>
+            </td>
+            <td>
               <select
-                id="nilaiMatriks"
+                id="alternatif"
                 className="form-select mb-3 w-full px-3 py-2 rounded-md shadow-sm ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-600"
-                value={nilaiMatriks}
-                onChange={handleNilaiMatriksChange}
+                value={selectedAlternatif}
+                onChange={handleAlternatifChange}
               >
-                <option value="">-- Pilih Nilai Matriks --</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
+                <option value="">-- Pilih Alternatif --</option>
+                {state.data &&
+                  state.data.map((nama) => (
+                    <option key={nama.id} value={nama.id}>
+                      {nama.nama_alternatif}
+                    </option>
+                  ))}
               </select>
-
-              <button
-                className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
-                onClick={handleSubmit}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="kriteria" className="block mb-1">
+                Pilih Kriteria:
+              </label>
+            </td>
+            <td>
+              <select
+                id="kriteria"
+                className="form-select mb-3 w-full px-3 py-2 rounded-md shadow-sm ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-600"
+                value={selectedCriteria}
+                onChange={handleCriteriaChange}
               >
-                Submit
-              </button>
+                <option value="">-- Pilih Kriteria --</option>
+                {criteriaOptions.map((criteria) => (
+                  <option key={criteria} value={criteria}>
+                    {criteria}
+                  </option>
+                ))}
+              </select>
+            </td>
+          </tr>
+          {selectedCriteria && (
+            <>
+              <tr>
+                <td>
+                  <label htmlFor="sifat" className="block mb-1">
+                    Pilih Sifat:
+                  </label>
+                </td>
+                <td>
+                  <select
+                    id="sifat"
+                    className="form-select mb-3 w-full px-3 py-2 rounded-md shadow-sm ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-600"
+                    value={selectedAttribute}
+                    onChange={handleAttributeChange}
+                  >
+                    <option value="">-- Pilih Sifat --</option>
+                    {selectedCriteria === "Pekerjaan" &&
+                      pekerjaanAttributes.map((attribute) => (
+                        <option key={attribute} value={attribute}>
+                          {attribute}
+                        </option>
+                      ))}
+                    {selectedCriteria === "Pendidikan" &&
+                      pendidikanAttributes.map((attribute) => (
+                        <option key={attribute} value={attribute}>
+                          {attribute}
+                        </option>
+                      ))}
+                    {selectedCriteria === "Penghasilan" &&
+                      penghasilanAttributes.map((attribute) => (
+                        <option key={attribute} value={attribute}>
+                          {attribute}
+                        </option>
+                      ))}
+                  </select>
+                </td>
+              </tr>
+              {selectedAttribute && (
+                <tr>
+                  <td>
+                    <label htmlFor="nilaiMatriks" className="block mb-1">
+                      Pilih Nilai Matriks:
+                    </label>
+                  </td>
+                  <td>
+                    <select
+                      id="nilaiMatriks"
+                      className="form-select mb-3 w-full px-3 py-2 rounded-md shadow-sm ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-600"
+                      value={nilaiMatriks}
+                      onChange={handleNilaiMatriksChange}
+                    >
+                      <option value="">-- Pilih Nilai Matriks --</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </td>
+                </tr>
+              )}
             </>
           )}
-        </>
-      )}
+        </tbody>
+      </table>
+
+      <button
+        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+        onClick={handleSubmit}
+        disabled={
+          !(selectedAlternatif && selectedCriteria && selectedAttribute && nilaiMatriks !== "")
+        }
+      >
+        Submit
+      </button>
     </div>
   );
 };

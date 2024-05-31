@@ -9,9 +9,10 @@ import Penilaian from "./pages/Nilai/Penilaian";
 import AlternatifForm from "./pages/Alternatif/AlternatifForm";
 import KriteriaInput from "./pages/Kriteria/KriteriaInput";
 import { AlternatifDetail } from "./pages/Alternatif/AlternatifDetail";
+import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
 
 function App() {
-  DispatchData(); // data untuk menjalanakan react context hook
+  // DispatchData(); // data untuk menjalanakan react context hook
   return (
     <div className="App">
       <BrowserRouter>
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Beranda />} />
             <Route path="/alternatif_form" element={<AlternatifForm />} />
+            <Route path="/alternatif-edit/:id" element={<AlternatifUpdate />} />
             <Route path="/data_penduduk" element={<AlternatifDetail />} />
             <Route path="/nilai_matriks" element={<NilaiMatriks />} />
             <Route path="/penilaian" element={<Penilaian />} />

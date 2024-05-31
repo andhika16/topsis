@@ -4,31 +4,12 @@ import { Link } from "react-router-dom";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 
 export function AlternatifDetail() {
-  const { alternatifState } = useAlternatifContext();
-
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [deletedItemId, setDeletedItemId] = useState(null);
+  const { state, deleteData } = useAlternatifContext();
+  const { data: alternatifState } = state; // Mengambil data dari state
 
   const hapusData = async (id) => {
-    try {
-      await fetch(`http://localhost:4000/alternatif/${id}`, {
-        method: "DELETE",
-      });
-      setIsDeleted(true);
-      setDeletedItemId(id); // Menandai item yang dihapus
-    } catch (error) {
-      console.log(error);
-    }
+    await deleteData(id);
   };
-
-  if (isDeleted && deletedItemId) {
-    // Menampilkan pesan atau tindakan setelah penghapusan
-    return (
-      <div className="container mx-auto p-4">
-        <p>Data dengan ID {deletedItemId} berhasil dihapus.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto p-4">
@@ -54,18 +35,23 @@ export function AlternatifDetail() {
                 <td className="py-3 px-6 text-left">{item.jenis_kelamin}</td>
                 <td className="py-3 px-6 text-left">{item.alamat}</td>
                 <td className="py-3 px-6 text-left">{item.pekerjaan}</td>
-                <td className="py-3 px-6 flex space-x-2">
+                <td className="py-3 space-y-2 ">
+                  <Link to={`/alternatif-edit/${item.id}`}>
+                    <button className=" bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-1 px-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                      Edit
+                    </button>
+                  </Link>
+                  <Link to={`/alternatifKriteria/${item.id}`}>
+                    <button className=" bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                      Kriteria
+                    </button>
+                  </Link>
                   <button
-                    className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1 px-1 rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                     onClick={() => hapusData(item.id)}
                   >
                     hapus
                   </button>
-                  <Link to={`/alternatifKriteria/${item.id}`}>
-                    <button className=" bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                      Kriteria
-                    </button>
-                  </Link>
                 </td>
               </tr>
             </tbody>

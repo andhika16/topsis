@@ -2,9 +2,8 @@ import React from "react";
 import { useAlternatifContext } from "../hooks/useAlternatifContext";
 import { Link } from "react-router-dom";
 const Beranda = () => {
-  const { alternatifState } = useAlternatifContext();
-  const totalAlternatif = alternatifState.length;
-
+  const { state } = useAlternatifContext();
+  const totalAlternatif = state.data.length
   return (
     <div className="w-full bg-slate-200 px-20 pt-10">
       <div className="flex space-x-3.5">
