@@ -4,14 +4,18 @@ const Matriks = require("../../model/matriksModel");
 const nilaiAlternatif = async (req, res) => {
   try {
     const response = await Alternatif.findAll({
-      attributes: ["id","nama_alternatif"],
+      attributes: ["id", "nama_alternatif"],
       include: [
         {
           model: Kriteria,
           as: "Kriteria",
-          attributes: ["nama_kriteria","id","alternatifId"],
+          attributes: ["nama_kriteria", "bobot", "poin1","poin2","poin3","poin4","poin5", "id", "alternatifId"],
         }, // Hanya ambil nama alternatif
-        { model: Matriks, as: "Matriks", attributes: ["nilai","id","alternatifId","kriteriaId"] }, // Hanya ambil nama kriteria
+        {
+          model: Matriks,
+          as: "Matriks",
+          attributes: ["nilai", "id", "alternatifId", "kriteriaId"],
+        }, // Hanya ambil nama kriteria
       ],
     });
     res.status(201).json({ success: true, data: response });
