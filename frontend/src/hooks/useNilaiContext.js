@@ -1,10 +1,10 @@
-import { NilaiContext } from "../context/NilaiContext";
 import { useContext } from "react";
+import { NilaiContext } from "../context/NilaiContext";
 
 export const useNilaiContext = () => {
   const context = useContext(NilaiContext);
   if (!context) {
-    throw new Error("useNilaiContext must be used within a MatriksProvider");
+    throw new Error("useMatriksContext must be used within a KriteriaProvider");
   }
   return context;
 };

@@ -12,7 +12,6 @@ import { AlternatifDetail } from "./pages/Alternatif/AlternatifDetail";
 import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
 
 function App() {
-  // DispatchData(); // data untuk menjalanakan react context hook
   return (
     <div className="App">
       <BrowserRouter>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 import {
   penghasilanAttributes,
@@ -6,6 +6,7 @@ import {
   pendidikanAttributes,
   criteriaOptions,
 } from "../../assets/atributKriteria";
+import { useMatriksContext } from "../../hooks/useMatriksContext";
 
 const KriteriaForm = () => {
   const [selectedCriteria, setSelectedCriteria] = useState("");
@@ -14,7 +15,31 @@ const KriteriaForm = () => {
   const [bobot, setBobot] = useState(3); // Nilai tetap 3
   const [nilaiMatriks, setNilaiMatriks] = useState("");
 
-  const { state, addKriteria, addMatriks } = useAlternatifContext();
+  const { state } = useAlternatifContext();
+  const { addData: addMatriks } = useMatriksContext();
+
+  const [kriteriaId, setKriteriaId] = useState(null); // State untuk menyimpan kriteriaId yang baru ditambahkan
+
+  useEffect(() => {
+    if (kriteriaId) {
+      const matriksData = {
+        KriteriaId: kriteriaId,
+        AlternatifId: selectedAlternatif,
+        nilai: nilaiMatriks,
+      };
+      addMatriks(matriksData)
+        .then(() => {
+          // Reset form setelah submit sukses
+          setSelectedCriteria("");
+          setSelectedAttribute("");
+          setNilaiMatriks("");
+          setKriteriaId(null); // Reset kriteriaId setelah berhasil menambah matriks
+        })
+        .catch((error) => {
+          console.error("Error while adding matriks:", error);
+        });
+    }
+  }, [kriteriaId, addMatriks, selectedAlternatif, nilaiMatriks]);
 
   const handleSubmit = async () => {
     if (
@@ -29,22 +54,23 @@ const KriteriaForm = () => {
         sifat: selectedAttribute,
         bobot: bobot,
       };
-
       try {
-        const kriteriaId = await addKriteria(kriteriaData);
-        if (kriteriaId) {
-          const matriksData = {
-            KriteriaId: kriteriaId,
-            AlternatifId: selectedAlternatif,
-            nilai: nilaiMatriks,
-          };
-          await addMatriks(matriksData);
-          // Reset form setelah submit sukses, jika perlu
-          setSelectedCriteria("");
-          setSelectedAttribute("");
-          setNilaiMatriks("");
-        } else {
-          console.error("Gagal mendapatkan ID kriteria baru.");
+        const response = await fetch("http://localhost:4000/kriteria", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(kriteriaData),
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          const { data } = responseData;
+          const kriteriaId = data.id; // ID dari response kriteria yang baru ditambahkan
+          if (kriteriaId) {
+            setKriteriaId(kriteriaId); // Simpan kriteriaId yang baru ditambahkan ke state
+          } else {
+            console.error("Gagal mendapatkan ID kriteria baru.");
+          }
         }
       } catch (error) {
         console.error("Error:", error);
@@ -191,7 +217,12 @@ const KriteriaForm = () => {
         className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
         onClick={handleSubmit}
         disabled={
-          !(selectedAlternatif && selectedCriteria && selectedAttribute && nilaiMatriks !== "")
+          !(
+            selectedAlternatif &&
+            selectedCriteria &&
+            selectedAttribute &&
+            nilaiMatriks !== ""
+          )
         }
       >
         Submit

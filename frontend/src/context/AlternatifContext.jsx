@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext,useEffect } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 
 export const AlternatifContext = createContext();
 

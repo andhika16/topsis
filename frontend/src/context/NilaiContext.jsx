@@ -1,39 +1,45 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 
-// Inisialisasi Context
 export const NilaiContext = createContext();
 
-// Reducer untuk mengelola state
-export const nilaiReducer = (state, action) => {
+const nilaiReducer = (state, action) => {
   switch (action.type) {
     case "SET_DATA_NILAI":
-      return action.payload;
-    case "ADD_NILAI":
-      return [...state, action.payload];
-    case "UPDATE_NILAI":
-      return state.map((item) =>
-        item.id === action.payload.id ? action.payload : item
-      );
-    case "DELETE_NILAI":
-      return state.filter((item) => item.id !== action.payload);
+      return { ...state, data: action.payload };
+    case " ADD_DATA_NILAI":
+      return { ...state, data: [...state.data, action.payload] };
     default:
       return state;
   }
 };
 
-// Inisialisasi state awal
-const initialNilaiState = [];
-
-// Wrapper untuk menyediakan state dan dispatch ke komponen di bawahnya
 export const NilaiProvider = ({ children }) => {
-  const [nilaiState, nilaiDispatch] = useReducer(
-    nilaiReducer,
-    initialNilaiState
-  );
+  const [state, dispatch] = useReducer(nilaiReducer, { data: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/nilai/");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        dispatch({
+          type: "SET_DATA_NILAI",
+          payload: result.data,
+        });
+      } catch (error) {
+        console.error("Fetch data error: ", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
-    <NilaiContext.Provider value={{ nilaiState, nilaiDispatch }}>
+    <NilaiContext.Provider value={{ state, dispatch }}>
       {children}
     </NilaiContext.Provider>
   );
 };
+
+export const useNilaiContext = () => useContext(NilaiContext);

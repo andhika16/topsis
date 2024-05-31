@@ -46,10 +46,6 @@ const DispatchData = () => {
         }
       }
     };
-
-    fetchData("http://localhost:4000/alternatif/", alternatifDispatch);
-    fetchData("http://localhost:4000/matriks/", matriksDispatch);
-    fetchData("http://localhost:4000/kriteria/", kriteriaDispatch);
     fetchData("http://localhost:4000/nilai/", nilaiDispatch);
   }, [alternatifDispatch, kriteriaDispatch, matriksDispatch, nilaiDispatch]);
 

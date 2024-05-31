@@ -6,7 +6,6 @@ import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 export function AlternatifDetail() {
   const { state, deleteData } = useAlternatifContext();
   const { data: alternatifState } = state; // Mengambil data dari state
-
   const hapusData = async (id) => {
     await deleteData(id);
   };
