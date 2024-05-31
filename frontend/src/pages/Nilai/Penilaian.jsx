@@ -14,7 +14,7 @@ const KriteriaForm = () => {
   const [bobot, setBobot] = useState(3); // Nilai tetap 3
   const [nilaiMatriks, setNilaiMatriks] = useState("");
 
-  const { alternatifState } = useAlternatifContext();
+  const { state, addKriteria, addMatriks } = useAlternatifContext();
 
   const handleSubmit = async () => {
     if (
@@ -23,7 +23,7 @@ const KriteriaForm = () => {
       selectedAttribute &&
       nilaiMatriks !== ""
     ) {
-      const data = {
+      const kriteriaData = {
         nama_kriteria: selectedCriteria,
         AlternatifId: selectedAlternatif,
         sifat: selectedAttribute,
@@ -31,44 +31,20 @@ const KriteriaForm = () => {
       };
 
       try {
-        const response = await fetch("http://localhost:4000/kriteria", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-          const responseData = await response.json();
-          const { data } = responseData;
-          const kriteriaId = data.id; // ID dari response kriteria yang baru ditambahkan
-          // Mengirim nilai matriks ke endpoint yang berbeda
+        const kriteriaId = await addKriteria(kriteriaData);
+        if (kriteriaId) {
           const matriksData = {
             KriteriaId: kriteriaId,
             AlternatifId: selectedAlternatif,
             nilai: nilaiMatriks,
           };
-          console.log(matriksData);
-          const matriksResponse = await fetch("http://localhost:4000/matriks", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(matriksData),
-          });
-
-          if (matriksResponse.ok) {
-            await matriksResponse.json();
-            // Reset form setelah submit sukses, jika perlu
-            setSelectedCriteria("");
-            setSelectedAttribute("");
-            setNilaiMatriks("");
-          } else {
-            console.error("Gagal mengirim nilai matriks ke server.");
-          }
+          await addMatriks(matriksData);
+          // Reset form setelah submit sukses, jika perlu
+          setSelectedCriteria("");
+          setSelectedAttribute("");
+          setNilaiMatriks("");
         } else {
-          console.error("Gagal mengirim data kriteria ke server.");
+          console.error("Gagal mendapatkan ID kriteria baru.");
         }
       } catch (error) {
         console.error("Error:", error);
@@ -108,8 +84,8 @@ const KriteriaForm = () => {
         onChange={handleAlternatifChange}
       >
         <option value="">-- Pilih Alternatif --</option>
-        {alternatifState &&
-          alternatifState.map((nama) => (
+        {state.data &&
+          state.data.map((nama) => (
             <option key={nama.id} value={nama.id}>
               {nama.nama_alternatif}
             </option>
