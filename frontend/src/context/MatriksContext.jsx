@@ -1,41 +1,108 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 
-// Inisialisasi Context
 export const MatriksContext = createContext();
 
-// Reducer untuk mengelola state
-export const matriksReducer = (state, action) => {
+const matriksReducer = (state, action) => {
   switch (action.type) {
     case "SET_DATA_MATRIKS":
-      return action.payload;
-    case "ADD_MATRIKS":
-      return [...state, action.payload];
-    case "UPDATE_MATRIKS":
-      return state.map((item) =>
-        item.id === action.payload.id ? action.payload : item
-      );
-    case "DELETE_MATRIKS":
-      return state.filter((item) => item.id !== action.payload);
+      return { ...state, data: action.payload };
+    case " ADD_DATA_MATRIKS":
+      return { ...state, data: [...state.data, action.payload] };
     default:
       return state;
   }
 };
 
-// Inisialisasi state awal
-const initialMatriksState = [];
-
-// Wrapper untuk menyediakan state dan dispatch ke komponen di bawahnya
 export const MatriksProvider = ({ children }) => {
-  const [matriksState, matriksDispatch] = useReducer(
-    matriksReducer,
-    initialMatriksState
-  );
+  const [state, dispatch] = useReducer(matriksReducer, { data: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/matriks/");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        dispatch({
+          type: "SET_DATA_MATRIKS",
+          payload: result.data,
+        });
+      } catch (error) {
+        console.error("Fetch data error: ", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const addData = async (data) => {
+    try {
+      const response = await fetch("http://localhost:4000/matriks/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "ADD_DATA_MATRIKS",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Add data error: ", error);
+    }
+  };
+
+  const updateData = async (id, newData) => {
+    try {
+      const response = await fetch(`http://localhost:4000/matriks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newData),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "SET_DATA_MATRIKS",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Update data error: ", error);
+    }
+  };
+
+  const deleteData = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:4000/matriks/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      dispatch({
+        type: "SET_DATA_MATRIKS",
+        payload: state.data.filter((item) => item.id !== id),
+      });
+    } catch (error) {
+      console.error("Delete data error: ", error);
+    }
+  };
 
   return (
-    <MatriksContext.Provider value={{ matriksState, matriksDispatch }}>
+    <MatriksContext.Provider
+      value={{ state, dispatch, addData, updateData, deleteData }}
+    >
       {children}
     </MatriksContext.Provider>
   );
 };
 
-// Custom hook untuk menggunakan Context
+export const useMatriksContext = () => useContext(MatriksContext);

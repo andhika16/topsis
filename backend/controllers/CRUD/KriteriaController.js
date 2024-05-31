@@ -1,4 +1,5 @@
 const Kriteria = require("../../model/kriteriaModel");
+const Matriks = require("../../model/matriksModel");
 
 const ambilKriteria = async (req, res) => {
   try {
@@ -20,7 +21,6 @@ const ambilSatuKriteria = async (req, res) => {
 
 const tambahKriteria = async (req, res) => {
   const { nama_kriteria, AlternatifId, bobot, sifat } = req.body;
-  console.log(req.body);
   if (!nama_kriteria || !AlternatifId || !bobot || !sifat) {
     return res.status(400).json({
       success: false,
@@ -45,7 +45,13 @@ const tambahKriteria = async (req, res) => {
 const hapusKriteria = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await Kriteria.destroy({ where: { id } });
+
+    // Explicitly delete related Matriks records if cascading is not working
+    await Matriks.destroy({ where: { KriteriaId: id } });
+
+    const result = await Kriteria.destroy({
+      where: { id },
+    });
 
     if (result) {
       res.json({ success: true, message: "Data Kriteria berhasil dihapus" });
@@ -55,7 +61,10 @@ const hapusKriteria = async (req, res) => {
         .json({ success: false, error: "Data Kriteria tidak ditemukan" });
     }
   } catch (error) {
-    handleError(res, error, "Gagal menghapus data Kriteria");
+    console.error(error);
+    res
+      .status(500)
+      .json({ success: false, error: "Gagal menghapus data Kriteria" });
   }
 };
 

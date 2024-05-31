@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Beranda from "./pages/Beranda";
 import SideBar from "./components/SideBar";
-import KriteriaForm from "./pages/Kriteria/KriteriaForm";
-import MatriksForm from "./pages/Matriks/MatriksForm";
-import AlternatifForm from "./pages/Alternatif/AlternatifForm";
 import AlternatifKriteria from "./pages/Alternatif/AlternatifKriteria";
 import DispatchData from "./pages/Dispatch/DispatchData";
-import DispatchNilaiData from "./pages/Dispatch/DispatchNilaiData";
+import NilaiMatriks from "./pages/Nilai/NilaiMatriks";
+import NilaiEdit from "./pages/Nilai/NilaiEdit";
+import Penilaian from "./pages/Nilai/Penilaian";
+import AlternatifForm from "./pages/Alternatif/AlternatifForm";
+import { AlternatifDetail } from "./pages/Alternatif/AlternatifDetail";
+import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
 
 function App() {
-  DispatchData(); // data untuk menjalanakan react context hook
-  DispatchNilaiData();
   return (
     <div className="App">
       <BrowserRouter>
@@ -19,13 +19,16 @@ function App() {
           <SideBar />
           <Routes>
             <Route path="/" element={<Beranda />} />
-            <Route path="/kriteria_form" element={<KriteriaForm />} />
-            <Route path="/matriks_form" element={<MatriksForm />} />
             <Route path="/alternatif_form" element={<AlternatifForm />} />
+            <Route path="/alternatif-edit/:id" element={<AlternatifUpdate />} />
+            <Route path="/data_penduduk" element={<AlternatifDetail />} />
+            <Route path="/nilai_matriks" element={<NilaiMatriks />} />
+            <Route path="/penilaian" element={<Penilaian />} />
             <Route
               path="/alternatifKriteria/:id"
               element={<AlternatifKriteria />}
             />
+            <Route path="/nilai_matriks/:id" element={<NilaiEdit />} />
           </Routes>
         </div>
       </BrowserRouter>

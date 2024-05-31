@@ -18,6 +18,7 @@ const {
   ambilSemuaMatriks,
   hapusMatriks,
   ambilSatuMatriks,
+  editMatriks,
 } = require("../controllers/CRUD/MatriksController");
 const {
   nilaiAlternatif,
@@ -33,7 +34,7 @@ router.delete("/kriteria/:id", hapusKriteria);
 // Rute untuk Alternatif
 router.get("/alternatif", ambilSemuaAlternatif);
 router.get("/alternatif/:id", ambilSatuAlternatif);
-router.patch("/alternatif/:id", ubahAlternatif);
+router.put("/alternatif/:id", ubahAlternatif);
 router.post("/alternatif", tambahAlternatif);
 router.delete("/alternatif/:id", hapusAlternatif);
 
@@ -41,6 +42,7 @@ router.delete("/alternatif/:id", hapusAlternatif);
 router.get("/matriks", ambilSemuaMatriks);
 router.get("/matriks/:id", ambilSatuMatriks);
 router.post("/matriks", tambahMatriks);
+router.put("/matriks/:id", editMatriks);
 router.delete("/matriks/:id_matrik", hapusMatriks);
 // rute untuk nilai normalisasi
 router.get("/nilai/:id", nilaiSemuaAlternatif);
