@@ -20,8 +20,8 @@ const ambilSatuKriteria = async (req, res) => {
 };
 
 const tambahKriteria = async (req, res) => {
-  const { nama_kriteria, AlternatifId, bobot, sifat } = req.body;
-  if (!nama_kriteria || !AlternatifId || !bobot || !sifat) {
+  const { nama_kriteria, bobot, jenis, keterangan } = req.body;
+  if ((!nama_kriteria || !bobot || !jenis, keterangan)) {
     return res.status(400).json({
       success: false,
       error: "Semua field harus diisi",
@@ -31,9 +31,9 @@ const tambahKriteria = async (req, res) => {
     try {
       const kriteriaBaru = await Kriteria.create({
         nama_kriteria,
-        AlternatifId,
         bobot,
-        sifat,
+        jenis,
+        keterangan,
       });
       res.status(201).json({ success: true, data: kriteriaBaru });
     } catch (error) {
@@ -47,7 +47,6 @@ const hapusKriteria = async (req, res) => {
     const { id } = req.params;
 
     // Explicitly delete related Matriks records if cascading is not working
-    await Matriks.destroy({ where: { KriteriaId: id } });
 
     const result = await Kriteria.destroy({
       where: { id },
