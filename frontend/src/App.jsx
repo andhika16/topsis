@@ -9,7 +9,6 @@ import Penilaian from "./pages/Nilai/Penilaian";
 import AlternatifForm from "./pages/Alternatif/AlternatifForm";
 import { AlternatifDetail } from "./pages/Alternatif/AlternatifDetail";
 import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
-import KriteriaForm from "./pages/Kriteria.js/Kriteria";
 
 function App() {
   return (
@@ -25,7 +24,6 @@ function App() {
             <Route path="/data_penduduk" element={<AlternatifDetail />} />
             <Route path="/nilai_matriks" element={<NilaiMatriks />} />
             <Route path="/penilaian" element={<Penilaian />} />
-            <Route path="/kriteria" element={<KriteriaForm />} />
             
             <Route
               path="/alternatifKriteria/:id"
