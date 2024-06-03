@@ -2,6 +2,7 @@ const express = require("express");
 const semuaRoutes = require("./routes/crudRoutes");
 const relationRoutes = require("./routes/relationRoutes");
 const topsis = require("./routes/topsis");
+const db = require("./config/Database");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
@@ -17,3 +18,7 @@ app.use("/", topsis);
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
+
+(async () => {
+  await db.sync();
+})();

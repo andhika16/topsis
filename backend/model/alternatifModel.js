@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/Database");
-const Kriteria = require("./kriteriaModel");
 
 const Alternatif = db.define(
   "Alternatif",
@@ -36,11 +35,10 @@ const Alternatif = db.define(
     freezeTableName: true,
   }
 );
-{
-  async () => {
-    await db.sync();
-  };
-}
+
+(async () => {
+  await db.sync();
+})();
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
 Alternatif.hasMany(db.define("Kriteria"));
 Alternatif.hasMany(db.define("Matriks"), { foreignKey: "AlternatifId" });

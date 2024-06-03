@@ -31,11 +31,9 @@ const Matriks = db.define(
   }
 );
 
-Matriks.belongsTo(Kriteria, {
-  as: "kriteria",
-  foreignKey: "KriteriaId",
-  onDelete: "CASCADE",
-});
+(async () => {
+  await db.sync();
+})();
 Matriks.belongsTo(Alternatif, { as: "alternatif", foreignKey: "AlternatifId" });
 
 module.exports = Matriks;
