@@ -1,35 +1,36 @@
 const { DataTypes } = require("sequelize");
-const db = require("../config/Database");
-const Kriteria = require("./kriteriaModel");
-const Alternatif = require("./alternatifModel");
 
+const db = require("../config/Database");
+const Kategori = require("./kategoriModel");
+const Opsi = require("./opsiModel");
+const Alternatif = require("./alternatifModel");
 const Matriks = db.define(
   "Matriks",
   {
     id_penilaian: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
     id_nilai: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       references: {
-        model: "nilai", // Name of the table that this foreign key references
-        key: "id_nilai",
+        model: "Opsi", // Ganti dengan nama model yang sesuai jika diperlukan
+        key: "id",
       },
     },
     id_alternatif: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       references: {
-        model: "alternatif", // Assuming there is an `alternatif` table, you need to replace it with the actual table name
-        key: "id_alternatif",
+        model: "Alternatif", // Ganti dengan nama model yang sesuai jika diperlukan
+        key: "id",
       },
     },
     nilai: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       allowNull: false,
     },
     normalisasi: {
@@ -45,20 +46,20 @@ const Matriks = db.define(
       allowNull: false,
     },
     rank: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       allowNull: false,
     },
   },
   {
-    tableName: "matriks",
+    tableName: "matriks",                               
     timestamps: false,
-    freezeTableName: true,
   }
 );
+
+Matriks.belongsTo(Opsi, { as: "Opsi", foreignKey: "id_nilai" });
+Matriks.belongsTo(Alternatif, { as: "Alternatif", foreignKey: "id_alternatif" });
 
 (async () => {
   await db.sync();
 })();
-Matriks.belongsTo(Alternatif, { as: "alternatif", foreignKey: "AlternatifId" });
-
 module.exports = Matriks;

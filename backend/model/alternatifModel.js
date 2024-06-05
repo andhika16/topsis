@@ -40,7 +40,6 @@ const Alternatif = db.define(
   await db.sync();
 })();
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
-Alternatif.hasMany(db.define("Kriteria"));
-Alternatif.hasMany(db.define("Matriks"), { foreignKey: "AlternatifId" });
+Alternatif.hasMany(db.define("Matriks"), { foreignKey: "alternatif_id" });
 
 module.exports = Alternatif;

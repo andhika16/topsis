@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useKriteriaContext } from "../../hooks/useKriteriaContext";
-const KriteriaForm = () => {
+const KriteriaTest = () => {
   const { kriteriaDispatch } = useKriteriaContext();
 
   const [formData, setFormData] = useState({
@@ -21,7 +21,6 @@ const KriteriaForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form data submitted: ", formData);
-    
 
     // You can send the form data to the backend here
   };
@@ -101,4 +100,4 @@ const KriteriaForm = () => {
   );
 };
 
-export default KriteriaForm;
+export default KriteriaTest;

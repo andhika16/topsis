@@ -9,7 +9,9 @@ import Penilaian from "./pages/Nilai/Penilaian";
 import AlternatifForm from "./pages/Alternatif/AlternatifForm";
 import { AlternatifDetail } from "./pages/Alternatif/AlternatifDetail";
 import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
-import Kriteria from "./pages/Kriteria/KriteriaTest";
+import KriteriaTest from "./pages/Kriteria/KriteriaTest";
+import KriteriaSatu from "./pages/Kriteria/KriteriaSatu";
+import KriteriaDua from "./pages/Kriteria/KriteriaDua";
 
 function App() {
   return (
@@ -25,8 +27,11 @@ function App() {
             <Route path="/data_penduduk" element={<AlternatifDetail />} />
             <Route path="/nilai_matriks" element={<NilaiMatriks />} />
             <Route path="/penilaian" element={<Penilaian />} />
-            
-            <Route path="/kriteria" element={<Kriteria />} />
+
+            <Route path="/kriteria" element={<KriteriaTest />} />
+            <Route path="/kriteria-satu" element={<KriteriaSatu />} />
+            <Route path="/kriteria-dua" element={<KriteriaDua />} />
+
             <Route
               path="/alternatifKriteria/:id"
               element={<AlternatifKriteria />}

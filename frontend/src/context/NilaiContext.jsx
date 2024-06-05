@@ -19,7 +19,7 @@ export const NilaiProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/nilai/");
+        const response = await fetch("http://localhost:4000/kategori-opsi/");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -35,8 +35,31 @@ export const NilaiProvider = ({ children }) => {
     fetchData();
   }, []);
 
+
+  const addData = async (data) => {
+    try {
+      const response = await fetch("http://localhost:4000/nilai/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "ADD_DATA_NILAI",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Add data error: ", error);
+    }
+  };
+
   return (
-    <NilaiContext.Provider value={{ state, dispatch }}>
+    <NilaiContext.Provider value={{ state, dispatch ,addData}}>
       {children}
     </NilaiContext.Provider>
   );

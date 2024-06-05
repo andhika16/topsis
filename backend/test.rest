@@ -1,6 +1,8 @@
 
 
-GET http://localhost:4000/nilai
+GET http://localhost:4000/kategori-opsi
+###
+GET http://localhost:4000/matriks
 
 ###
 POST http://localhost:4000/alternatif

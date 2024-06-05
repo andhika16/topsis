@@ -3,10 +3,10 @@ import { useNilaiContext } from "../../hooks/useNilaiContext";
 import { Link } from "react-router-dom";
 
 const NilaiMatriks = () => {
-  const { state } = useNilaiContext();
-  const { data } = state;
-  const nilaiState = data;
-  console.log(nilaiState);
+  // const { state } = useNilaiContext();
+  // const { data } = state;
+  // const nilaiState = data;
+  // console.log(nilaiState);
   return (
     <div className="container">
       <table className="min-w-full table-fixed border-collapse border border-gray-300">
