@@ -127,7 +127,7 @@ function skorPreferensiRelatif(jarakPositif, jarakNegatif) {
 }
 
 // Fungsi utama untuk TOPSIS
-async function topsis(req,res) {
+async function topsis(req, res) {
   try {
     // Ambil data alternatif, kriteria, dan nilai matriks dari database
     const alternatifData = await Alternatif.findAll({

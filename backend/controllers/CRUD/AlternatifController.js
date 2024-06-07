@@ -52,7 +52,7 @@ const tambahAlternatif = async (req, res) => {
     }
     // Lakukan validasi atau manipulasi data sesuai kebutuhan
     // ...
-
+    
     // Tambahkan data ke database menggunakan Sequelize
     const alternatifBaru = await Alternatif.create({
       nama_alternatif,

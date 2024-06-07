@@ -34,7 +34,7 @@ export function AlternatifDetail() {
                 <td className="py-3 px-6 text-left">{item.jenis_kelamin}</td>
                 <td className="py-3 px-6 text-left">{item.alamat}</td>
                 <td className="py-3 px-6 text-left">{item.pekerjaan}</td>
-                <td className="py-3 space-y-2 ">
+                <td className="py-3 space-y-2 space-x-1">
                   <Link to={`/alternatif-edit/${item.id}`}>
                     <button className=" bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-1 px-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                       Edit

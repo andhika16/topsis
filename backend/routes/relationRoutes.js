@@ -4,16 +4,13 @@ const {
   alternatifKriteriaMatriks,
   alternatifKriteria,
   alternatifMatriks,
-  testMatriksNormalisai
 } = require("../controllers/Relations/alternatif.js");
 
-
-// route asosiasi alternatif 
+// route asosiasi alternatif
 router.get("/alternatifKriteria/:id", alternatifKriteria);
 router.get("/alternatifMatriks/:id", alternatifMatriks);
 router.get("/alternatifKriteriaMatriks/:id", alternatifKriteriaMatriks);
-router.get("/test", testMatriksNormalisai);
 
 // route asosisasi Kriteria
 
-module.exports = router
+module.exports = router;

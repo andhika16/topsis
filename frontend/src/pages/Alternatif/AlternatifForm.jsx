@@ -13,7 +13,6 @@ const AlternatifForm = ({ editMode, initialData }) => {
     pekerjaan: "",
   });
 
-
   useEffect(() => {
     if (editMode && initialData) {
       setFormData(initialData);
@@ -27,7 +26,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
   const handleSubmit = async () => {
     if (editMode) {
-      await updateData(initialData.id,formData);
+      await updateData(initialData.id, formData);
     } else {
       await addData(formData);
     }

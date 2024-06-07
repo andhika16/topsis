@@ -6,7 +6,9 @@ const nilaiReducer = (state, action) => {
   switch (action.type) {
     case "SET_DATA_NILAI":
       return { ...state, data: action.payload };
-    case " ADD_DATA_NILAI":
+    case "SET_DATA_KATEGORI_OPSI":
+      return { ...state, kategoriOpsi: action.payload };
+    case "ADD_DATA_NILAI":
       return { ...state, data: [...state.data, action.payload] };
     default:
       return state;
@@ -14,27 +16,47 @@ const nilaiReducer = (state, action) => {
 };
 
 export const NilaiProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(nilaiReducer, { data: [] });
+  const [state, dispatch] = useReducer(nilaiReducer, {
+    data: [],
+    kategoriOpsi: [],
+  });
+
+  const fetchDataNilai = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/nilai/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "SET_DATA_NILAI",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Fetch data error: ", error);
+    }
+  };
+
+  const fetchDataKategoriOpsi = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/kategori-opsi/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "SET_DATA_KATEGORI_OPSI",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Fetch data error: ", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:4000/kategori-opsi/");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const result = await response.json();
-        dispatch({
-          type: "SET_DATA_NILAI",
-          payload: result.data,
-        });
-      } catch (error) {
-        console.error("Fetch data error: ", error);
-      }
-    };
-    fetchData();
+    fetchDataNilai();
+    fetchDataKategoriOpsi();
   }, []);
-
 
   const addData = async (data) => {
     try {
@@ -58,8 +80,45 @@ export const NilaiProvider = ({ children }) => {
     }
   };
 
+  const editNilai = async (id, data) => {
+    try {
+      const response = await fetch(`http://localhost:4000/matriks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Matriks: data }),
+      });
+
+      console.log("id:", id, "nilai :", data);
+
+      if (!response.ok) {
+        // Handle unsuccessful response
+        throw new Error("Gagal menyimpan perubahan nilai");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "SET_DATA_NILAI",
+        payload: result.data,
+      });
+    } catch (error) {
+      // Handle error if the request fails
+      console.error("Gagal menyimpan perubahan nilai:", error);
+      // Handle the error as needed, such as displaying an error message to the user
+    }
+  };
+
   return (
-    <NilaiContext.Provider value={{ state, dispatch ,addData}}>
+    <NilaiContext.Provider
+      value={{
+        state,
+        dispatch,
+        addData,
+        fetchDataNilai,
+        fetchDataKategoriOpsi,
+        editNilai,
+      }}
+    >
       {children}
     </NilaiContext.Provider>
   );

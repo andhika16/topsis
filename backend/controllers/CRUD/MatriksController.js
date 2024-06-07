@@ -57,17 +57,20 @@ const tambahMatriks = async (req, res) => {
 
 const editMatriks = async (req, res) => {
   const data = req.body.Matriks; // Assuming data is sent in the request body
+
+    console.log(data);
   if (!Array.isArray(data) || data.length === 0) {
     return res.status(400).json({ message: "Invalid data format" });
   }
+
+
 
   // Validate each object in the array
   for (let item of data) {
     if (
       typeof item.nilai === "undefined" ||
-      typeof item.id === "undefined" ||
-      typeof item.alternatifId === "undefined" ||
-      typeof item.kriteriaId === "undefined"
+      typeof item.id_nilai === "undefined" ||
+      typeof item.id_penilaian === "undefined" 
     ) {
       return res
         .status(400)
@@ -76,10 +79,9 @@ const editMatriks = async (req, res) => {
   }
 
   const transaction = await Matriks.sequelize.transaction();
-
+  console.log(data);
   try {
     // Upsert the records
-
     await Matriks.bulkCreate(data, {
       updateOnDuplicate: ["nilai"],
       transaction,

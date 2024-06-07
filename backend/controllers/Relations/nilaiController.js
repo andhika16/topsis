@@ -1,20 +1,16 @@
 const Alternatif = require("../../model/alternatifModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
 const Opsi = require("../../model/opsiModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
 const Kategori = require("../../model/kategoriModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
+const Matriks = require("../../model/matriksModel"); // Pastikan Anda telah mengganti path sesuai dengan struktur proyek A.nda
 const nilaiAlternatif = async (req, res) => {
   try {
     const response = await Alternatif.findAll({
       attributes: ["id", "nama_alternatif"],
       include: [
         {
-          model: Kategori,
-          as: "Kategori",
-          attributes: ["nama", "bobot"],
-        }, // Hanya ambil nama alternatif
-        {
-          model: Opsi,
-          as: "opsi",
-          attributes: ["label", "value", "kategori_id", "id"],
+          model: Matriks,
+          as: "Matriks",
+          attributes: ["id_nilai", "nilai", "id_penilaian","normalisasi"],
         }, // Hanya ambil nama kriteria
       ],
     });
@@ -26,6 +22,7 @@ const nilaiAlternatif = async (req, res) => {
       .json({ success: false, message: "Gagal mengambil data matriks." });
   }
 };
+
 const tambahKategori = async (req, res) => {
   try {
     const data = req.body;
@@ -46,8 +43,8 @@ const tambahKategori = async (req, res) => {
       rank: item.rank || 0,
     }));
 
-    // const result = await Matriks.bulkCreate(matriksData);
-    console.log(matriksData);
+    const result = await Matriks.bulkCreate(matriksData);
+    // console.log(matriksData);
 
     return res.status(201).json({
       message: "Data berhasil ditambahkan",
@@ -61,4 +58,4 @@ const tambahKategori = async (req, res) => {
 
 // Fungsi untuk menambahkan data matriks
 
-module.exports = { nilaiAlternatif,tambahKategori };
+module.exports = { nilaiAlternatif, tambahKategori };

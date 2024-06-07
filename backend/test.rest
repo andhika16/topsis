@@ -1,20 +1,29 @@
 
 
+GET http://localhost:4000/alternatifMatriks/1
+
+###
 GET http://localhost:4000/kategori-opsi
 ###
 GET http://localhost:4000/matriks
+###
+GET http://localhost:4000/nilai
 
 ###
 POST http://localhost:4000/alternatif
 Content-Type: application/json
-{
-    "nama_alternatif": "John Doe",
-    "no_kk": "1234567890",
+
+
+  {
+    "nama_alternatif": "Budi Santoso",
+    "no_kk": "12345678901234567890",
     "jenis_kelamin": "Laki-laki",
-    "alamat": "Jl. Contoh No. 123",
+    "alamat": "Jl. Merdeka No. 1, Jakarta",
     "no_telp": "081234567890",
-    "pekerjaan": "Pegawai Swasta"
-}
+    "pekerjaan": "Dokter"
+  },
+  
+
 
 
 ###
@@ -32,5 +41,7 @@ Content-Type: application/json
 GET http://localhost:4000/topsis
 ###
 GET http://localhost:4000/topsistest
+###
+GET http://localhost:4000/topsisdua
 
 

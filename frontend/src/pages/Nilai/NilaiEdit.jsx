@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useNilaiContext } from "../../hooks/useNilaiContext";
 import { useParams } from "react-router-dom";
 
-const NilaiUbah = () => {
+const NilaiEdit = () => {
   const { id } = useParams();
-  const { nilaiState } = useNilaiContext(); // Add updateNilai to update the state
+  const { state, editNilai } = useNilaiContext();
+  const { data: nilaiState } = state;
+  console.log(nilaiState);
   const nilai = nilaiState.find((item) => item.id == id);
 
   // Local state for the values being edited
@@ -35,24 +37,7 @@ const NilaiUbah = () => {
       ...matriks,
       nilai: editValues[index],
     }));
-    try {
-      const response = await fetch(`http://localhost:4000/matriks/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ Matriks: updatedMatriks }),
-      });
-
-      if (!response.ok) {
-        // Handle unsuccessful response
-        throw new Error("Gagal menyimpan perubahan nilai");
-      }
-    } catch (error) {
-      // Handle error if the request fails
-      console.error("Gagal menyimpan perubahan nilai:", error);
-      // Handle the error as needed, such as displaying an error message to the user
-    }
+    await editNilai(id, updatedMatriks);
   };
 
   return (
@@ -104,4 +89,4 @@ const NilaiUbah = () => {
   );
 };
 
-export default NilaiUbah;
+export default NilaiEdit;

@@ -2,32 +2,41 @@ import React from "react";
 import { useNilaiContext } from "../../hooks/useNilaiContext";
 import { Link } from "react-router-dom";
 
+const generateTableHeaders = (headers) => {
+  return headers.map((header, index) => (
+    <th
+      key={index}
+      className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700"
+    >
+      {header}
+    </th>
+  ));
+};
+
 const NilaiMatriks = () => {
-  // const { state } = useNilaiContext();
-  // const { data } = state;
-  // const nilaiState = data;
-  // console.log(nilaiState);
+  const { state } = useNilaiContext();
+  const { data: nilaiState } = state;
+  console.log(nilaiState);
+  const headers = [
+    "Data Matriks",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "Detail",
+  ];
+
   return (
     <div className="container">
       <table className="min-w-full table-fixed border-collapse border border-gray-300">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              Nilai Matriks
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              C1
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              C2
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              C3
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              Detail
-            </th>
-          </tr>
+          <tr className="bg-gray-200">{generateTableHeaders(headers)}</tr>
         </thead>
         <tbody>
           {nilaiState.map((item, i) => (
@@ -45,14 +54,12 @@ const NilaiMatriks = () => {
                   </td>
                 ))
               ) : (
-                <>
-                  <td
-                    className="border border-gray-300 px-4 py-2 text-sm text-gray-700"
-                    colSpan="3"
-                  >
-                    -
-                  </td>
-                </>
+                <td
+                  className="border border-gray-300 px-4 py-2 text-sm text-gray-700"
+                  colSpan="10"
+                >
+                  -
+                </td>
               )}
               <td className="border border-gray-300 px-4 py-2 text-sm space-x-3 text-blue-600 hover:text-blue-800">
                 <Link to={`/alternatifKriteria/${item.id}`}>Detail</Link>
@@ -64,23 +71,7 @@ const NilaiMatriks = () => {
       </table>
       <table className="min-w-full table-fixed border-collapse border border-gray-300">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              Nilai Matriks Ternormalisasi
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              C1
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              C2
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              C3
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-              Detail
-            </th>
-          </tr>
+          <tr className="bg-gray-200">{generateTableHeaders(headers)}</tr>
         </thead>
         <tbody>
           {nilaiState.map((item, i) => (
@@ -88,24 +79,22 @@ const NilaiMatriks = () => {
               <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
                 {item.nama_alternatif}
               </td>
-              {item.Kriteria.length > 0 ? (
-                item.Kriteria.map((matriks, j) => (
+              {item.Matriks.length > 0 ? (
+                item.Matriks.map((matriks, j) => (
                   <td
                     className="border border-gray-300 px-4 py-2 text-sm text-gray-700"
                     key={j}
                   >
-                    {matriks.poin1}
+                    {matriks.normalisasi}
                   </td>
                 ))
               ) : (
-                <>
-                  <td
-                    className="border border-gray-300 px-4 py-2 text-sm text-gray-700"
-                    colSpan="3"
-                  >
-                    -
-                  </td>
-                </>
+                <td
+                  className="border border-gray-300 px-4 py-2 text-sm text-gray-700"
+                  colSpan="10"
+                >
+                  -
+                </td>
               )}
               <td className="border border-gray-300 px-4 py-2 text-sm space-x-3 text-blue-600 hover:text-blue-800">
                 <Link to={`/alternatifKriteria/${item.id}`}>Detail</Link>

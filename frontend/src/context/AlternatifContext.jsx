@@ -59,7 +59,6 @@ export const AlternatifProvider = ({ children }) => {
 
   const updateData = async (id, newData) => {
     try {
-      console.log(id);
       const response = await fetch(`http://localhost:4000/alternatif/${id}`, {
         method: "PUT",
         headers: {
