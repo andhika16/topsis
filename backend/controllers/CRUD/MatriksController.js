@@ -1,3 +1,4 @@
+const Alternatif = require("../../model/alternatifModel");
 const Kriteria = require("../../model/kriteriaModel");
 const Matriks = require("../../model/matriksModel");
 
@@ -58,19 +59,17 @@ const tambahMatriks = async (req, res) => {
 const editMatriks = async (req, res) => {
   const data = req.body.Matriks; // Assuming data is sent in the request body
 
-    console.log(data);
+  console.log(data);
   if (!Array.isArray(data) || data.length === 0) {
     return res.status(400).json({ message: "Invalid data format" });
   }
-
-
 
   // Validate each object in the array
   for (let item of data) {
     if (
       typeof item.nilai === "undefined" ||
       typeof item.id_nilai === "undefined" ||
-      typeof item.id_penilaian === "undefined" 
+      typeof item.id_penilaian === "undefined"
     ) {
       return res
         .status(400)

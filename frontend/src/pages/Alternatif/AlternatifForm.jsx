@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
+import { toast, ToastContainer } from "react-toastify";
 
 const AlternatifForm = ({ editMode, initialData }) => {
-  const { addData, updateData } = useAlternatifContext();
+  const { addData, updateData, state, loading, error } = useAlternatifContext();
+  const { data: alternatifData } = state;
 
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     nama_alternatif: "",
     no_kk: "",
     jenis_kelamin: "laki-laki",
     alamat: "",
-    no_telp: "",
+    no_nik: "",
     pekerjaan: "",
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (editMode && initialData) {
@@ -19,22 +23,61 @@ const AlternatifForm = ({ editMode, initialData }) => {
     }
   }, [editMode, initialData]);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // Render error state
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async () => {
-    if (editMode) {
-      await updateData(initialData.id, formData);
-    } else {
-      await addData(formData);
+    // Validasi untuk menambah data baru
+    if (!editMode && isDuplicate(formData)) {
+      toast.error(
+        `Data dengan nomor nik :\n${formData.no_kk} atau nomor kk : \n${formData.no_nik} sudah terdaftar!`
+      );
+      return;
     }
-    // Setelah submit berhasil, bisa tambahkan logika redirect atau tindakan lainnya
+
+    try {
+      if (editMode) {
+        await updateData(initialData.id, formData);
+      } else {
+        await addData(formData);
+      }
+      toast.success("Data telah berhasil ditambahkan!", {
+        className: "bg-green-500 text-white",
+        progressClassName: "bg-white",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.error("Error while submitting:", error);
+      toast.error("Gagal menambahkan data.");
+    }
+  };
+
+  // Fungsi untuk memeriksa apakah data sudah ada
+  const isDuplicate = (data = null) => {
+    const { no_kk, no_nik } = data;
+    return alternatifData.some(
+      (item) => item.no_kk === no_kk || item.no_nik === no_nik // Exclude current item when editing
+    );
+  };
+
+  const handleReset = () => {
+    setFormData(editMode && initialData ? initialData : initialFormData);
   };
 
   return (
     <div className="mx-12 mt-5">
+      <ToastContainer />
       <div className="text-lg font-semibold">
         <h1>
           {editMode ? "Edit" : "Tambah"} Form Alternatif Sistem Pendukung
@@ -59,11 +102,22 @@ const AlternatifForm = ({ editMode, initialData }) => {
           type="text"
           id="no_kk"
           name="no_kk"
+          maxLength={16}
           onChange={handleChange}
           value={formData.no_kk}
           required
         />
-
+        <label htmlFor="no_nik">No NIK:</label>
+        <input
+          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          type="text"
+          id="no_nik"
+          name="no_nik"
+          maxLength={16}
+          onChange={handleChange}
+          value={formData.no_nik}
+          required
+        />
         <label>Jenis Kelamin :</label>
         <select
           value={formData.jenis_kelamin}
@@ -86,17 +140,6 @@ const AlternatifForm = ({ editMode, initialData }) => {
           required
         />
 
-        <label htmlFor="no_telp">Nomor Telepon:</label>
-        <input
-          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
-          type="text"
-          id="no_telp"
-          name="no_telp"
-          onChange={handleChange}
-          value={formData.no_telp}
-          required
-        />
-
         <label htmlFor="pekerjaan">Pekerjaan:</label>
         <input
           className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
@@ -108,13 +151,21 @@ const AlternatifForm = ({ editMode, initialData }) => {
           required
         />
 
-        <button
-          className="bg-green-400 my-3 rounded-lg px-5 py-2"
-          type="button"
-          onClick={handleSubmit}
-        >
-          {editMode ? "Simpan Perubahan" : "Submit"}
-        </button>
+        <div className="flex space-x-4 py-2">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-indigo-500 text-white rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="px-4 py-2 bg-gray-500 text-white rounded-md shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            Reset
+          </button>
+        </div>
       </form>
     </div>
   );

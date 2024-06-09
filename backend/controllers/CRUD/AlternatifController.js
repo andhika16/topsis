@@ -1,6 +1,7 @@
 const Alternatif = require("../../model/alternatifModel");
 const Kriteria = require("../../model/kriteriaModel");
-
+const Matriks = require("../../model/matriksModel");
+const { Op } = require("sequelize");
 const ambilSemuaAlternatif = async (req, res) => {
   try {
     const alternatif = await Alternatif.findAll();
@@ -25,41 +26,55 @@ const ambilSatuAlternatif = async (req, res) => {
       .json({ success: false, error: "Gagal mendapatkan data Alternatif" });
   }
 };
-
-// Fungsi untuk menambahkan data alternatif
 const tambahAlternatif = async (req, res) => {
   try {
-    const {
-      nama_alternatif,
-      no_kk,
-      jenis_kelamin,
-      alamat,
-      no_telp,
-      pekerjaan,
-    } = req.body;
+    const { nama_alternatif, no_kk, jenis_kelamin, alamat, no_nik, pekerjaan } =
+      req.body;
+
     // Validasi minimal untuk memastikan data yang dibutuhkan tersedia
     if (
       !nama_alternatif ||
       !no_kk ||
       !jenis_kelamin ||
       !alamat ||
-      !no_telp ||
+      !no_nik ||
       !pekerjaan
     ) {
       return res
         .status(400)
         .json({ success: false, error: "Semua field harus diisi" });
     }
-    // Lakukan validasi atau manipulasi data sesuai kebutuhan
-    // ...
-    
+
+    // Validasi tambahan jika diperlukan
+    // Misalnya, validasi panjang karakter untuk no_kk dan no_nik
+    if (no_kk.length !== 16 || no_nik.length !== 16) {
+      return res.status(400).json({
+        success: false,
+        error: "Nomor KK dan NIK harus memiliki panjang 16 karakter",
+      });
+    }
+
+    // Cek apakah data dengan nomor KK atau NIK yang sama sudah ada
+    const existingAlternatif = await Alternatif.findOne({
+      where: {
+        [Op.or]: [{ no_kk: no_kk }, { no_nik: no_nik }],
+      },
+    });
+
+    if (existingAlternatif) {
+      return res.status(400).json({
+        success: false,
+        error: "Data dengan Nomor KK atau NIK yang sama sudah ada",
+      });
+    }
+
     // Tambahkan data ke database menggunakan Sequelize
     const alternatifBaru = await Alternatif.create({
       nama_alternatif,
       no_kk,
       jenis_kelamin,
       alamat,
-      no_telp,
+      no_nik,
       pekerjaan,
     });
 
@@ -74,7 +89,7 @@ const tambahAlternatif = async (req, res) => {
 
 const ubahAlternatif = async (req, res) => {
   const { id } = req.params;
-  const { nama_alternatif, no_kk, jenis_kelamin, alamat, no_telp, pekerjaan } =
+  const { nama_alternatif, no_kk, jenis_kelamin, alamat, no_nik, pekerjaan } =
     req.body;
 
   // Validasi minimal untuk memastikan ID alternatif tersedia
@@ -83,32 +98,68 @@ const ubahAlternatif = async (req, res) => {
     !no_kk ||
     !jenis_kelamin ||
     !alamat ||
-    !no_telp ||
+    !no_nik ||
     !pekerjaan
   ) {
     return res
       .status(400)
       .json({ success: false, error: "Semua field harus diisi" });
-  } else {
-    try {
-      const alternatif = await Alternatif.findOne({
-        where: {
-          id,
-        },
+  }
+
+  try {
+    // Cek apakah ada alternatif dengan nomor KK atau NIK yang sama, kecuali untuk data saat ini
+    const existingAlternatif = await Alternatif.findOne({
+      where: {
+        [Op.and]: [
+          { id: { [Op.ne]: id } }, // Memastikan tidak membandingkan dengan dirinya sendiri
+          {
+            [Op.or]: [{ no_kk: no_kk }, { no_nik: no_nik }],
+          },
+        ],
+      },
+    });
+
+    if (existingAlternatif) {
+      return res.status(400).json({
+        success: false,
+        error: "Data dengan Nomor KK atau NIK yang sama sudah ada",
       });
-      if (alternatif) {
-        alternatif.nama_alternatif = nama_alternatif;
-        alternatif.no_kk = no_kk;
-        alternatif.jenis_kelamin = jenis_kelamin;
-        alternatif.alamat = alamat;
-        alternatif.no_telp = no_telp;
-        alternatif.pekerjaan = pekerjaan;
-        alternatif.save();
-        return res.status(201).json({ success: true, data: alternatif });
-      }
-    } catch (error) {
-      console.log(error);
     }
+
+    const alternatif = await Alternatif.findOne({
+      where: { id },
+    });
+
+    if (!alternatif) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Data Alternatif tidak ditemukan" });
+    }
+
+    // Validasi tambahan jika diperlukan
+    // Misalnya, validasi panjang karakter untuk no_kk dan no_nik
+    if (no_kk.length !== 16 || no_nik.length !== 16) {
+      return res.status(400).json({
+        success: false,
+        error: "Nomor KK dan NIK harus memiliki panjang 16 karakter",
+      });
+    }
+
+    // Update data alternatif
+    alternatif.nama_alternatif = nama_alternatif;
+    alternatif.no_kk = no_kk;
+    alternatif.no_nik = no_nik;
+    alternatif.jenis_kelamin = jenis_kelamin;
+    alternatif.alamat = alamat;
+    alternatif.pekerjaan = pekerjaan;
+    await alternatif.save();
+
+    res.status(201).json({ success: true, data: alternatif });
+  } catch (error) {
+    console.error("Gagal mengubah data Alternatif:", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Gagal mengubah data Alternatif" });
   }
 };
 
@@ -124,7 +175,7 @@ const hapusAlternatif = async (req, res) => {
         .json({ success: false, error: "ID Alternatif harus disertakan" });
     }
 
-    await Kriteria.destroy({ where: { AlternatifId: id } });
+    await Matriks.destroy({ where: { id_alternatif: id } });
 
     // Hapus data dari database menggunakan Sequelize
     const result = await Alternatif.destroy({

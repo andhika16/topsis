@@ -10,7 +10,13 @@ const nilaiAlternatif = async (req, res) => {
         {
           model: Matriks,
           as: "Matriks",
-          attributes: ["id_nilai", "nilai", "id_penilaian","normalisasi"],
+          attributes: [
+            "id_nilai",
+            "nilai",
+            "id_penilaian",
+            "normalisasi",
+            "terbobot",
+          ],
         }, // Hanya ambil nama kriteria
       ],
     });

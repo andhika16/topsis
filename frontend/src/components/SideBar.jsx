@@ -23,15 +23,7 @@ const SideBar = () => {
       src: Chat,
       gap: true,
     },
-    { link: "/penilaian", title: "Penilaian", src: Chat },
-    { link: "/kriteria-satu", title: "Kritera Satu", src: Chat },
-    { link: "/kriteria-dua", title: "Kriteria Dua", src: Chat },
-    // { link: "", title: "Accounts", src: User, gap: true },
-    // { link: "", title: "Schedule ", src: Calendar },
-    // { link: "", title: "Search", src: Search },
-    // { link: "", title: "Analytics", src: Chart },
-    // { link: "", title: "Files ", src: Folder, gap: true },
-    // { link: "", title: "Setting", src: Setting },
+    { link: "/kriteria-satu", title: "Form Penilaian", src: Chat },
   ];
 
   return (
@@ -39,7 +31,7 @@ const SideBar = () => {
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-slate-900 h-screen p-5  pt-8 relative duration-300`}
+        } bg-slate-900 h-screen max-h-full p-5  pt-8 relative duration-300`}
       >
         <img
           src={Control}

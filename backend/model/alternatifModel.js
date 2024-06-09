@@ -9,23 +9,23 @@ const Alternatif = db.define(
       allowNull: false,
     },
     no_kk: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(16),
       allowNull: false,
     },
     jenis_kelamin: {
-      type: DataTypes.STRING(15),
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
     alamat: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    no_telp: {
-      type: DataTypes.STRING(13),
+    no_nik: {
+      type: DataTypes.STRING(16),
       allowNull: false,
     },
     pekerjaan: {
-      type: DataTypes.STRING(12),
+      type: DataTypes.STRING(20),
       allowNull: false,
     },
   },

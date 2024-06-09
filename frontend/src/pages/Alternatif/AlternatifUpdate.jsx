@@ -24,7 +24,6 @@ const AlternatifUpdate = () => {
 
   return (
     <div>
-      <h2>Edit Data Alternatif</h2>
       {initialData ? (
         <AlternatifForm editMode={true} initialData={initialData} />
       ) : (

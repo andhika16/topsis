@@ -56,8 +56,17 @@ const Matriks = db.define(
   }
 );
 
+Alternatif.hasMany(Matriks, {
+  foreignKey: "id_alternatif",
+  onDelete:"CASCADE"
+})
+
 Matriks.belongsTo(Opsi, { as: "Opsi", foreignKey: "id_nilai" });
-Matriks.belongsTo(Alternatif, { as: "Alternatif", foreignKey: "id_alternatif" });
+// Matriks.belongsTo(Alternatif, { as: "Alternatif", foreignKey: "id_alternatif" });
+Matriks.belongsTo(Alternatif, { 
+  foreignKey: "id_alternatif",
+  onDelete: 'CASCADE'  // Cascade delete
+});
 
 (async () => {
   await db.sync();

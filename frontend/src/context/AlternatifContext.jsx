@@ -1,4 +1,10 @@
-import React, { createContext, useReducer, useContext, useEffect } from "react";
+import React, {
+  createContext,
+  useReducer,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 export const AlternatifContext = createContext();
 
@@ -15,25 +21,32 @@ const alternatifReducer = (state, action) => {
 
 export const AlternatifProvider = ({ children }) => {
   const [state, dispatch] = useReducer(alternatifReducer, { data: [] });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/alternatif/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      dispatch({
+        type: "SET_DATA_ALTERNATIF",
+        payload: result.data,
+      });
+      setLoading(true)
+    } catch (error) {
+      console.error("Fetch data error: ", error);
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:4000/alternatif/");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const result = await response.json();
-        dispatch({
-          type: "SET_DATA_ALTERNATIF",
-          payload: result.data,
-        });
-      } catch (error) {
-        console.error("Fetch data error: ", error);
-      }
-    };
     fetchData();
-  }, []);
+  }, []); // Ensure fetchData is called once when the component mounts
 
   const addData = async (data) => {
     try {
@@ -98,7 +111,16 @@ export const AlternatifProvider = ({ children }) => {
 
   return (
     <AlternatifContext.Provider
-      value={{ state, dispatch, addData, updateData, deleteData }}
+      value={{
+        state,
+        dispatch,
+        fetchData,
+        addData,
+        updateData,
+        deleteData,
+        loading,
+        error,
+      }}
     >
       {children}
     </AlternatifContext.Provider>
