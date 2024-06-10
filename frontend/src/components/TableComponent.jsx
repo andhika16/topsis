@@ -51,10 +51,10 @@ const TableComponent = ({ headers, data, valueType }) => {
                   colSpan={headers.length - 2}
                   className="border border-gray-300 text-sm py-2 px-4 text-center text-gray-700"
                 >
-                  -
+                  Nilai belum terinput
                 </td>
               )}
-              {valueType === "nilai" && (
+              {valueType === "nilai" &&  (
                 <td className="border border-gray-300 py-2 px-4 text-sm text-left">
                   <div className="flex space-x-3">
                     <Link

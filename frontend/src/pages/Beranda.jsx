@@ -1,6 +1,5 @@
 import React from "react";
 import { useAlternatifContext } from "../hooks/useAlternatifContext";
-import PopulationChart from "../components/PopulationChart";
 import { Link } from "react-router-dom";
 const Beranda = () => {
   const { state } = useAlternatifContext();

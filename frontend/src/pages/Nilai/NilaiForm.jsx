@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNilaiContext } from "../../hooks/useNilaiContext";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
-const KriteriaSatu = () => {
+const NilaiForm = () => {
   const [formData, setFormData] = useState({});
   const [alternatifId, setAlternatifId] = useState("");
-  const { state, addData } = useNilaiContext();
+  const { state, addData,fetchDataNilai } = useNilaiContext();
   const { kategoriOpsi: kriteria_data } = state;
 
   const nama_matriks = state.data.filter((item) => item.Matriks.length === 0);
@@ -20,6 +19,10 @@ const KriteriaSatu = () => {
       setFormData(initialFormData);
     }
   }, [kriteria_data]);
+
+  useEffect(() => {
+    fetchDataNilai()
+  },[])
 
   const handleChange = (e) => {
     const { name, value, selectedOptions } = e.target;
@@ -39,7 +42,7 @@ const KriteriaSatu = () => {
     e.preventDefault();
 
     for (let kriteria of kriteria_data) {
-      if (!formData[kriteria.nama] || formData[kriteria.nama].value === "") {
+      if (nama_matriks.length === 0 || formData[kriteria.nama].value === "") {
         toast.error(`Silakan lengkapi semua formulir kriteria `, {
           className: "text-xl p-2 w-50",
           bodyClassName: "text-xl",
@@ -154,4 +157,4 @@ const KriteriaSatu = () => {
   );
 };
 
-export default KriteriaSatu;
+export default NilaiForm;

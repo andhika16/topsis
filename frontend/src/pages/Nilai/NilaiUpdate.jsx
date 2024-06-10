@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNilaiContext } from "../../hooks/useNilaiContext";
 import { useParams } from "react-router-dom";
 
-const NilaiEdit = () => {
+const NilaiUpdate = () => {
   const { id } = useParams();
   const { state, editNilai } = useNilaiContext();
   const { data: nilaiState } = state;
@@ -89,4 +89,4 @@ const NilaiEdit = () => {
   );
 };
 
-export default NilaiEdit;
+export default NilaiUpdate;

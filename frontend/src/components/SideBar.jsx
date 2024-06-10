@@ -23,7 +23,7 @@ const SideBar = () => {
       src: Chat,
       gap: true,
     },
-    { link: "/kriteria-satu", title: "Form Penilaian", src: Chat },
+    { link: "/penilaian", title: "Form Kriteria", src: Chat },
   ];
 
   return (

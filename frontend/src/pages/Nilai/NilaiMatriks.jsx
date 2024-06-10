@@ -63,7 +63,9 @@ const NilaiMatriks = () => {
 
   return (
     <div className="container">
-      <h2 className="uppercase font-semibold m-2">Tabel {activeTable} Alternatif</h2>
+      <h2 className="uppercase font-semibold m-2">
+        Tabel {activeTable} Alternatif
+      </h2>
 
       {activeTable === "normalisasi" && (
         <TableComponent
@@ -88,24 +90,23 @@ const NilaiMatriks = () => {
         />
       )}
 
-      {/* FIXME:modifikasi atau percantik tampilan tombol */}
       <button
         onClick={() => toggleTable("nilai")}
         className="mb-4 px-4 py-2 hover:text-blue-800 "
       >
-        Tabel Nilai Matriks
+         Nilai Input Matriks
       </button>
       <button
         onClick={() => toggleTable("normalisasi")}
         className="mb-4 px-4 py-2 hover:text-blue-800 "
       >
-        Tabel Nilai Normalisasi
+         Nilai Normalisasi
       </button>
       <button
         onClick={() => toggleTable("terbobot")}
         className="mb-4 px-4 py-2 hover:text-blue-800 "
       >
-        Tabel Nilai Terbobot
+         Nilai Terbobot
       </button>
     </div>
   );

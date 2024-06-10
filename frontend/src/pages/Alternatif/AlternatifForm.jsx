@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 import { toast, ToastContainer } from "react-toastify";
 
 const AlternatifForm = ({ editMode, initialData }) => {
   const { addData, updateData, state, loading, error } = useAlternatifContext();
   const { data: alternatifData } = state;
+  const navigate = useNavigate();
 
   const initialFormData = {
     nama_alternatif: "",
@@ -40,9 +42,11 @@ const AlternatifForm = ({ editMode, initialData }) => {
   const handleSubmit = async () => {
     // Validasi untuk menambah data baru
     if (!editMode && isDuplicate(formData)) {
-      toast.error(
-        `Data dengan nomor nik :\n${formData.no_kk} atau nomor kk : \n${formData.no_nik} sudah terdaftar!`
-      );
+      toast.error(`Nik atau KK sudah terdaftar `, {
+        className: "text-xl p-2 w-20",
+        bodyClassName: "text-xl",
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -52,11 +56,18 @@ const AlternatifForm = ({ editMode, initialData }) => {
       } else {
         await addData(formData);
       }
-      toast.success("Data telah berhasil ditambahkan!", {
-        className: "bg-green-500 text-white",
-        progressClassName: "bg-white",
-        autoClose: 3000,
-      });
+      toast.success(
+        editMode
+          ? "Data telah  berhasil diupdate!"
+          : "Data telah  berhasil ditambahkan!",
+        {
+          className: "bg-green-500 text-white",
+          progressClassName: "bg-white",
+          autoClose: 3000,
+        }
+      );
+
+      navigate("/data_penduduk");
     } catch (error) {
       console.error("Error while submitting:", error);
       toast.error("Gagal menambahkan data.");
@@ -153,10 +164,11 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <div className="flex space-x-4 py-2">
           <button
-            type="submit"
-            className="px-4 py-2 bg-indigo-500 text-white rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            type="button"
+            onClick={handleSubmit}
           >
-            Submit
+            {editMode ? "Simpan Perubahan" : "Submit"}
           </button>
           <button
             type="button"
