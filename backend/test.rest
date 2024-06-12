@@ -43,5 +43,7 @@ GET http://localhost:4000/topsis
 GET http://localhost:4000/topsistest
 ###
 GET http://localhost:4000/topsisdua
+###
+GET http://localhost:4000/topsis_data
 
 

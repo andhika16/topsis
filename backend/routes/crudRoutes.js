@@ -27,7 +27,9 @@ const {
 } = require("../controllers/Relations/nilaiController");
 
 const {
-  ambilSemuaKategori, ambilKategoriOpsi,ambilOpsi
+  ambilSemuaKategori,
+  ambilKategoriOpsi,
+  ambilOpsi,
 } = require("../controllers/CRUD/KategoriController");
 
 // Rute untuk Kriteria
@@ -48,7 +50,7 @@ router.get("/matriks", ambilSemuaMatriks);
 router.get("/matriks/:id", ambilSatuMatriks);
 router.post("/matriks", tambahMatriks);
 router.put("/matriks/:id", editMatriks);
-router.delete("/matriks/:id_matrik", hapusMatriks);
+router.delete("/matriks/:id", hapusMatriks);
 // rute untuk nilai normalisasi
 router.get("/nilai", nilaiAlternatif);
 router.post("/nilai", tambahKategori);

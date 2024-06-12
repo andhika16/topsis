@@ -78,7 +78,6 @@ const editMatriks = async (req, res) => {
   }
 
   const transaction = await Matriks.sequelize.transaction();
-  console.log(data);
   try {
     // Upsert the records
     await Matriks.bulkCreate(data, {
@@ -99,10 +98,10 @@ const editMatriks = async (req, res) => {
 // Fungsi untuk menghapus data matriks
 const hapusMatriks = async (req, res) => {
   try {
-    const { id_matrik } = req.params;
-
+    const { id:id_alternatif } = req.params;
+    console.log(id_alternatif);
     // Validasi minimal untuk memastikan ID matriks tersedia
-    if (!id_matrik) {
+    if (!id_alternatif) {
       return res
         .status(400)
         .json({ success: false, error: "ID Matriks harus disertakan" });
@@ -111,7 +110,7 @@ const hapusMatriks = async (req, res) => {
     // Hapus data dari database menggunakan Sequelize
     const result = await Matriks.destroy({
       where: {
-        id_matrik,
+        id_alternatif,
       },
     });
 
