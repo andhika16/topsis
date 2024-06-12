@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNilaiContext } from "../hooks/useNilaiContext";
+import { toast, ToastContainer } from "react-toastify";
 
 const generateTableHeaders = (headers) => {
   return headers.map((header, index) => (
     <th
       key={index}
-      className="border border-gray-300 text-sm font-semibold text-gray-700 py-2 px-4 text-center"
+      className="border border-gray-100 text-sm font-semibold text-gray-900 py-2 px-4 text-center"
     >
       {header}
     </th>
@@ -13,6 +15,15 @@ const generateTableHeaders = (headers) => {
 };
 
 const TableComponent = ({ headers, data, valueType }) => {
+  const { hapusNilai } = useNilaiContext();
+  const hapusDataNilai = async (id) => {
+    await hapusNilai(id);
+    toast.success("data berhasil dihapus", {
+      className: "text-xl p-2 w-50",
+      bodyClassName: "text-xl",
+      autoClose: 3000,
+    });
+  };
   const getValue = (matriks) => {
     switch (valueType) {
       case "normalisasi":
@@ -27,21 +38,22 @@ const TableComponent = ({ headers, data, valueType }) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full table-auto border-collapse border border-gray-300">
+      <ToastContainer />
+      <table className="min-w-full table-auto border-collapse border border-gray-500">
         <thead>
           <tr className="bg-gray-200">{generateTableHeaders(headers)}</tr>
         </thead>
         <tbody>
-          {data.map((item, i) => (
-            <tr key={i} className="hover:bg-gray-100 text-center">
-              <td className="border border-gray-300 text-sm py-2 px-4 text-left">
+          {data?.map((item, i) => (
+            <tr key={i} className="hover:bg-gray-900 text-center">
+              <td className="border border-gray-500 text-gray-100 text-sm py-2 px-4 text-left">
                 {item.nama_alternatif}
               </td>
               {item.Matriks.length > 0 ? (
                 item.Matriks.map((matriks, j) => (
                   <td
                     key={j}
-                    className="border border-gray-300 text-sm py-2 px-4 text-center text-gray-700"
+                    className="border border-gray-500 text-sm py-2 px-4 text-center text-gray-100"
                   >
                     {getValue(matriks)}
                   </td>
@@ -49,13 +61,13 @@ const TableComponent = ({ headers, data, valueType }) => {
               ) : (
                 <td
                   colSpan={headers.length - 2}
-                  className="border border-gray-300 text-sm py-2 px-4 text-center text-gray-700"
+                  className="border border-gray-500 text-sm py-2 px-4 text-center text-gray-100"
                 >
                   Nilai belum terinput
                 </td>
               )}
-              {valueType === "nilai" &&  (
-                <td className="border border-gray-300 py-2 px-4 text-sm text-left">
+              {valueType === "nilai" && (
+                <td className="border border-gray-500 py-2 px-4 text-sm text-left">
                   <div className="flex space-x-3">
                     <Link
                       to={`/alternatifKriteria/${item.id}`}
@@ -69,6 +81,12 @@ const TableComponent = ({ headers, data, valueType }) => {
                     >
                       Ubah
                     </Link>
+                    <button
+                      className="text-red-600 hover:underline hover:text-red-700"
+                      onClick={() => hapusDataNilai(item.id)}
+                    >
+                      Hapus
+                    </button>
                   </div>
                 </td>
               )}

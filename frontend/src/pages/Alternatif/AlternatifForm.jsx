@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AlternatifForm = ({ editMode, initialData }) => {
   const { addData, updateData, state, loading, error } = useAlternatifContext();
@@ -17,8 +18,8 @@ const AlternatifForm = ({ editMode, initialData }) => {
     pekerjaan: "",
   };
 
-  const [formData, setFormData] = useState(initialFormData);
 
+  const [formData, setFormData] = useState(initialFormData);
   useEffect(() => {
     if (editMode && initialData) {
       setFormData(initialData);
@@ -39,11 +40,25 @@ const AlternatifForm = ({ editMode, initialData }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+
   const handleSubmit = async () => {
+    const invalidFields = validateFormData(formData);
+
+    if (invalidFields.length > 0) {
+      invalidFields.forEach((field) => {
+        toast.error(`Harap isi field ${field}.`, {
+          className: "text-xl p-2 w-50",
+          bodyClassName: "text-xl",
+          autoClose: 3000,
+        });
+      });
+      return;
+    }
+
     // Validasi untuk menambah data baru
     if (!editMode && isDuplicate(formData)) {
       toast.error(`Nik atau KK sudah terdaftar `, {
-        className: "text-xl p-2 w-20",
+        className: "text-xl p-2 w-50",
         bodyClassName: "text-xl",
         autoClose: 3000,
       });
@@ -58,8 +73,8 @@ const AlternatifForm = ({ editMode, initialData }) => {
       }
       toast.success(
         editMode
-          ? "Data telah  berhasil diupdate!"
-          : "Data telah  berhasil ditambahkan!",
+          ? "Data telah berhasil diupdate!"
+          : "Data telah berhasil ditambahkan!",
         {
           className: "bg-green-500 text-white",
           progressClassName: "bg-white",
@@ -74,11 +89,24 @@ const AlternatifForm = ({ editMode, initialData }) => {
     }
   };
 
-  // Fungsi untuk memeriksa apakah data sudah ada
+  const validateFormData = (data) => {
+    const invalidFields = [];
+    const { nama_alternatif, no_kk, no_nik, jenis_kelamin, alamat, pekerjaan } =
+      data;
+    if (!nama_alternatif) invalidFields.push("Nama Penduduk");
+    if (!no_kk) invalidFields.push("Nomor KK");
+    if (!no_nik) invalidFields.push("No NIK");
+    if (!jenis_kelamin) invalidFields.push("Jenis Kelamin");
+    if (!alamat) invalidFields.push("Alamat");
+    if (!pekerjaan) invalidFields.push("Pekerjaan");
+
+    return invalidFields;
+  };
+
   const isDuplicate = (data = null) => {
     const { no_kk, no_nik } = data;
     return alternatifData.some(
-      (item) => item.no_kk === no_kk || item.no_nik === no_nik // Exclude current item when editing
+      (item) => item.no_kk === no_kk || item.no_nik === no_nik
     );
   };
 
@@ -89,16 +117,16 @@ const AlternatifForm = ({ editMode, initialData }) => {
   return (
     <div className="mx-12 mt-5">
       <ToastContainer />
-      <div className="text-lg font-semibold">
+      <div className="text-lg text-gray-100 font-semibold">
         <h1>
-          {editMode ? "Edit" : "Tambah"} Form Alternatif Sistem Pendukung
+          {editMode ? "Edit" : "Tambah"} Form Penduduk Sistem Pendukung
           Keputusan
         </h1>
       </div>
-      <form className="" action="">
-        <label htmlFor="nama_alternatif">Nama Alternatif:</label>
+      <form className="text-gray-100 font-semibold" action="">
+        <label htmlFor="nama_alternatif">Nama Penduduk:</label>
         <input
-          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="nama_alternatif"
           name="nama_alternatif"
@@ -109,7 +137,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <label htmlFor="no_kk">Nomor KK:</label>
         <input
-          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="no_kk"
           name="no_kk"
@@ -120,7 +148,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
         />
         <label htmlFor="no_nik">No NIK:</label>
         <input
-          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="no_nik"
           name="no_nik"
@@ -132,7 +160,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
         <label>Jenis Kelamin :</label>
         <select
           value={formData.jenis_kelamin}
-          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           onChange={handleChange}
           name="jenis_kelamin"
           id="jenisKelamin"
@@ -143,7 +171,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <label htmlFor="alamat">Alamat:</label>
         <input
-          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           id="alamat"
           name="alamat"
           onChange={handleChange}
@@ -153,7 +181,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <label htmlFor="pekerjaan">Pekerjaan:</label>
         <input
-          className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="pekerjaan"
           name="pekerjaan"
@@ -164,7 +192,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <div className="flex space-x-4 py-2">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-2 bg-blue-500 text-white  shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
             type="button"
             onClick={handleSubmit}
           >
@@ -173,7 +201,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
           <button
             type="button"
             onClick={handleReset}
-            className="px-4 py-2 bg-gray-500 text-white rounded-md shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-2 bg-gray-500 text-white  shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Reset
           </button>

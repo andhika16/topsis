@@ -2,13 +2,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
+import { toast, ToastContainer } from "react-toastify";
 
 export function AlternatifDetail() {
   const { state, deleteData, error, loading, fetchData } =
     useAlternatifContext();
   const { data: alternatifState } = state;
   const [localData, setLocalData] = useState([]);
-
+// TODO:tambahkan notifikasi toaster ketika data penduduk baru ditambahkan
   useEffect(() => {
     // Filter out any undefined values from the alternatifState and update localData
     if (Array.isArray(alternatifState)) {
@@ -23,6 +24,11 @@ export function AlternatifDetail() {
 
   const hapusData = async (id) => {
     await deleteData(id);
+    toast.success("data berhasil dihapus", {
+      className: "text-xl p-2 w-50",
+      bodyClassName: "text-xl",
+      autoClose: 3000,
+    });
   };
 
   if (loading) {
@@ -35,6 +41,7 @@ export function AlternatifDetail() {
 
   return (
     <div className="container mx-auto">
+      <ToastContainer />
       <div className="p-6">
         <table className="min-w-full table-auto">
           <thead>
@@ -51,11 +58,16 @@ export function AlternatifDetail() {
           {localData.length === 0 ? (
             <tbody>
               <tr className="border-b text-sm border-gray-200">
-                <td
-                  colSpan="7"
-                  className="py-2 px-4 text-center text-gray-700 font-medium"
-                >
-                  Tidak ada data kriteria tersedia.
+                <td colSpan="7">
+                  <span className="text-center text-red-700 font-medium">
+                    data penduduk belum terisi.
+                  </span>
+                  <br />
+                  <span className="text-blue-700 text-center">
+                    <Link to={"/alternatif_form"}>
+                      silahkan isi data penduduk
+                    </Link>
+                  </span>
                 </td>
               </tr>
             </tbody>

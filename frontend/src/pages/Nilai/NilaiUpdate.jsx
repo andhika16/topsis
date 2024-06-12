@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useNilaiContext } from "../../hooks/useNilaiContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const NilaiUpdate = () => {
   const { id } = useParams();
   const { state, editNilai } = useNilaiContext();
   const { data: nilaiState } = state;
-  console.log(nilaiState);
-  const nilai = nilaiState.find((item) => item.id == id);
-
+  const nilai = nilaiState?.find((item) => item.id == id);
+  const navigate = useNavigate()
   // Local state for the values being edited
   const [editValues, setEditValues] = useState(
     nilai ? nilai.Matriks.map((matriks) => matriks.nilai) : []
@@ -38,6 +37,7 @@ const NilaiUpdate = () => {
       nilai: editValues[index],
     }));
     await editNilai(id, updatedMatriks);
+    navigate('/nilai_matriks')
   };
 
   return (

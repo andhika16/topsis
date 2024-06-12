@@ -90,7 +90,6 @@ export const NilaiProvider = ({ children }) => {
         body: JSON.stringify({ Matriks: data }),
       });
 
-      console.log("id:", id, "nilai :", data);
 
       if (!response.ok) {
         // Handle unsuccessful response
@@ -108,11 +107,27 @@ export const NilaiProvider = ({ children }) => {
     }
   };
 
+  const hapusNilai = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:4000/matriks/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+    } catch (error) {
+      console.error("Gagal menghapus data Matriks:", error);
+      alert("Gagal menghapus data Matriks");
+    }
+  };
+
   return (
     <NilaiContext.Provider
       value={{
         state,
         dispatch,
+        hapusNilai,
         addData,
         fetchDataNilai,
         fetchDataKategoriOpsi,

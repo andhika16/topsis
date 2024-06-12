@@ -3,12 +3,13 @@ import { useNilaiContext } from "../../hooks/useNilaiContext";
 import TableComponent from "../../components/TableComponent";
 
 const NilaiMatriks = () => {
-  const { state, fetchDataNilai } = useNilaiContext();
+  const { state, fetchDataNilai ,hapusNilai} = useNilaiContext();
   const { data: nilaiState } = state;
   const [activeTable, setActiveTable] = useState(null);
 
   useEffect(() => {
     fetchDataNilai(); // Fetch data when the component mounts
+    hapusNilai()
   }, []);
 
   const headersNilai = [
@@ -55,7 +56,7 @@ const NilaiMatriks = () => {
   ];
 
   if (!activeTable) {
-    setActiveTable("normalisasi");
+    setActiveTable("nilai");
   }
   const toggleTable = (tableName) => {
     setActiveTable(activeTable === tableName ? null : tableName);
@@ -63,7 +64,7 @@ const NilaiMatriks = () => {
 
   return (
     <div className="container">
-      <h2 className="uppercase font-semibold m-2">
+      <h2 className="uppercase text-gray-200 font-semibold m-2">
         Tabel {activeTable} Alternatif
       </h2>
 
@@ -92,19 +93,19 @@ const NilaiMatriks = () => {
 
       <button
         onClick={() => toggleTable("nilai")}
-        className="mb-4 px-4 py-2 hover:text-blue-800 "
+        className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
       >
          Nilai Input Matriks
       </button>
       <button
         onClick={() => toggleTable("normalisasi")}
-        className="mb-4 px-4 py-2 hover:text-blue-800 "
+        className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
       >
          Nilai Normalisasi
       </button>
       <button
         onClick={() => toggleTable("terbobot")}
-        className="mb-4 px-4 py-2 hover:text-blue-800 "
+        className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
       >
          Nilai Terbobot
       </button>

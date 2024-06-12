@@ -10,7 +10,7 @@ import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-gray-900">
       <BrowserRouter>
         <div className=""></div>
         <div className="flex">
