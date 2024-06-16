@@ -24,6 +24,7 @@ const SideBar = () => {
       gap: true,
     },
     { link: "/penilaian", title: "Form Kriteria", src: Chat },
+    { link: "/bobot", title: "Form Nilai Bobot Kriteria", src: Chat },
   ];
 
   return (

@@ -41,7 +41,7 @@ const NilaiUpdate = () => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto text-gray-100">
       <table className="table-auto border-collapse border border-gray-400">
         <thead>
           <tr>
@@ -49,17 +49,24 @@ const NilaiUpdate = () => {
             <th className="border border-gray-400 px-4 py-2">C1</th>
             <th className="border border-gray-400 px-4 py-2">C2</th>
             <th className="border border-gray-400 px-4 py-2">C3</th>
+            <th className="border border-gray-400 px-4 py-2">C4</th>
+            <th className="border border-gray-400 px-4 py-2">C5</th>
+            <th className="border border-gray-400 px-4 py-2">C6</th>
+            <th className="border border-gray-400 px-4 py-2">C7</th>
+            <th className="border border-gray-400 px-4 py-2">C8</th>
+            <th className="border border-gray-400 px-4 py-2">C9</th>
+            <th className="border border-gray-400 px-4 py-2">C10</th>
             <th className="border border-gray-400 px-4 py-2">Aksi</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="border border-gray-400 px-4 py-2">
+          <tr className="">
+            <td className="border  border-gray-400 px-4 py-2">
               {nama_alternatif}
             </td>
             {Matriks.length > 0 ? (
               Matriks.map((matriks, i) => (
-                <td className="border border-gray-400 px-4 py-2" key={i}>
+                <td className="border text-gray-800 border-gray-200 px-4 py-2" key={i}>
                   <input
                     type="number"
                     pattern="[1-5]"
@@ -77,7 +84,7 @@ const NilaiUpdate = () => {
             <td className="border border-gray-400 px-4 py-2">
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
+                className="px-4 py-2 bg-blue-500 text-black rounded"
               >
                 Simpan
               </button>

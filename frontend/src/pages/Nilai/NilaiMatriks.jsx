@@ -3,13 +3,21 @@ import { useNilaiContext } from "../../hooks/useNilaiContext";
 import TableComponent from "../../components/TableComponent";
 
 const NilaiMatriks = () => {
-  const { state, fetchDataNilai ,hapusNilai} = useNilaiContext();
+  const { state, fetchDataNilai, hapusNilai } = useNilaiContext();
   const { data: nilaiState } = state;
   const [activeTable, setActiveTable] = useState(null);
+  const [localData, setLocalData] = useState([]);
+
+  useEffect(() => {
+    // Filter out any undefined values from the alternatifState and update localData
+    if (Array.isArray(nilaiState)) {
+      const filteredData = nilaiState.filter((item) => item.nilai !== 0);
+      setLocalData(filteredData);
+    }
+  }, [nilaiState]);
 
   useEffect(() => {
     fetchDataNilai(); // Fetch data when the component mounts
-    hapusNilai()
   }, []);
 
   const headersNilai = [
@@ -71,14 +79,14 @@ const NilaiMatriks = () => {
       {activeTable === "normalisasi" && (
         <TableComponent
           headers={headerNormalisasi}
-          data={nilaiState}
+          data={localData}
           valueType={"normalisasi"}
         />
       )}
       {activeTable === "terbobot" && (
         <TableComponent
           headers={headerTerbobot}
-          data={nilaiState}
+          data={localData}
           valueType={"bobot"}
         />
       )}
@@ -86,7 +94,7 @@ const NilaiMatriks = () => {
       {activeTable === "nilai" && (
         <TableComponent
           headers={headersNilai}
-          data={nilaiState}
+          data={localData}
           valueType={"nilai"}
         />
       )}
@@ -95,19 +103,19 @@ const NilaiMatriks = () => {
         onClick={() => toggleTable("nilai")}
         className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
       >
-         Nilai Input Matriks
+        Nilai Input Matriks
       </button>
       <button
         onClick={() => toggleTable("normalisasi")}
         className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
       >
-         Nilai Normalisasi
+        Nilai Normalisasi
       </button>
       <button
         onClick={() => toggleTable("terbobot")}
         className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
       >
-         Nilai Terbobot
+        Nilai Terbobot
       </button>
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNilaiContext } from "../hooks/useNilaiContext";
 import { toast, ToastContainer } from "react-toastify";
-
+// TODO: tambahkan nomor urut untuk tiap table
 const generateTableHeaders = (headers) => {
   return headers.map((header, index) => (
     <th
@@ -39,7 +39,7 @@ const TableComponent = ({ headers, data, valueType }) => {
   return (
     <div className="overflow-x-auto">
       <ToastContainer />
-      <table className="min-w-full table-auto border-collapse border border-gray-500">
+      <table className=" lg:min-w-full table-auto border-collapse border border-gray-500">
         <thead>
           <tr className="bg-gray-200">{generateTableHeaders(headers)}</tr>
         </thead>
@@ -69,11 +69,10 @@ const TableComponent = ({ headers, data, valueType }) => {
               {valueType === "nilai" && (
                 <td className="border border-gray-500 py-2 px-4 text-sm text-left">
                   <div className="flex space-x-3">
-                    <Link
-                      to={`/alternatifKriteria/${item.id}`}
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      Detail
+                    <Link to={`/alternatif_kriteria/${item.id}`}>
+                      <button className="text-blue-600 hover:underline hover:text-blue-700">
+                        Detail
+                      </button>
                     </Link>
                     <Link
                       to={`/nilai_matriks/${item.id}`}

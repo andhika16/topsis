@@ -16,25 +16,24 @@ const kriteriaReducer = (state, action) => {
 export const KriteriaProvider = ({ children }) => {
   const [state, dispatch] = useReducer(kriteriaReducer, { data: [] });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:4000/kriteria/");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const result = await response.json();
-        dispatch({
-          type: "SET_DATA_KRITERIA",
-          payload: result.data,
-        });
-      } catch (error) {
-        console.error("Fetch data error: ", error);
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/kategori/");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-    };
+      const result = await response.json();
+      dispatch({
+        type: "SET_DATA_KRITERIA",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("Fetch data error: ", error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, []);
-
   const addData = async (data) => {
     try {
       const response = await fetch("http://localhost:4000/kriteria/", {
@@ -57,9 +56,9 @@ export const KriteriaProvider = ({ children }) => {
     }
   };
 
-  const updateData = async (id, newData) => {
+  const updateData = async (newData) => {
     try {
-      const response = await fetch(`http://localhost:4000/kriteria/${id}`, {
+      const response = await fetch(`http://localhost:4000/kategori/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

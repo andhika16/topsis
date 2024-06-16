@@ -29,7 +29,6 @@ const NilaiForm = () => {
   const handleChange = (e) => {
     const { name, value, selectedOptions } = e.target;
     const id = selectedOptions[0]?.getAttribute("data-id");
-
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: { value: value, id: parseInt(id) },
@@ -92,7 +91,9 @@ const NilaiForm = () => {
   return (
     <div className="p-4 max-w-xl ml-10">
       <ToastContainer />
-      <h2 className="text-xl text-gray-200 font-bold mb-4">Form Input Kriteria</h2>
+      <h2 className="text-xl text-gray-200 font-bold mb-4">
+        Form Input Kriteria
+      </h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-200 font-medium mb-2">

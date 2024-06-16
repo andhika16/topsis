@@ -126,7 +126,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
       <form className="text-gray-100 font-semibold" action="">
         <label htmlFor="nama_alternatif">Nama Penduduk:</label>
         <input
-          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="nama_alternatif"
           name="nama_alternatif"
@@ -137,7 +137,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <label htmlFor="no_kk">Nomor KK:</label>
         <input
-          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="no_kk"
           name="no_kk"
@@ -148,7 +148,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
         />
         <label htmlFor="no_nik">No NIK:</label>
         <input
-          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="no_nik"
           name="no_nik"
@@ -160,7 +160,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
         <label>Jenis Kelamin :</label>
         <select
           value={formData.jenis_kelamin}
-          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           onChange={handleChange}
           name="jenis_kelamin"
           id="jenisKelamin"
@@ -171,7 +171,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <label htmlFor="alamat">Alamat:</label>
         <input
-          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           id="alamat"
           name="alamat"
           onChange={handleChange}
@@ -181,7 +181,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
 
         <label htmlFor="pekerjaan">Pekerjaan:</label>
         <input
-          className="flex  shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
+          className="flex text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset w-full h-10 sm:max-w-md"
           type="text"
           id="pekerjaan"
           name="pekerjaan"
