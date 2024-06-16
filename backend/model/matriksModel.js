@@ -4,6 +4,9 @@ const db = require("../config/Database");
 const Kategori = require("./kategoriModel");
 const Opsi = require("./opsiModel");
 const Alternatif = require("./alternatifModel");
+// TODO:melalukan perhitungan database mulai dari satu (garap keri ae)
+
+
 const Matriks = db.define(
   "Matriks",
   {
@@ -51,24 +54,27 @@ const Matriks = db.define(
     },
   },
   {
-    tableName: "matriks",                               
+    tableName: "matriks",
     timestamps: false,
   }
 );
 
 Alternatif.hasMany(Matriks, {
   foreignKey: "id_alternatif",
-  onDelete:"CASCADE"
-})
+  onDelete: "CASCADE",
+});
 
 Matriks.belongsTo(Opsi, { as: "Opsi", foreignKey: "id_nilai" });
 // Matriks.belongsTo(Alternatif, { as: "Alternatif", foreignKey: "id_alternatif" });
-Matriks.belongsTo(Alternatif, { 
+Matriks.belongsTo(Alternatif, {
   foreignKey: "id_alternatif",
-  onDelete: 'CASCADE'  // Cascade delete
+  onDelete: "CASCADE", // Cascade delete
 });
 
 (async () => {
   await db.sync();
 })();
+
+
+
 module.exports = Matriks;

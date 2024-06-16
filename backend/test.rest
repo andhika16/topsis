@@ -1,6 +1,6 @@
 
 
-GET http://localhost:4000/alternatifMatriks/1
+GET http://localhost:4000/alternatifKriteria/45
 
 ###
 GET http://localhost:4000/kategori-opsi
@@ -8,6 +8,8 @@ GET http://localhost:4000/kategori-opsi
 GET http://localhost:4000/matriks
 ###
 GET http://localhost:4000/nilai
+###
+GET http://localhost:4000/kategori
 
 ###
 POST http://localhost:4000/alternatif

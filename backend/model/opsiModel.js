@@ -32,5 +32,5 @@ const Opsi = db.define(
     timestamps: false,
   }
 );
-
+Opsi.hasMany(db.define("Matriks"), { foreignKey: "id_nilai" });
 module.exports = Opsi;

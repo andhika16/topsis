@@ -30,6 +30,7 @@ const {
   ambilSemuaKategori,
   ambilKategoriOpsi,
   ambilOpsi,
+  updateKategori,
 } = require("../controllers/CRUD/KategoriController");
 
 // Rute untuk Kriteria
@@ -57,6 +58,7 @@ router.post("/nilai", tambahKategori);
 // rute untuk nilai normalisasi
 
 router.get("/kategori", ambilSemuaKategori);
+router.put("/kategori", updateKategori);
 router.get("/kategori-opsi", ambilKategoriOpsi);
 router.get("/opsi", ambilOpsi);
 
