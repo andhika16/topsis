@@ -1,5 +1,5 @@
 const Alternatif = require("../../model/alternatifModel");
-const Kriteria = require("../../model/kriteriaModel");
+const Kategori = require("../../model/kategoriModel");
 const Matriks = require("../../model/matriksModel");
 
 // Fungsi untuk normalisasi matriks keputusan
@@ -155,7 +155,7 @@ async function topsis(req, res) {
 
     // Bobot kriteria
     let bobot = [];
-
+    
     // Isi matriks keputusan dan bobot dari data yang sudah diambil
     for (let i = 0; i < alternatifCount; i++) {
       const alternatif = alternatifData[i];

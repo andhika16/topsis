@@ -1,5 +1,4 @@
 const Alternatif = require("../../model/alternatifModel");
-const Kriteria = require("../../model/kriteriaModel");
 const Matriks = require("../../model/matriksModel");
 const { Op } = require("sequelize");
 const ambilSemuaAlternatif = async (req, res) => {
@@ -28,17 +27,27 @@ const ambilSatuAlternatif = async (req, res) => {
 };
 const tambahAlternatif = async (req, res) => {
   try {
-    const { nama_alternatif, no_kk, jenis_kelamin, alamat, no_nik, pekerjaan } =
-      req.body;
+    const {
+      nama_alternatif,
+      no_kk,
+      jenis_kelamin,
+      no_nik,
+      pekerjaan,
+      tempat_tgl_lahir,
+      RT,
+      RW,
+      jalan,
+    } = req.body;
 
     // Validasi minimal untuk memastikan data yang dibutuhkan tersedia
     if (
-      !nama_alternatif ||
-      !no_kk ||
-      !jenis_kelamin ||
-      !alamat ||
-      !no_nik ||
-      !pekerjaan
+      (!nama_alternatif ||
+        !no_kk ||
+        !jenis_kelamin ||
+        !no_nik ||
+        !pekerjaan ||
+        !tempat_tgl_lahir,
+      !RT || !RW || !jalan)
     ) {
       return res
         .status(400)
@@ -73,9 +82,12 @@ const tambahAlternatif = async (req, res) => {
       nama_alternatif,
       no_kk,
       jenis_kelamin,
-      alamat,
       no_nik,
       pekerjaan,
+      tempat_tgl_lahir,
+      RT,
+      RW,
+      jalan,
     });
 
     res.status(201).json({ success: true, msg: alternatifBaru });
@@ -89,17 +101,27 @@ const tambahAlternatif = async (req, res) => {
 
 const ubahAlternatif = async (req, res) => {
   const { id } = req.params;
-  const { nama_alternatif, no_kk, jenis_kelamin, alamat, no_nik, pekerjaan } =
-    req.body;
+  const {
+    nama_alternatif,
+    no_kk,
+    jenis_kelamin,
+    no_nik,
+    pekerjaan,
+    tempat_tgl_lahir,
+    RT,
+    RW,
+    jalan,
+  } = req.body;
 
   // Validasi minimal untuk memastikan ID alternatif tersedia
   if (
-    !nama_alternatif ||
-    !no_kk ||
-    !jenis_kelamin ||
-    !alamat ||
-    !no_nik ||
-    !pekerjaan
+    (!nama_alternatif ||
+      !no_kk ||
+      !jenis_kelamin ||
+      !no_nik ||
+      !pekerjaan ||
+      !tempat_tgl_lahir,
+    !RT || !RW || !jalan)
   ) {
     return res
       .status(400)
@@ -150,8 +172,11 @@ const ubahAlternatif = async (req, res) => {
     alternatif.no_kk = no_kk;
     alternatif.no_nik = no_nik;
     alternatif.jenis_kelamin = jenis_kelamin;
-    alternatif.alamat = alamat;
     alternatif.pekerjaan = pekerjaan;
+    alternatif.tempat_tgl_lahir = tempat_tgl_lahir;
+    alternatif.RT = RT;
+    alternatif.RW = RW;
+    alternatif.jalan = jalan;
     await alternatif.save();
 
     res.status(201).json({ success: true, data: alternatif });

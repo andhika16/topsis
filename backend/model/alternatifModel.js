@@ -12,16 +12,29 @@ const Alternatif = db.define(
       type: DataTypes.STRING(16),
       allowNull: false,
     },
+    no_nik: {
+      type: DataTypes.STRING(16),
+      allowNull: false,
+    },
+    tempat_tgl_lahir: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     jenis_kelamin: {
       type: DataTypes.STRING(10),
       allowNull: false,
     },
-    alamat: {
-      type: DataTypes.TEXT,
+    jalan: {
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
-    no_nik: {
-      type: DataTypes.STRING(16),
+    RT: {
+      type: DataTypes.INTEGER(5),
+      allowNull: false,
+    },
+
+    RW: {
+      type: DataTypes.INTEGER(5),
       allowNull: false,
     },
     pekerjaan: {
@@ -37,7 +50,7 @@ const Alternatif = db.define(
 );
 
 (async () => {
-  await db.sync();
+  await db.sync({alter:true});
 })();
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
 Alternatif.hasMany(db.define("Matriks"), { foreignKey: "id_alternatif" });

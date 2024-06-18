@@ -16,6 +16,8 @@ const nilaiAlternatif = async (req, res) => {
             "id_penilaian",
             "normalisasi",
             "terbobot",
+            "nilai_akhir",
+            "rank",
           ],
         }, // Hanya ambil nama kriteria
       ],

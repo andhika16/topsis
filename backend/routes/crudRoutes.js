@@ -1,12 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const {
-  tambahKriteria,
-  hapusKriteria,
-  ambilKriteria,
-  ambilSatuKriteria,
-} = require("../controllers/CRUD/KriteriaController");
-const {
   ambilSemuaAlternatif,
   tambahAlternatif,
   hapusAlternatif,
@@ -32,12 +26,6 @@ const {
   ambilOpsi,
   updateKategori,
 } = require("../controllers/CRUD/KategoriController");
-
-// Rute untuk Kriteria
-router.get("/kriteria", ambilKriteria);
-router.get("/kriteria/:id", ambilSatuKriteria);
-router.post("/kriteria", tambahKriteria);
-router.delete("/kriteria/:id", hapusKriteria);
 
 // Rute untuk Alternatif
 router.get("/alternatif", ambilSemuaAlternatif);

@@ -1,5 +1,4 @@
 const Alternatif = require("../../model/alternatifModel");
-const Kriteria = require("../../model/kriteriaModel");
 const Matriks = require("../../model/matriksModel");
 
 const ambilSemuaMatriks = async (req, res) => {

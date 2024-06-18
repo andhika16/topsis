@@ -1,7 +1,7 @@
 const Alternatif = require("../../model/alternatifModel");
 const Kategori = require("../../model/kategoriModel");
 const Matriks = require("../../model/matriksModel");
-// FIXME : program di topsistestdua ini masih belum bisa menyaring data yang sudah punya nilai normalisasi atau belum karena alternatif yang sudah punya nilai normalisasi seharusnya tidak ikut di kalkulasi
+
 // Fungsi untuk normalisasi matriks keputusan
 function normalisasiMatriks(matriks) {
   const jumlah_vertikal = Array(matriks[0].length).fill(0);
@@ -63,10 +63,13 @@ function jarakEuclidean(alternatif, solusiIdeal) {
 function skorPreferensiRelatif(jarakPositif, jarakNegatif) {
   return jarakNegatif / (jarakPositif + jarakNegatif);
 }
-// FIXME:perbaiki fungsi simpan nilai
-async function simpanNilai(id_alternatif, id_penilaian, nilai, tipe) {
+
+// Fungsi untuk menyimpan nilai ke dalam tabel Matriks
+async function simpanNilai(id_alternatif, id_penilaian, normalisasi, terbobot) {
   try {
-    const nilaiRounded = Number(nilai.toFixed(3));
+    const nilaiNormalisasi = Number(normalisasi.toFixed(3));
+    const nilaiTerbobot = Number(terbobot.toFixed(3));
+
     let entry = await Matriks.findOne({
       where: { id_alternatif, id_penilaian },
     });
@@ -75,20 +78,22 @@ async function simpanNilai(id_alternatif, id_penilaian, nilai, tipe) {
       entry = await Matriks.create({
         id_alternatif,
         id_penilaian,
-        [tipe]: nilaiRounded,
+        normalisasi: nilaiNormalisasi,
+        terbobot: nilaiTerbobot,
       });
     } else {
-      entry[tipe] = nilaiRounded;
+      entry.normalisasi = nilaiNormalisasi;
+      entry.terbobot = nilaiTerbobot;
       await entry.save();
     }
-    console.log(id_alternatif, id_penilaian, nilai);
 
     return { success: true, data: entry };
   } catch (error) {
-    console.error(`Gagal menyimpan nilai ${tipe}:`, error);
+    console.error(`Gagal menyimpan nilai:`, error);
     throw error;
   }
 }
+
 // Fungsi utama untuk TOPSIS
 async function testTopsisDua(req, res) {
   try {
@@ -109,10 +114,17 @@ async function testTopsisDua(req, res) {
 
     const alternatifCount = alternatifData.length;
     const kriteriaCount = alternatifData[0].Matriks.length;
-
+    const nama_matriks = alternatifData.filter(
+      (item) => item.Matriks?.length === 0
+    );
+    if (nama_matriks.length !== 0) {
+      res.status(422).send({
+        message: "mohon maaf data alternatif yang terinput belum lengkap",
+        data: nama_matriks,
+      });
+      return true;
+    }
     let matriksKeputusan = [];
-
-    console.log(matriksKeputusan);
 
     let bobot = bobotKategori.map((item) => item.bobot);
     for (let i = 0; i < alternatifCount; i++) {
@@ -127,12 +139,26 @@ async function testTopsisDua(req, res) {
       }
     }
 
-    // console.log(matriksKeputusan);
     const matriksNormalisasi = normalisasiMatriks(matriksKeputusan);
     const matriksBobot = matriksTerbobot(matriksNormalisasi, bobot);
 
+    const { positif, negatif } = solusiIdeal(matriksBobot);
+
+    const skorPreferensi = alternatifData.map((alternatif, i) => {
+      const { jarakPositif, jarakNegatif } = jarakEuclidean(matriksBobot[i], {
+        positif,
+        negatif,
+      });
+      return {
+        id: alternatif.id,
+        nama_alternatif: alternatif.nama_alternatif,
+        skor: skorPreferensiRelatif(jarakPositif, jarakNegatif),
+      };
+    });
+
+    skorPreferensi.sort((a, b) => b.skor - a.skor);
+
     let isComplete = true;
-    // TODO:penambahan data simpan nilai rank
     for (let i = 0; i < alternatifCount; i++) {
       for (let j = 0; j < kriteriaCount; j++) {
         try {
@@ -140,14 +166,10 @@ async function testTopsisDua(req, res) {
             alternatifData[i].id,
             alternatifData[i].Matriks[j].id_penilaian,
             matriksNormalisasi[i][j],
-            "normalisasi"
+            matriksBobot[i][j]
           );
-          await simpanNilai(
-            alternatifData[i].id,
-            alternatifData[i].Matriks[j].id_penilaian,
-            matriksBobot[i][j],
-            "terbobot"
-          );
+
+          console.log("data tersimpan");
         } catch (error) {
           isComplete = false;
           console.error(
@@ -166,23 +188,7 @@ async function testTopsisDua(req, res) {
         .json({ success: false, message: "Gagal menyimpan beberapa nilai." });
     }
 
-    const { positif, negatif } = solusiIdeal(matriksBobot);
-
-    console.log("positif : \n", positif, "negatif: \n:", negatif);
-
-    const skorPreferensi = alternatifData.map((alternatif, i) => {
-      const { jarakPositif, jarakNegatif } = jarakEuclidean(matriksBobot[i], {
-        positif,
-        negatif,
-      });
-      return {
-        id: alternatif.id,
-        nama_alternatif: alternatif.nama_alternatif,
-        skor: skorPreferensiRelatif(jarakPositif, jarakNegatif),
-      };
-    });
-
-    skorPreferensi.sort((a, b) => b.skor - a.skor);
+    // Update ranks
 
     console.table(skorPreferensi);
 
