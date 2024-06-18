@@ -33,9 +33,10 @@ const AlternatifKriteria = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!data || !data.success) {
-    return <div>No data available</div>;
+  if (data.data.Matriks.length === 0 || !data.success) {
+    return <div className="text-gray-100 text-3xl my-80">Nilai Belum terinput silahkan input nilai</div>;
   }
+
 
   return (
     <div className="bg-gray-900 text-white p-6 rounded-lg shadow-lg">

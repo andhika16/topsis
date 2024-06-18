@@ -9,6 +9,7 @@ import AlternatifForm from "./pages/Alternatif/AlternatifForm";
 import AlternatifDetail from "./pages/Alternatif/AlternatifDetail";
 import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
 import AlternatifKriteria from "./pages/Alternatif/alternatifKriteria";
+import RankingTable from "./pages/Nilai/Rangking";
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
             />
             <Route path="/bobot" element={<NilaiBobotUpdate />} />
             <Route path="/nilai_matriks" element={<NilaiMatriks />} />
-            <Route path="/penilaian" element={<NilaiForm />} />
             <Route path="/nilai_matriks/:id" element={<NilaiUpdate />} />
+            <Route path="/penilaian" element={<NilaiForm />} />
+            <Route path="/rangking" element={<RankingTable />} />
           </Routes>
         </div>
       </BrowserRouter>

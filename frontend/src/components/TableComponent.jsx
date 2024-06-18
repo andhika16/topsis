@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNilaiContext } from "../hooks/useNilaiContext";
 import { toast, ToastContainer } from "react-toastify";
-// TODO: tambahkan nomor urut untuk tiap table
+
+// Generate table headers
 const generateTableHeaders = (headers) => {
   return headers.map((header, index) => (
     <th
@@ -14,16 +15,21 @@ const generateTableHeaders = (headers) => {
   ));
 };
 
+// Table component
 const TableComponent = ({ headers, data, valueType }) => {
   const { hapusNilai } = useNilaiContext();
+
+  // Function to delete value
   const hapusDataNilai = async (id) => {
     await hapusNilai(id);
-    toast.success("data berhasil dihapus", {
+    toast.success("Data berhasil dihapus", {
       className: "text-xl p-2 w-50",
       bodyClassName: "text-xl",
-      autoClose: 3000,
+      autoClose: 1000,
     });
   };
+
+  // Get value from matriks
   const getValue = (matriks) => {
     switch (valueType) {
       case "normalisasi":
@@ -39,13 +45,18 @@ const TableComponent = ({ headers, data, valueType }) => {
   return (
     <div className="overflow-x-auto">
       <ToastContainer />
-      <table className=" lg:min-w-full table-auto border-collapse border border-gray-500">
+      <table className="lg:min-w-full table-auto border-collapse border border-gray-500">
         <thead>
-          <tr className="bg-gray-200">{generateTableHeaders(headers)}</tr>
+          <tr className="bg-gray-200">
+            {generateTableHeaders(headers)}
+          </tr>
         </thead>
         <tbody>
           {data?.map((item, i) => (
             <tr key={i} className="hover:bg-gray-900 text-center">
+              <td className="border border-gray-500 text-gray-100 text-sm py-2 px-4 text-left">
+                {i + 1}
+              </td>
               <td className="border border-gray-500 text-gray-100 text-sm py-2 px-4 text-left">
                 {item.nama_alternatif}
               </td>

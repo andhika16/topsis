@@ -50,8 +50,11 @@ export default function AlternatifDetail() {
               <th className="py-2">Nomor KK</th>
               <th className="py-2">NIK</th>
               <th className="py-2">Jenis Kelamin</th>
-              <th className="py-2">Alamat</th>
+              <th className="py-2">Tempat/Tanggal lahir</th>
               <th className="py-2">Pekerjaan</th>
+              <th className="py-2">RT</th>
+              <th className="py-2">RW</th>
+              <th className="py-2">Jalan</th>
               <th className="py-2">Keterangan</th>
             </tr>
           </thead>
@@ -88,10 +91,19 @@ export default function AlternatifDetail() {
                     {item.jenis_kelamin}
                   </td>
                   <td className="py-1 px-2 text-left text-gray-200">
-                    {item.alamat}
+                    {item.pekerjaan}
                   </td>
                   <td className="py-1 px-2 text-left text-gray-200">
-                    {item.pekerjaan}
+                    {item.tempat_tgl_lahir}
+                  </td>
+                  <td className="py-1 px-2 text-left text-gray-200">
+                    {item.RT}
+                  </td>
+                  <td className="py-1 px-2 text-left text-gray-200">
+                    {item.RW}
+                  </td>
+                  <td className="py-1 px-2 text-left text-gray-200">
+                    {item.jalan}
                   </td>
                   <td className="py-1 px-2 text-left text-gray-200">
                     <div className="flex space-x-2">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNilaiContext } from "../../hooks/useNilaiContext";
 import TableComponent from "../../components/TableComponent";
+import { Link } from "react-router-dom";
 
 const NilaiMatriks = () => {
   const { state, fetchDataNilai, hapusNilai } = useNilaiContext();
@@ -16,12 +17,26 @@ const NilaiMatriks = () => {
     }
   }, [nilaiState]);
 
+  const nama_matriks = state.data.filter((item) => item.Matriks?.length === 0);
+
   useEffect(() => {
     fetchDataNilai(); // Fetch data when the component mounts
   }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Jumlah item per halaman
+
+  const totalPages = Math.ceil(localData.length / itemsPerPage);
+
+  const paginateData = (data, pageNumber, pageSize) => {
+    const startIndex = (pageNumber - 1) * pageSize;
+    return data.slice(startIndex, startIndex + pageSize);
+  };
+
+  const currentData = paginateData(localData, currentPage, itemsPerPage);
 
   const headersNilai = [
-    "Nilai Matriks",
+    "No",
+    "Nama",
     "C1",
     "C2",
     "C3",
@@ -32,11 +47,11 @@ const NilaiMatriks = () => {
     "C8",
     "C9",
     "C10",
-    "Detail",
   ];
 
   const headerNormalisasi = [
-    "Nilai Normalisasi",
+    "No",
+    "Nama",
     "C1",
     "C2",
     "C3",
@@ -50,7 +65,8 @@ const NilaiMatriks = () => {
   ];
 
   const headerTerbobot = [
-    "Nilai Terbobot",
+    "No",
+    "Nama",
     "C1",
     "C2",
     "C3",
@@ -68,6 +84,7 @@ const NilaiMatriks = () => {
   }
   const toggleTable = (tableName) => {
     setActiveTable(activeTable === tableName ? null : tableName);
+    setCurrentPage(1); // Reset halaman saat mengganti tabel
   };
 
   return (
@@ -75,18 +92,42 @@ const NilaiMatriks = () => {
       <h2 className="uppercase text-gray-200 font-semibold m-2">
         Tabel {activeTable} Alternatif
       </h2>
+      <button
+        onClick={() => toggleTable("nilai")}
+        className="m-2 mb-4 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+      >
+        Nilai Input Matriks
+      </button>
+      <button
+        onClick={() => toggleTable("normalisasi")}
+        className="m-2 mb-4 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+      >
+        Nilai Normalisasi
+      </button>
+      <button
+        onClick={() => toggleTable("terbobot")}
+        className="m-2 mb-4 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+      >
+        Nilai Terbobot
+      </button>
+      <Link
+        to={"/rangking"}
+        className="m-2 mb-4 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+      >
+        hasil Peringkat
+      </Link>
 
       {activeTable === "normalisasi" && (
         <TableComponent
           headers={headerNormalisasi}
-          data={localData}
+          data={currentData}
           valueType={"normalisasi"}
         />
       )}
       {activeTable === "terbobot" && (
         <TableComponent
           headers={headerTerbobot}
-          data={localData}
+          data={currentData}
           valueType={"bobot"}
         />
       )}
@@ -94,29 +135,40 @@ const NilaiMatriks = () => {
       {activeTable === "nilai" && (
         <TableComponent
           headers={headersNilai}
-          data={localData}
+          data={currentData}
           valueType={"nilai"}
         />
       )}
 
-      <button
-        onClick={() => toggleTable("nilai")}
-        className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
-      >
-        Nilai Input Matriks
-      </button>
-      <button
-        onClick={() => toggleTable("normalisasi")}
-        className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
-      >
-        Nilai Normalisasi
-      </button>
-      <button
-        onClick={() => toggleTable("terbobot")}
-        className="mb-4 text-gray-200 px-4 py-2 hover:text-blue-800 "
-      >
-        Nilai Terbobot
-      </button>
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() =>
+              setCurrentPage((prevPage) =>
+                prevPage > 1 ? prevPage - 1 : prevPage
+              )
+            }
+            disabled={currentPage === 1}
+            className="mx-1 px-3 py-1 rounded  text-gray-100 font-semibold"
+          >
+            Previous
+          </button>
+          <span className="mx-1 px-3 py-1  text-gray-100 font-semibold">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prevPage) =>
+                prevPage < totalPages ? prevPage + 1 : prevPage
+              )
+            }
+            disabled={currentPage === totalPages}
+            className="mx-1 px-3 py-1 rounded  text-gray-100 font-semibold"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

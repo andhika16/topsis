@@ -90,7 +90,6 @@ export const NilaiProvider = ({ children }) => {
         body: JSON.stringify({ Matriks: data }),
       });
 
-
       if (!response.ok) {
         // Handle unsuccessful response
         throw new Error("Gagal menyimpan perubahan nilai");
@@ -115,7 +114,13 @@ export const NilaiProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
       });
-
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      dispatch({
+        type: "SET_DATA_NILAI",
+        payload: state.data.filter((item) => item.id !== id),
+      });
     } catch (error) {
       console.error("Gagal menghapus data Matriks:", error);
       alert("Gagal menghapus data Matriks");

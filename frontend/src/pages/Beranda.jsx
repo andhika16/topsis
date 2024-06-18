@@ -11,7 +11,7 @@ const Beranda = () => {
           to={"/data_penduduk"}
           className="block bg-yellow-500 shadow-md  p-6 mb-4 text-xl text-left font-mono  hover:bg-gray-100 transition-colors duration-300"
         >
-          Total Penduduk: {totalAlternatif}
+          Data Penduduk {totalAlternatif}
         </Link>
       </div>
     </div>
