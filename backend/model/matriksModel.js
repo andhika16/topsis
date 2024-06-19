@@ -71,9 +71,6 @@ Matriks.belongsTo(Alternatif, {
   onDelete: "CASCADE", // Cascade delete
 });
 
-(async () => {
-  await db.sync();
-})();
 
 
 

@@ -3,8 +3,10 @@ const Kategori = require("../../model/kategoriModel");
 const Matriks = require("../../model/matriksModel");
 
 function normalisasiMatriks(matriks) {
-  const nilai = [];
-  const nilai_pangkat = []; // Untuk menyimpan jumlah sebelum diakarkan
+  // const nilai = [];
+  // const nilai_pangkat = []; // Untuk menyimpan jumlah sebelum diakarkan
+  const nilai = Array(matriks[0].length).fill(0);
+  const nilai_pangkat = Array(matriks[0].length).fill(0);
 
   // Inisialisasi nilai dengan nilai nol
   for (let col = 0; col < matriks[0].length; col++) {

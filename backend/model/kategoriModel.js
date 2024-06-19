@@ -29,8 +29,6 @@ const Kategori = db.define(
 Kategori.hasMany(Opsi, { as: "opsi", foreignKey: "kategori_id" });
 Opsi.belongsTo(Kategori, { as: "kategori", foreignKey: "kategori_id" });
 
-(async () => {
-  await db.sync();
-})();
+
 
 module.exports = Kategori;

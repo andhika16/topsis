@@ -1,7 +1,7 @@
 const Alternatif = require("../../model/alternatifModel");
 const Kategori = require("../../model/kategoriModel");
 const Matriks = require("../../model/matriksModel");
-
+// TODO:input topsis masih input normalisasi dan bobot,perhitungan kalkulasi rangking dan skor dilakukan terpisah perbaiki agar kode lebih efisien
 function normalisasiMatriks(matriks) {
   const nilai = [];
   const nilai_pangkat = []; // Untuk menyimpan jumlah sebelum diakarkan

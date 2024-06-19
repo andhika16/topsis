@@ -49,9 +49,7 @@ const Alternatif = db.define(
   }
 );
 
-(async () => {
-  await db.sync({alter:true});
-})();
+
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
 Alternatif.hasMany(db.define("Matriks"), { foreignKey: "id_alternatif" });
 

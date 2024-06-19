@@ -41,11 +41,18 @@ Content-Type: application/json
 
 ###
 # GET http://localhost:4000/topsis
-# ###
-# GET http://localhost:4000/topsistest
-# ###
+###
+GET http://localhost:4000/topsistest
+
+###
 GET http://localhost:4000/topsisdua
 ###
 # GET http://localhost:4000/topsis_data
-
+###
+curl -X POST http://localhost:4000/admin/login \
+-H "Content-Type: application/json" \
+-d '{
+    "username": "andka",
+    "password": "ahika"
+}'
 
