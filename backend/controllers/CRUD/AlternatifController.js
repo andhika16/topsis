@@ -1,6 +1,9 @@
 const Alternatif = require("../../model/alternatifModel");
 const Matriks = require("../../model/matriksModel");
 const { Op } = require("sequelize");
+
+// TODO:buat get data berdasarkan rt atau rw atau jalan yang sama agar bisa dikelompokkan melalui database dan bisa input nilai matrik berdasarkan kolom yang sama
+
 const ambilSemuaAlternatif = async (req, res) => {
   try {
     const alternatif = await Alternatif.findAll();

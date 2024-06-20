@@ -2,30 +2,39 @@ const express = require("express");
 const router = express.Router();
 const Admin = require("../model/adminModel");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 // Endpoint Login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
-
   try {
     // Cari admin berdasarkan username
     const admin = await Admin.findOne({ where: { username } });
 
+    if (!username || !password) {
+      return res
+        .status(404)
+        .json({ error: "harap masukkan username dan password" });
+    }
+
     if (!admin) {
-      return res.status(404).json({ error: "Admin not found" });
+      return res
+        .status(404)
+        .json({ error: "Username tidak ditemukan." });
     }
 
     // Bandingkan password yang dimasukkan dengan password di database
     const isPasswordValid = await bcrypt.compare(password, admin.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res
+        .status(401)
+        .json({ error: "Password Salah." });
     }
 
     res.status(200).json({ message: "Login successful", admin });
   } catch (error) {
-    res.status(500).json({ error: "Failed to login" });
+    console.error("Failed to login", error);
+    res.status(500).json({ error: "Failed to login. Please try again later." });
   }
 });
 

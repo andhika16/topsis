@@ -12,35 +12,7 @@ GET http://localhost:4000/nilai
 GET http://localhost:4000/kategori
 
 ###
-POST http://localhost:4000/alternatif
-Content-Type: application/json
-
-
-  {
-    "nama_alternatif": "Budi Santoso",
-    "no_kk": "12345678901234567890",
-    "jenis_kelamin": "Laki-laki",
-    "alamat": "Jl. Merdeka No. 1, Jakarta",
-    "no_telp": "081234567890",
-    "pekerjaan": "Dokter"
-  },
-  
-
-
-
-###
-GET http://localhost:4000/kriteria 
-Content-Type: application/json
-
-{
-    "nama_kriteria":"lantai",
-    "bobot":3,
-    "jenis":"benefit",
-    "keterangan":"tanah"
-}
-
-###
-# GET http://localhost:4000/topsis
+GET http://localhost:4000/topsis
 ###
 GET http://localhost:4000/topsistest
 
@@ -52,7 +24,7 @@ GET http://localhost:4000/topsisdua
 curl -X POST http://localhost:4000/admin/login \
 -H "Content-Type: application/json" \
 -d '{
-    "username": "andka",
-    "password": "ahika"
+    "username": "dhika",
+    "password": "andhika"
 }'
 
