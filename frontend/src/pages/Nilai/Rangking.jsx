@@ -27,7 +27,7 @@ const RankingTable = () => {
 
   if (error) {
     return (
-      <div className=" flex flex-col items-center justify-center">
+      <div className=" flex flex-col">
         <button
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
@@ -43,7 +43,7 @@ const RankingTable = () => {
   }
 
   return (
-    <div className="flex flex-col bg-gray-900 text-white min-h-screen items-center justify-center">
+    <div className="flex flex-col bg-gray-900 text-white min-h-screen ">
       <div className="max-w-5xl mx-auto px-4 py-8">
         <h2 className="text-2xl uppercase font-bold mb-4">Hasil Perhitungan sistem pendukung keputusan penduduk desa tatung</h2>
         {!dataFetched && (
