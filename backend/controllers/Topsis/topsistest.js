@@ -84,7 +84,6 @@ function jarakEuclidean(alternatif, solusiIdeal) {
       0
     )
   );
-
   return { jarakPositif, jarakNegatif };
 }
 
@@ -134,7 +133,6 @@ const testTopsis = async (req, res) => {
 
   const matriksNormalisasi = normalisasiMatriks(matriksKeputusan);
   const bobotMatriks = matriksTerbobot(matriksNormalisasi, bobot);
-
   const { positif, negatif } = solusiIdeal(bobotMatriks);
   const skorPreferensi = alternatifData.map((alternatif, i) => {
     const { jarakPositif, jarakNegatif } = jarakEuclidean(bobotMatriks[i], {
@@ -157,7 +155,10 @@ const testTopsis = async (req, res) => {
     alternatif.ranking = index + 1;
   });
 
-  res.status(201).send({ data: skorPreferensi });
+  res.status(201).send({
+    data: skorPreferensi,
+
+  });
 };
 
 module.exports = { testTopsis };

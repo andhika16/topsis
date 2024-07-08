@@ -65,10 +65,18 @@ function skorPreferensiRelatif(jarakPositif, jarakNegatif) {
 }
 
 // Fungsi untuk menyimpan nilai ke dalam tabel Matriks
-async function simpanNilai(id_alternatif, id_penilaian, normalisasi, terbobot) {
+async function simpanNilai(
+  id_alternatif,
+  id_penilaian,
+  normalisasi,
+  terbobot,
+  nilai_akhir,
+  rangking
+) {
   try {
     const nilaiNormalisasi = Number(normalisasi.toFixed(3));
     const nilaiTerbobot = Number(terbobot.toFixed(3));
+    const skor = Number(nilai_akhir.toFixed(3));
 
     let entry = await Matriks.findOne({
       where: { id_alternatif, id_penilaian },
@@ -80,10 +88,14 @@ async function simpanNilai(id_alternatif, id_penilaian, normalisasi, terbobot) {
         id_penilaian,
         normalisasi: nilaiNormalisasi,
         terbobot: nilaiTerbobot,
+        nilai_akhir: skor,
+        rank: rangking,
       });
     } else {
       entry.normalisasi = nilaiNormalisasi;
       entry.terbobot = nilaiTerbobot;
+      entry.nilai_akhir = skor;
+      entry.rank = rangking;
       await entry.save();
     }
 
@@ -152,21 +164,31 @@ async function testTopsisDua(req, res) {
       return {
         id: alternatif.id,
         nama_alternatif: alternatif.nama_alternatif,
+        jarakPositif,
+        jarakNegatif,
         skor: skorPreferensiRelatif(jarakPositif, jarakNegatif),
       };
     });
 
     skorPreferensi.sort((a, b) => b.skor - a.skor);
+    skorPreferensi.forEach((alternatif, index) => {
+      alternatif.ranking = index + 1;
+    });
 
     let isComplete = true;
     for (let i = 0; i < alternatifCount; i++) {
       for (let j = 0; j < kriteriaCount; j++) {
         try {
+          const nilai_akhir = skorPreferensi[i].skor;
+          const rangking = skorPreferensi[i].ranking;
+
           await simpanNilai(
             alternatifData[i].id,
             alternatifData[i].Matriks[j].id_penilaian,
             matriksNormalisasi[i][j],
-            matriksBobot[i][j]
+            matriksBobot[i][j],
+            nilai_akhir,
+            rangking
           );
 
           console.log("data tersimpan");
@@ -189,8 +211,6 @@ async function testTopsisDua(req, res) {
     }
 
     // Update ranks
-
-    console.table(skorPreferensi);
 
     return res.json({ success: true, data: skorPreferensi });
   } catch (error) {
