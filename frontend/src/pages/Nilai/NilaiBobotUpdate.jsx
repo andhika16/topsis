@@ -49,7 +49,9 @@ function NilaiBobotUpdate() {
       progressClassName: "bg-white",
       autoClose: 3000,
     });
-    window.location.reload();
+
+    console.log(localCategories);
+    // window.location.reload();
   };
 
   if (!localCategories.length) {

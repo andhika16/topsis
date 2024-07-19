@@ -9,8 +9,25 @@ GET http://localhost:4000/matriks
 ###
 GET http://localhost:4000/nilai
 ###
+PUT http://localhost:4000/opsi
+###
 GET http://localhost:4000/kategori
-
+###
+GET http://localhost:4000/alternatif
+###
+curl -X POST http://localhost:4000/alternatif \
+-H "Content-Type: application/json" \
+-d '{
+      "nama_alternatif": "Tukul",
+      "no_kk":  "3504413300645003",
+      "no_nik": "2350219090645003",
+      "tempat_tgl_lahir": "Ponorogo,20 November 1999",
+      "jenis_kelamin": "laki-laki",
+      "jalan": "GatutKaca",
+      "RT": 2,
+      "RW": 1,
+      "pekerjaan": "petani"
+    }'
 ###
 GET http://localhost:4000/topsis
 ###
@@ -21,10 +38,26 @@ GET http://localhost:4000/topsisdua
 ###
 # GET http://localhost:4000/topsis_data
 ###
+GET http://localhost:4000/montecarlo
+###
 curl -X POST http://localhost:4000/admin/login \
 -H "Content-Type: application/json" \
 -d '{
-    "username": "dhika",
+    "username": "andhika",
     "password": "andhika"
 }'
-
+###
+curl -X PUT http://localhost:4000/kategori \
+-H "Content-Type: application/json" \
+-d '[
+    {"id": 1, "nama": "Penghasilan", "bobot": 4},
+    {"id": 2, "nama": "Luas rumah", "bobot": 3},
+    {"id": 3, "nama": "Jenis dinding", "bobot": 3},
+    {"id": 4, "nama": "Lantai", "bobot": 3},
+    {"id": 5, "nama": "Harta benda", "bobot": 4},
+    {"id": 6, "nama": "Penerangan rumah", "bobot": 3},
+    {"id": 7, "nama": "Jumlah keluarga", "bobot": 4},
+    {"id": 8, "nama": "Pendidikan", "bobot": 4},
+    {"id": 9, "nama": "Pekerjaan", "bobot": 2},
+    {"id": 10, "nama": "Akses kesehatan", "bobot": 3}
+]'

@@ -76,19 +76,20 @@ const updateKategori = async (req, res) => {
         try {
           let kategori = await Kategori.findByPk(id);
 
-          if (!kategori) {
-            // If category doesn't exist, create new record (optional)
-            kategori = await Kategori.create({
-              id,
-              nama,
-              bobot: validatedBobot,
-            });
-          } else {
-            // Update existing category
-            kategori.nama = nama;
-            kategori.bobot = validatedBobot;
-            await kategori.save();
-          }
+          // if (!kategori) {
+          //   // If category doesn't exist, create new record (optional)
+          //   kategori = await Kategori.create({
+          //     id,
+          //     nama,
+          //     bobot: validatedBobot,
+          //   });
+          // } else {
+          //   // Update existing category
+          //   kategori.nama = nama;
+          //   kategori.bobot = validatedBobot;
+          //   await kategori.save();
+          // }
+
 
           return {
             id: kategori.id,

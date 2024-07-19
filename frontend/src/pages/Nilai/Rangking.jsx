@@ -7,7 +7,7 @@ const RankingTable = () => {
 
   const fetchDatarangking = async () => {
     try {
-      const response = await fetch("http://localhost:4000/topsistest/");
+      const response = await fetch("http://localhost:4000/topsisdua/");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

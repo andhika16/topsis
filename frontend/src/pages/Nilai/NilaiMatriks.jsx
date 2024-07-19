@@ -17,7 +17,7 @@ const NilaiMatriks = () => {
     }
   }, [nilaiState]);
 
-  const nama_matriks = state.data.filter((item) => item.Matriks?.length === 0);
+  // const nama_matriks = state.data.filter((item) => item.Matriks?.length === 0);
 
   useEffect(() => {
     fetchDataNilai(); // Fetch data when the component mounts

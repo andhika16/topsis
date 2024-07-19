@@ -14,7 +14,6 @@ import RankingTable from "./pages/Nilai/Rangking";
 import LoginForm from "./admin/LoginForm";
 import NotFound from "./components/NotFound";
 import ProtectedRoutes from "./components/ProtectedRoutes";
-
 function App() {
   return (
     <div className="App bg-gray-900">
@@ -40,7 +39,6 @@ function App() {
               <Route path="/penilaian" element={<NilaiForm />} />
               <Route path="/rangking" element={<RankingTable />} />
               <Route path="*" element={<NotFound />} />
-
             </Route>
           </Routes>
         </div>

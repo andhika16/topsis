@@ -37,6 +37,7 @@ const NilaiUpdate = () => {
       nilai: editValues[index],
     }));
     await editNilai(id, updatedMatriks);
+    
     navigate('/nilai_matriks')
   };
 
