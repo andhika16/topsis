@@ -3,11 +3,15 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
 
 // Inisialisasi state awal dari localStorage jika ada
-const initialState = {
-  // FIXME :jangan lupa mengatasi halaman logout ketika refresh
-  isLoggedIn: true,
-  admin: null,
-  error: null,
+const initialState = () => {
+  const storedAuthState = localStorage.getItem("authState");
+  return storedAuthState
+    ? JSON.parse(storedAuthState)
+    : {
+        isLoggedIn: false,
+        admin: null,
+        error: null,
+      };
 };
 
 // Membuat context untuk user
@@ -51,16 +55,21 @@ const authReducer = (state, action) => {
 
 // Komponen provider untuk user context
 export const AuthProvider = ({ children }) => {
-  const [authState, dispatch] = useReducer(authReducer, initialState);
+  const [authState, dispatch] = useReducer(authReducer, {}, initialState);
 
   // Efek untuk memuat data autentikasi dari localStorage saat komponen dimuat
   useEffect(() => {
     const storedAuthState = localStorage.getItem("authState");
     if (storedAuthState) {
-      dispatch({
-        type: actionTypes.LOGIN_SUCCESS,
-        payload: JSON.parse(storedAuthState),
-      });
+      try {
+        const parsedAuthState = JSON.parse(storedAuthState);
+        dispatch({
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: parsedAuthState.admin, // Update disini untuk sesuai dengan struktur authState
+        });
+      } catch (error) {
+        console.error("Failed to parse authState:", error);
+      }
     }
   }, []);
 
@@ -94,6 +103,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     dispatch({ type: actionTypes.LOGOUT });
+    localStorage.removeItem("authState"); // Tambahkan ini untuk memastikan localStorage dihapus saat logout
   };
 
   return (

@@ -23,7 +23,7 @@ const NilaiMatriks = () => {
     fetchDataNilai(); // Fetch data when the component mounts
   }, []);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Jumlah item per halaman
+  const itemsPerPage = 12; // Jumlah item per halaman
 
   const totalPages = Math.ceil(localData.length / itemsPerPage);
 

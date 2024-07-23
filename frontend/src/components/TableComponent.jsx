@@ -42,6 +42,13 @@ const TableComponent = ({ headers, data, valueType }) => {
     }
   };
 
+  // Sort data: prioritize rows with filled-in values
+  const sortedData = [...data].sort((a, b) => {
+    const aHasValues = a.Matriks.some(matriks => getValue(matriks) !== 0);
+    const bHasValues = b.Matriks.some(matriks => getValue(matriks) !== 0);
+    return bHasValues - aHasValues; // bHasValues first, so rows with values come first
+  });
+
   return (
     <div className="overflow-x-auto">
       <ToastContainer />
@@ -52,7 +59,7 @@ const TableComponent = ({ headers, data, valueType }) => {
           </tr>
         </thead>
         <tbody>
-          {data?.map((item, i) => (
+          {sortedData.map((item, i) => (
             <tr key={i} className="hover:bg-gray-900 text-center">
               <td className="border border-gray-500 text-gray-100 text-sm py-2 px-4 text-left">
                 {i + 1}

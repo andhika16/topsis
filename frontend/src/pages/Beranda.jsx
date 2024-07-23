@@ -7,7 +7,12 @@ const Beranda = () => {
   const { state: alternatifState } = useAlternatifContext();
   const { state: nilaiState } = useNilaiContext();
   const totalAlternatif = alternatifState?.data?.length || 0;
-  const totalNilai = nilaiState?.data?.length || 0;
+  const totalNilai = nilaiState.data.filter((item) => item.Matriks?.length !== 0);
+
+  
+  
+
+  
 
   return (
     <div className="w-full bg-slate-900 px-20 pt-10">
@@ -31,7 +36,7 @@ const Beranda = () => {
           className="w-80 shadow-md bg-yellow-900 rounded  mb-4  transition duration-300 ease-in-out relative"
         >
           <div className="flex flex-col text-white text-opacity-70 p-2 space-y-2">
-            <span className="text-6xl  font-semibold">{totalNilai}</span>
+            <span className="text-6xl  font-semibold">{totalNilai.length}</span>
             <span className="text-lg font-medium ">Data Topsis</span>
           </div>
           <i className="fa-solid fa-chart-line text-8xl text-gray-100 text-opacity-40 absolute top-5 right-6"></i>

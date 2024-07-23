@@ -17,7 +17,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
   return (
-    <div className="App bg-gray-900">
+    <div className="App bg-gray-900 max-h-full">
       <BrowserRouter>
         <div className="">
           <Routes>

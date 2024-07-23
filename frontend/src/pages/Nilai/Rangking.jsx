@@ -7,7 +7,7 @@ const RankingTable = () => {
 
   const fetchDatarangking = async () => {
     try {
-      const response = await fetch("http://localhost:4000/topsistest/");
+      const response = await fetch("http://localhost:4000/topsisdua/");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -27,17 +27,14 @@ const RankingTable = () => {
 
   if (error) {
     return (
-      <div className=" flex flex-col">
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-        >
-          <Link to={'/penilaian'} >
-          form nilai
-          </Link>
-        </button>
-        <span className="text-gray-50 text-2xl font-semibold text-center">
-          Mohon Maaf Silahkan lengkapi nilai data penduduk untuk memproses perangkingan
+      <div className=" flex flex-col justify-center items-center mx-auto">
+        <span className="text-gray-50 text-2xl font-semibold text-center mb-4">
+          Mohon Maaf Silahkan isi kriteria data penduduk untuk memproses
+          perangkingan
         </span>
+        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <Link to={"/penilaian"}>form nilai</Link>
+        </button>
       </div>
     );
   }
@@ -45,7 +42,9 @@ const RankingTable = () => {
   return (
     <div className="flex flex-col bg-gray-900 text-white min-h-screen ">
       <div className="max-w-5xl mx-auto px-4 py-8">
-        <h2 className="text-2xl uppercase font-bold mb-4">Hasil Perhitungan sistem pendukung keputusan penduduk desa tatung</h2>
+        <h2 className="text-2xl uppercase font-bold mb-4">
+          Hasil Perhitungan sistem pendukung keputusan penduduk desa tatung
+        </h2>
         {!dataFetched && (
           <div className="flex items-center justify-center h-screen">
             <button

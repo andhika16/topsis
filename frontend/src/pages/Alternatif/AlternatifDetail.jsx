@@ -4,14 +4,16 @@ import { Link } from "react-router-dom";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 import { toast, ToastContainer } from "react-toastify";
 
+const ITEMS_PER_PAGE = 10;
+
 export default function AlternatifDetail() {
   const { state, deleteData, error, loading, fetchData } =
     useAlternatifContext();
   const { data: alternatifState } = state;
   const [localData, setLocalData] = useState([]);
-  // TODO:tambahkan notifikasi toaster ketika data penduduk baru ditambahkan
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
-    // Filter out any undefined values from the alternatifState and update localData
     if (Array.isArray(alternatifState)) {
       const filteredData = alternatifState.filter((item) => item !== undefined);
       setLocalData(filteredData);
@@ -19,7 +21,7 @@ export default function AlternatifDetail() {
   }, [alternatifState]);
 
   useEffect(() => {
-    fetchData(); // Fetch data when the component mounts
+    fetchData();
   }, []);
 
   const hapusData = async (id) => {
@@ -30,6 +32,15 @@ export default function AlternatifDetail() {
       autoClose: 3000,
     });
   };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  const currentItems = localData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(localData.length / ITEMS_PER_PAGE);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -46,6 +57,8 @@ export default function AlternatifDetail() {
         <table className="min-w-full table-auto">
           <thead>
             <tr className="text-sm text-gray-100 text-center border-b-2 border-gray-700">
+
+              <th className="py-2">No</th>
               <th className="py-2">Nama</th>
               <th className="py-2">Nomor KK</th>
               <th className="py-2">NIK</th>
@@ -58,10 +71,10 @@ export default function AlternatifDetail() {
               <th className="py-2">Keterangan</th>
             </tr>
           </thead>
-          {localData.length === 0 ? (
+          {currentItems.length === 0 ? (
             <tbody>
               <tr className="border-b text-sm border-gray-200">
-                <td colSpan="7">
+                <td colSpan="10">
                   <span className="text-center text-red-700 font-medium">
                     data penduduk belum terisi.
                   </span>
@@ -76,8 +89,11 @@ export default function AlternatifDetail() {
             </tbody>
           ) : (
             <tbody>
-              {localData.map((item, index) => (
+              {currentItems.map((item, index) => (
                 <tr key={index} className="border-b text-sm border-gray-200">
+                  <td className="py-1 px-2 text-left text-gray-200 whitespace-nowrap">
+                    {index + 1}
+                  </td>
                   <td className="py-1 px-2 text-left text-gray-200 whitespace-nowrap">
                     {item.nama_alternatif}
                   </td>
@@ -126,6 +142,21 @@ export default function AlternatifDetail() {
             </tbody>
           )}
         </table>
+        <div className="flex justify-center mt-4">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              className={`mx-1 px-3 py-1 rounded ${
+                currentPage === i + 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-300 text-gray-700"
+              }`}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

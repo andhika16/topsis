@@ -14,7 +14,10 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       await login(username, password);
-      navigate("/");
+      console.log(username,password);
+      if(login) {
+        navigate("/")
+      }
     } catch (error) {
       console.log(error);
     }

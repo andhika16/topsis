@@ -7,9 +7,8 @@ import SideBar from "./SideBar";
 
 const ProtectedRoutes = () => {
   const { authState } = useAuthContext();
-  console.log(authState.isLoggedIn);
   // Cek apakah pengguna sudah login
-  if (!authState.isLoggedIn) {
+  if (!authState.isLoggedIn || !authState.admin) {
     return <Navigate to="/login" />;
   }
 

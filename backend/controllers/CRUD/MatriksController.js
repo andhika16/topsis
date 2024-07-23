@@ -10,42 +10,6 @@ const ambilSemuaMatriks = async (req, res) => {
   }
 };
 
-// (async () => {
-//   try {
-//     // Mengambil semua data dari tabel matriks
-//     const allRecords = await Matriks.findAll({
-//       order: [["id_penilaian", "ASC"]],
-//     });
-
-//     // Hapus semua data dari tabel matriks
-//     await Matriks.destroy({
-//       where: {},
-//       truncate: true,
-//     });
-
-//     // Reset AUTO_INCREMENT ke 1
-//     await db.query("ALTER TABLE matriks AUTO_INCREMENT = 1");
-
-//     // Memasukkan kembali data dengan ID yang dimulai dari 1
-//     for (const record of allRecords) {
-//       await Matriks.create({
-//         id_nilai: record.id_nilai,
-//         id_alternatif: record.id_alternatif,
-//         nilai: record.nilai,
-//         normalisasi: record.normalisasi,
-//         terbobot: record.terbobot,
-//         nilai_akhir: record.nilai_akhir,
-//         rank: record.rank,
-//       });
-//     }
-
-//     console.log("ID berhasil direset dan data dimasukkan kembali.");
-//   } catch (error) {
-//     console.error("Error resetting IDs:", error);
-//   } finally {
-//     await db.close();
-//   }
-// })();
 const ambilSatuMatriks = async (req, res) => {
   try {
     const id = req.params.id;
