@@ -67,7 +67,9 @@ const SideBar = () => {
                 index === 0 && "bg-light-white"
               } `}
             >
-              <img src={Menu.src} />
+              <Link to={Menu.link}>
+                <img src={Menu.src} />
+              </Link>
               <Link
                 to={Menu.link}
                 className={`${!open && "hidden"} origin-left duration-200`}

@@ -35,7 +35,7 @@ export const AlternatifProvider = ({ children }) => {
         type: "SET_DATA_ALTERNATIF",
         payload: result.data,
       });
-      setLoading(true)
+      setLoading(true);
     } catch (error) {
       console.error("Fetch data error: ", error);
       setError(error);
@@ -58,9 +58,10 @@ export const AlternatifProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("Network response was not ok", result.error);
       }
       const result = await response.json();
+      console.log(result);
       dispatch({
         type: "ADD_DATA_ALTERNATIF",
         payload: result.data,
