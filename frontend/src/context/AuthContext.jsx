@@ -5,7 +5,7 @@ import React, { createContext, useReducer, useContext, useEffect } from "react";
 // Inisialisasi state awal dari localStorage jika ada
 const initialState = {
   // FIXME :jangan lupa mengatasi halaman logout ketika refresh
-  isLoggedIn: true,
+  isLoggedIn: false,
   admin: null,
   error: null,
 };

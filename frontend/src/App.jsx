@@ -15,6 +15,7 @@ import LoginForm from "./admin/LoginForm";
 import NotFound from "./components/NotFound";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import AlternatifMassData from "./pages/Alternatif/alternatifMassData";
+import NilaiTabelForm from "./pages/Nilai/NilaiTabelForm";
 function App() {
   return (
     <div className="App bg-gray-900">
@@ -27,6 +28,7 @@ function App() {
               <Route path="/alternatif_form" element={<AlternatifForm />} />
               <Route path="/data_penduduk" element={<AlternatifDetail />} />
               <Route path="/alternatifMass" element={<AlternatifMassData />} />
+              <Route path="/nilai_tabel_form" element={<NilaiTabelForm />} />
               <Route
                 path="/alternatif-edit/:id"
                 element={<AlternatifUpdate />}

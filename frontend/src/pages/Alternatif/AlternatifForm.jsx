@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAlternatifContext } from "../../hooks/useAlternatifContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { Link } from "react-router-dom";
 const AlternatifForm = ({ editMode, initialData }) => {
   const { addData, updateData, state, loading, error } = useAlternatifContext();
   const { data: alternatifData } = state;
@@ -238,7 +238,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
             required
           />
 
-          <div className="flex space-x-4 py-2">
+          <div className="flex space-x-4 py-2 w-max  ">
             <button
               className="px-4 py-2 bg-blue-500 text-white  shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
               type="button"
@@ -252,6 +252,13 @@ const AlternatifForm = ({ editMode, initialData }) => {
               className="px-4 py-2 bg-gray-500 text-white  shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               Reset
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-4 py-2 bg-yellow-500 text-black  shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              <Link to={"/alternatifMass"}>Input Data Banyak</Link>
             </button>
           </div>
         </form>
