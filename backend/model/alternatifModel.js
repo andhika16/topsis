@@ -25,7 +25,7 @@ const Alternatif = db.define(
       allowNull: false,
     },
     jalan: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(15),
       allowNull: false,
     },
     RT: {
@@ -48,7 +48,6 @@ const Alternatif = db.define(
     freezeTableName: true,
   }
 );
-
 
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
 Alternatif.hasMany(db.define("Matriks"), { foreignKey: "id_alternatif" });

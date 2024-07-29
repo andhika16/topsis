@@ -114,8 +114,9 @@ export const NilaiProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
       });
+      console.log(response);
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("Network response was not ok", response.error);
       }
       dispatch({
         type: "SET_DATA_NILAI",
@@ -123,7 +124,6 @@ export const NilaiProvider = ({ children }) => {
       });
     } catch (error) {
       console.error("Gagal menghapus data Matriks:", error);
-      alert("Gagal menghapus data Matriks");
     }
   };
 

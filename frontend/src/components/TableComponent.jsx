@@ -47,9 +47,7 @@ const TableComponent = ({ headers, data, valueType }) => {
       <ToastContainer />
       <table className="lg:min-w-full table-auto border-collapse border border-gray-500">
         <thead>
-          <tr className="bg-gray-200">
-            {generateTableHeaders(headers)}
-          </tr>
+          <tr className="bg-gray-200">{generateTableHeaders(headers)}</tr>
         </thead>
         <tbody>
           {data?.map((item, i) => (
@@ -79,18 +77,30 @@ const TableComponent = ({ headers, data, valueType }) => {
               )}
               {valueType === "nilai" && (
                 <td className="border border-gray-500 py-2 px-4 text-sm text-left">
-                  <div className="flex space-x-3">
-                    <Link to={`/alternatif_kriteria/${item.id}`}>
-                      <button className="text-blue-600 hover:underline hover:text-blue-700">
-                        Detail
-                      </button>
-                    </Link>
-                    <Link
-                      to={`/nilai_matriks/${item.id}`}
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      Ubah
-                    </Link>
+                  <div className="flex ">
+                    {item.Matriks.length > 0 ? (
+                      <div className="space-x-3 mr-3">
+                        <Link to={`/alternatif_kriteria/${item.id}`}>
+                          <button className="text-blue-600 hover:underline hover:text-blue-700">
+                            Detail
+                          </button>
+                        </Link>
+                        <Link
+                          to={`/nilai_matriks/${item.id}`}
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          Ubah
+                        </Link>
+                      </div>
+                    ) : (
+                      <Link
+                        className="text-blue-600 hover:text-blue-800 mr-2"
+                        to={"/penilaian"}
+                      >
+                        Input
+                      </Link>
+                    )}
+
                     <button
                       className="text-red-600 hover:underline hover:text-red-700"
                       onClick={() => hapusDataNilai(item.id)}

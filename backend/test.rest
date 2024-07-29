@@ -61,3 +61,5 @@ curl -X PUT http://localhost:4000/kategori \
     {"id": 9, "nama": "Pekerjaan", "bobot": 2},
     {"id": 10, "nama": "Akses kesehatan", "bobot": 3}
 ]'
+
+

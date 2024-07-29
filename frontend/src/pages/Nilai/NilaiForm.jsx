@@ -64,8 +64,8 @@ const NilaiForm = () => {
     }));
 
     try {
-      // await addData(dataToSend);
-      console.log(dataToSend);
+      await addData(dataToSend);
+      // console.log(dataToSend);
       
       // window.location.reload();
       toast.success("Data telah berhasil ditambahkan!", {

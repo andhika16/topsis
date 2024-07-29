@@ -24,6 +24,7 @@ const SideBar = () => {
   const Menus = [
     { link: "/", title: "Beranda", src: Chart_fill },
     { link: "/nilai_matriks", title: "Nilai ", src: Chart_fill },
+    { link: "/alternatifMass", title: "Bulk Create", src: Chart_fill },
     {
       link: "/alternatif_form",
       title: "Form Penduduk",
@@ -67,7 +68,9 @@ const SideBar = () => {
                 index === 0 && "bg-light-white"
               } `}
             >
-              <img src={Menu.src} />
+              <Link to={Menu.link}>
+                <img src={Menu.src} />
+              </Link>
               <Link
                 to={Menu.link}
                 className={`${!open && "hidden"} origin-left duration-200`}

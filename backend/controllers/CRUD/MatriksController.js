@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const Alternatif = require("../../model/alternatifModel");
 const Matriks = require("../../model/matriksModel");
 
@@ -10,42 +11,6 @@ const ambilSemuaMatriks = async (req, res) => {
   }
 };
 
-// (async () => {
-//   try {
-//     // Mengambil semua data dari tabel matriks
-//     const allRecords = await Matriks.findAll({
-//       order: [["id_penilaian", "ASC"]],
-//     });
-
-//     // Hapus semua data dari tabel matriks
-//     await Matriks.destroy({
-//       where: {},
-//       truncate: true,
-//     });
-
-//     // Reset AUTO_INCREMENT ke 1
-//     await db.query("ALTER TABLE matriks AUTO_INCREMENT = 1");
-
-//     // Memasukkan kembali data dengan ID yang dimulai dari 1
-//     for (const record of allRecords) {
-//       await Matriks.create({
-//         id_nilai: record.id_nilai,
-//         id_alternatif: record.id_alternatif,
-//         nilai: record.nilai,
-//         normalisasi: record.normalisasi,
-//         terbobot: record.terbobot,
-//         nilai_akhir: record.nilai_akhir,
-//         rank: record.rank,
-//       });
-//     }
-
-//     console.log("ID berhasil direset dan data dimasukkan kembali.");
-//   } catch (error) {
-//     console.error("Error resetting IDs:", error);
-//   } finally {
-//     await db.close();
-//   }
-// })();
 const ambilSatuMatriks = async (req, res) => {
   try {
     const id = req.params.id;
@@ -142,20 +107,30 @@ const hapusMatriks = async (req, res) => {
         .json({ success: false, error: "ID Matriks harus disertakan" });
     }
 
-    // Hapus data dari database menggunakan Sequelize
-    const result = await Matriks.destroy({
-      where: {
-        id_alternatif,
-      },
-    });
-
-    if (result) {
-      res.json({ success: true, message: "Data Matriks berhasil dihapus" });
-    } else {
+    const result = await Matriks.findOne({ where: { id_alternatif } });
+    console.log(result);
+    if (!result) {
       res
         .status(404)
-        .json({ success: false, error: "Data Matriks tidak ditemukan" });
+        .json({ success: false, message: "Data Matriks tidak ditemukan" });
+    } else {
+      res.json({ success: true, message: "Data Matriks berhasil dihapus" });
     }
+
+    // Hapus data dari database menggunakan Sequelize
+    // const result = await Matriks.destroy({
+    //   where: {
+    //     id_alternatif,
+    //   },
+    // });
+    // console.log(result);
+    // if (result !== 0) {
+    //   res.json({ success: true, message: "Data Matriks berhasil dihapus" });
+    // } else {
+    //   res
+    //     .status(404)
+    //     .json({ success: false, error: "Data Matriks tidak ditemukan" });
+    // }
   } catch (error) {
     console.error("Gagal menghapus data Matriks:", error);
     res

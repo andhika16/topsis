@@ -31,7 +31,6 @@ const AlternatifForm = ({ editMode, initialData }) => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
   // Render error state
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -53,6 +52,11 @@ const AlternatifForm = ({ editMode, initialData }) => {
           autoClose: 3000,
         });
       });
+      return;
+    }
+
+    if (error) {
+      console.log(error);
       return;
     }
 
@@ -83,7 +87,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
         }
       );
 
-      navigate("/data_penduduk");
+      // navigate("/data_penduduk");
     } catch (error) {
       console.error("Error while submitting:", error);
       toast.error("Gagal menambahkan data.");
@@ -104,7 +108,6 @@ const AlternatifForm = ({ editMode, initialData }) => {
       jalan,
     } = data;
     if (!nama_alternatif) invalidFields.push("Nama Penduduk");
-    if (!no_kk) invalidFields.push("Nomor KK");
     if (!no_nik) invalidFields.push("No NIK");
     if (!jenis_kelamin) invalidFields.push("Jenis Kelamin");
     if (!pekerjaan) invalidFields.push("Pekerjaan");
@@ -158,7 +161,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
             type="text"
             id="no_kk"
             name="no_kk"
-            maxLength={16}
+            maxLength={17}
             onChange={handleChange}
             value={formData.no_kk}
             required
@@ -169,7 +172,7 @@ const AlternatifForm = ({ editMode, initialData }) => {
             type="text"
             id="no_nik"
             name="no_nik"
-            maxLength={16}
+            maxLength={17}
             onChange={handleChange}
             value={formData.no_nik}
             required
