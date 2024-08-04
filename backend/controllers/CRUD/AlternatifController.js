@@ -44,32 +44,46 @@ const tambahAlternatif = async (req, res) => {
 
     // Validasi minimal untuk memastikan data yang dibutuhkan tersedia
     if (
-      (!nama_alternatif ||
-        !no_kk ||
-        !jenis_kelamin ||
-        !no_nik ||
-        !pekerjaan ||
-        !tempat_tgl_lahir,
-      !RT || !RW || !jalan)
+      !nama_alternatif ||
+      !jenis_kelamin ||
+      !no_nik ||
+      !pekerjaan ||
+      !tempat_tgl_lahir ||
+      !RT ||
+      !RW ||
+      !jalan
     ) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Semua field harus diisi" });
+      return res.status(400).json({
+        success: false,
+        error: "Semua field harus diisi",
+      });
+    }
+
+    function generateRandomNumber(length) {
+      return Array.from({ length }, () => Math.floor(Math.random() * 10)).join(
+        ""
+      );
+    }
+
+    // Jika no_kk kosong, generate nomor acak
+    let nomorKk = no_kk;
+    if (!nomorKk) {
+      nomorKk = generateRandomNumber(16);
     }
 
     // Validasi tambahan jika diperlukan
     // Misalnya, validasi panjang karakter untuk no_kk dan no_nik
-    if (no_kk.length !== 16 || no_nik.length !== 16) {
-      return res.status(400).json({
-        success: false,
-        error: "Nomor KK dan NIK harus memiliki panjang 16 karakter",
-      });
-    }
+    // if (nomorKk.length !== 16 || no_nik.length !== 16) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     error: "Nomor KK dan NIK harus memiliki panjang 16 karakter",
+    //   });
+    // }
 
     // Cek apakah data dengan nomor KK atau NIK yang sama sudah ada
     const existingAlternatif = await Alternatif.findOne({
       where: {
-        [Op.or]: [{ no_kk: no_kk }, { no_nik: no_nik }],
+        [Op.or]: [{ no_kk: nomorKk }, { no_nik: no_nik }],
       },
     });
 
@@ -83,7 +97,7 @@ const tambahAlternatif = async (req, res) => {
     // Tambahkan data ke database menggunakan Sequelize
     const alternatifBaru = await Alternatif.create({
       nama_alternatif,
-      no_kk,
+      no_kk: nomorKk,
       jenis_kelamin,
       no_nik,
       pekerjaan,
@@ -93,12 +107,16 @@ const tambahAlternatif = async (req, res) => {
       jalan,
     });
 
-    res.status(201).json({ success: true, msg: alternatifBaru });
+    res.status(201).json({
+      success: true,
+      msg: alternatifBaru,
+    });
   } catch (error) {
     console.error("Gagal menambahkan data Alternatif:", error);
-    res
-      .status(500)
-      .json({ success: false, error: "Gagal menambahkan data Alternatif" });
+    res.status(500).json({
+      success: false,
+      error: "Gagal menambahkan data Alternatif",
+    });
   }
 };
 

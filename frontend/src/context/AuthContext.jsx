@@ -63,19 +63,30 @@ export const AuthProvider = ({ children }) => {
     if (storedAuthState) {
       try {
         const parsedAuthState = JSON.parse(storedAuthState);
-        dispatch({
-          type: actionTypes.LOGIN_SUCCESS,
-          payload: parsedAuthState.admin, // Update disini untuk sesuai dengan struktur authState
-        });
+        if (parsedAuthState && parsedAuthState.isLoggedIn) {
+          dispatch({
+            type: actionTypes.LOGIN_SUCCESS,
+            payload: parsedAuthState.admin,
+          });
+        } else {
+          dispatch({ type: actionTypes.LOGOUT });
+        }
       } catch (error) {
         console.error("Failed to parse authState:", error);
+        dispatch({ type: actionTypes.LOGOUT });
       }
+    } else {
+      dispatch({ type: actionTypes.LOGOUT });
     }
   }, []);
 
   // Efek untuk menyimpan data autentikasi ke localStorage saat terjadi perubahan
   useEffect(() => {
-    localStorage.setItem("authState", JSON.stringify(authState));
+    if (authState.isLoggedIn) {
+      localStorage.setItem("authState", JSON.stringify(authState));
+    } else {
+      localStorage.removeItem("authState");
+    }
   }, [authState]);
 
   const login = async (username, password) => {

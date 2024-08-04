@@ -7,13 +7,9 @@ const Beranda = () => {
   const { state: alternatifState } = useAlternatifContext();
   const { state: nilaiState } = useNilaiContext();
   const totalAlternatif = alternatifState?.data?.length || 0;
-  const totalNilai = nilaiState.data.filter((item) => item.Matriks?.length !== 0);
+  // const totalNilai = nilaiState?.data?.length || 0;
 
-  
-  
-
-  
-
+  const totalNilai = nilaiState.data.filter((e) => e.Matriks.length !== 0);
   return (
     <div className="w-full bg-slate-900 px-20 pt-10">
       <div className="flex  space-x-4 ">

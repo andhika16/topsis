@@ -23,7 +23,8 @@ const SideBar = () => {
   const { logout } = useAuthContext();
   const Menus = [
     { link: "/", title: "Beranda", src: Chart_fill },
-    { link: "/nilai_matriks", title: "Nilai ", src: Chart_fill },
+    { link: "/nilai_matriks", title: "Data penilaian ", src: Chart_fill },
+    { link: "/data_penduduk", title: "Data Penduduk", src: Chart_fill },
     {
       link: "/alternatif_form",
       title: "Form Penduduk",

@@ -1,23 +1,21 @@
 const Alternatif = require("../../model/alternatifModel");
 const Kategori = require("../../model/kategoriModel");
 const Matriks = require("../../model/matriksModel");
-
+// FIXME:nilai normalisasi dan bobot belum terurut dengan rangking
 // Fungsi untuk normalisasi matriks keputusan
 function normalisasiMatriks(matriks) {
-  const jumlah_vertikal = Array(matriks[0].length).fill(0);
+  const nilai_matriks = Array(matriks[0].length).fill(0);
 
   // Hitung jumlah vertikal dengan pangkat dua
   for (let col = 0; col < matriks[0].length; col++) {
     for (let row = 0; row < matriks.length; row++) {
-      jumlah_vertikal[col] += Math.pow(matriks[row][col], 2);
+      nilai_matriks[col] += Math.pow(matriks[row][col], 2);
     }
-    jumlah_vertikal[col] = Math.sqrt(jumlah_vertikal[col]);
+    nilai_matriks[col] = Math.sqrt(nilai_matriks[col]);
   }
 
   // Normalisasi matriks
-  return matriks.map((row) =>
-    row.map((val, col) => val / jumlah_vertikal[col])
-  );
+  return matriks.map((row) => row.map((val, col) => val / nilai_matriks[col]));
 }
 
 // Fungsi untuk menghitung matriks terbobot
@@ -81,7 +79,6 @@ async function simpanNilai(
     let entry = await Matriks.findOne({
       where: { id_alternatif, id_penilaian },
     });
-
     if (!entry) {
       entry = await Matriks.create({
         id_alternatif,
@@ -92,6 +89,8 @@ async function simpanNilai(
         rank: rangking,
       });
     } else {
+      entry.id_alternatif;
+      entry.id_penilaian;
       entry.normalisasi = nilaiNormalisasi;
       entry.terbobot = nilaiTerbobot;
       entry.nilai_akhir = skor;
@@ -99,7 +98,7 @@ async function simpanNilai(
       await entry.save();
     }
 
-    return { success: true, data: entry };
+    return { success: true, message: "Hasil nilai", data: entry };
   } catch (error) {
     console.error(`Gagal menyimpan nilai:`, error);
     throw error;
@@ -155,7 +154,6 @@ async function testTopsisDua(req, res) {
     const matriksBobot = matriksTerbobot(matriksNormalisasi, bobot);
 
     const { positif, negatif } = solusiIdeal(matriksBobot);
-
     const skorPreferensi = alternatifData.map((alternatif, i) => {
       const { jarakPositif, jarakNegatif } = jarakEuclidean(matriksBobot[i], {
         positif,
@@ -182,16 +180,16 @@ async function testTopsisDua(req, res) {
           const nilai_akhir = skorPreferensi[i].skor;
           const rangking = skorPreferensi[i].ranking;
 
-          await simpanNilai(
-            alternatifData[i].id,
-            alternatifData[i].Matriks[j].id_penilaian,
-            matriksNormalisasi[i][j],
-            matriksBobot[i][j],
-            nilai_akhir,
-            rangking
-          );
+          // await simpanNilai(
+          //   alternatifData[i].id,
+          //   alternatifData[i].Matriks[j].id_penilaian,
+          //   matriksNormalisasi[i][j],
+          //   matriksBobot[i][j],
+          //   nilai_akhir,
+          //   rangking
+          // );
 
-          console.log("data tersimpan");
+          // console.log("data tersimpan");
         } catch (error) {
           isComplete = false;
           console.error(
@@ -212,7 +210,10 @@ async function testTopsisDua(req, res) {
 
     // Update ranks
 
-    return res.json({ success: true, data: skorPreferensi });
+    return res.json({
+      success: true,
+      data: skorPreferensi,
+    });
   } catch (error) {
     console.error(error);
     return res

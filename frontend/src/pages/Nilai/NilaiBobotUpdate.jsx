@@ -49,7 +49,9 @@ function NilaiBobotUpdate() {
       progressClassName: "bg-white",
       autoClose: 3000,
     });
-    window.location.reload();
+
+    console.log(localCategories);
+    // window.location.reload();
   };
 
   if (!localCategories.length) {
@@ -57,7 +59,7 @@ function NilaiBobotUpdate() {
   }
 
   return (
-    <div className="overflow-x-auto text-gray-100 p-4">
+    <div className="overflow-x-auto text-gray-100 p-4 w-1/2 mx-auto">
       <ToastContainer />
       <h1 className="text-3xl text-gray-100 font-bold mb-6">
         Penentuan Nilai Bobot Kriteria

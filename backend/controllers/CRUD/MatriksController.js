@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const Alternatif = require("../../model/alternatifModel");
 const Matriks = require("../../model/matriksModel");
 
@@ -58,7 +59,6 @@ const tambahMatriks = async (req, res) => {
 const editMatriks = async (req, res) => {
   const data = req.body.Matriks; // Assuming data is sent in the request body
 
-  console.log(data);
   if (!Array.isArray(data) || data.length === 0) {
     return res.status(400).json({ message: "Invalid data format" });
   }
@@ -98,7 +98,6 @@ const editMatriks = async (req, res) => {
 const hapusMatriks = async (req, res) => {
   try {
     const { id: id_alternatif } = req.params;
-    console.log(id_alternatif);
     // Validasi minimal untuk memastikan ID matriks tersedia
     if (!id_alternatif) {
       return res
@@ -106,14 +105,24 @@ const hapusMatriks = async (req, res) => {
         .json({ success: false, error: "ID Matriks harus disertakan" });
     }
 
+    // const result = await Matriks.findOne({ where: { id_alternatif } });
+    // console.log(result);
+    // if (!result) {
+    //   res
+    //     .status(404)
+    //     .json({ success: false, message: "Data Matriks tidak ditemukan" });
+    // } else {
+    //   res.json({ success: true, message: "Data Matriks berhasil dihapus" });
+    // }
+
     // Hapus data dari database menggunakan Sequelize
     const result = await Matriks.destroy({
       where: {
         id_alternatif,
       },
     });
-
-    if (result) {
+    console.log(result);
+    if (result !== 0) {
       res.json({ success: true, message: "Data Matriks berhasil dihapus" });
     } else {
       res
