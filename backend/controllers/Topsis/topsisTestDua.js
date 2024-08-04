@@ -189,7 +189,7 @@ async function testTopsisDua(req, res) {
           //   rangking
           // );
 
-          console.log("data tersimpan");
+          // console.log("data tersimpan");
         } catch (error) {
           isComplete = false;
           console.error(

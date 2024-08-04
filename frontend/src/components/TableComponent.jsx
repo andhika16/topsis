@@ -76,7 +76,7 @@ const TableComponent = ({ headers, data, valueType }) => {
                 </td>
               )}
               {valueType === "nilai" && (
-                <td className="border border-gray-500 py-2 px-4 text-sm text-left">
+                <td className="py-2 px-4 text-sm text-left">
                   <div className="flex ">
                     {item.Matriks.length > 0 ? (
                       <div className="space-x-3 mr-3">

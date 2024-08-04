@@ -66,8 +66,8 @@ const NilaiForm = () => {
     try {
       await addData(dataToSend);
       // console.log(dataToSend);
-      
-      // window.location.reload();
+
+      window.location.reload();
       toast.success("Data telah berhasil ditambahkan!", {
         className: "bg-green-500 text-white",
         progressClassName: "bg-white",
