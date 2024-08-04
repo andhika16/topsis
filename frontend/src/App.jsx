@@ -1,36 +1,42 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Beranda from "./pages/Beranda";
-import SideBar from "./components/SideBar";
-import AlternatifKriteria from "./pages/Alternatif/AlternatifKriteria";
-import DispatchData from "./pages/Dispatch/DispatchData";
 import NilaiMatriks from "./pages/Nilai/NilaiMatriks";
-import NilaiEdit from "./pages/Nilai/NilaiEdit";
-import Penilaian from "./pages/Nilai/Penilaian";
+import NilaiUpdate from "./pages/Nilai/NilaiUpdate";
+import NilaiForm from "./pages/Nilai/NilaiForm";
+import NilaiBobotUpdate from "./pages/Nilai/NilaiBobotUpdate";
 import AlternatifForm from "./pages/Alternatif/AlternatifForm";
-import { AlternatifDetail } from "./pages/Alternatif/AlternatifDetail";
+import AlternatifDetail from "./pages/Alternatif/AlternatifDetail";
 import AlternatifUpdate from "./pages/Alternatif/AlternatifUpdate";
+import AlternatifKriteria from "./pages/Alternatif/alternatifKriteria";
+import RankingTable from "./pages/Nilai/Rangking";
+import LoginForm from "./admin/LoginForm";
+import NotFound from "./components/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AlternatifMassData from "./pages/Alternatif/alternatifMassData";
+import NilaiTabelForm from "./pages/Nilai/NilaiTabelForm";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-gray-900 max-h-full">
       <BrowserRouter>
-        <div className=""></div>
-        <div className="flex">
-          <SideBar />
-          <Routes>
+        <Routes>
+          <Route path="/login" element={<LoginForm />} />
+          <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Beranda />} />
             <Route path="/alternatif_form" element={<AlternatifForm />} />
-            <Route path="/alternatif-edit/:id" element={<AlternatifUpdate />} />
             <Route path="/data_penduduk" element={<AlternatifDetail />} />
+            <Route path="/alternatifMass" element={<AlternatifMassData />} />
+            <Route path="/nilai_tabel_form" element={<NilaiTabelForm />} />
+            <Route path="/alternatif-edit/:id" element={<AlternatifUpdate />} />
+            <Route path="/alternatif_kriteria/:id" element={<AlternatifKriteria />} />
+            <Route path="/bobot" element={<NilaiBobotUpdate />} />
             <Route path="/nilai_matriks" element={<NilaiMatriks />} />
-            <Route path="/penilaian" element={<Penilaian />} />
-            <Route
-              path="/alternatifKriteria/:id"
-              element={<AlternatifKriteria />}
-            />
-            <Route path="/nilai_matriks/:id" element={<NilaiEdit />} />
-          </Routes>
-        </div>
+            <Route path="/nilai_matriks/:id" element={<NilaiUpdate />} />
+            <Route path="/penilaian" element={<NilaiForm />} />
+            <Route path="/rangking" element={<RankingTable />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

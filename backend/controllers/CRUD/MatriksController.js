@@ -1,4 +1,5 @@
-const Kriteria = require("../../model/kriteriaModel");
+const { where } = require("sequelize");
+const Alternatif = require("../../model/alternatifModel");
 const Matriks = require("../../model/matriksModel");
 
 const ambilSemuaMatriks = async (req, res) => {
@@ -57,6 +58,7 @@ const tambahMatriks = async (req, res) => {
 
 const editMatriks = async (req, res) => {
   const data = req.body.Matriks; // Assuming data is sent in the request body
+
   if (!Array.isArray(data) || data.length === 0) {
     return res.status(400).json({ message: "Invalid data format" });
   }
@@ -65,9 +67,8 @@ const editMatriks = async (req, res) => {
   for (let item of data) {
     if (
       typeof item.nilai === "undefined" ||
-      typeof item.id === "undefined" ||
-      typeof item.alternatifId === "undefined" ||
-      typeof item.kriteriaId === "undefined"
+      typeof item.id_nilai === "undefined" ||
+      typeof item.id_penilaian === "undefined"
     ) {
       return res
         .status(400)
@@ -76,10 +77,8 @@ const editMatriks = async (req, res) => {
   }
 
   const transaction = await Matriks.sequelize.transaction();
-
   try {
     // Upsert the records
-
     await Matriks.bulkCreate(data, {
       updateOnDuplicate: ["nilai"],
       transaction,
@@ -98,23 +97,32 @@ const editMatriks = async (req, res) => {
 // Fungsi untuk menghapus data matriks
 const hapusMatriks = async (req, res) => {
   try {
-    const { id_matrik } = req.params;
-
+    const { id: id_alternatif } = req.params;
     // Validasi minimal untuk memastikan ID matriks tersedia
-    if (!id_matrik) {
+    if (!id_alternatif) {
       return res
         .status(400)
         .json({ success: false, error: "ID Matriks harus disertakan" });
     }
 
+    // const result = await Matriks.findOne({ where: { id_alternatif } });
+    // console.log(result);
+    // if (!result) {
+    //   res
+    //     .status(404)
+    //     .json({ success: false, message: "Data Matriks tidak ditemukan" });
+    // } else {
+    //   res.json({ success: true, message: "Data Matriks berhasil dihapus" });
+    // }
+
     // Hapus data dari database menggunakan Sequelize
     const result = await Matriks.destroy({
       where: {
-        id_matrik,
+        id_alternatif,
       },
     });
-
-    if (result) {
+    console.log(result);
+    if (result !== 0) {
       res.json({ success: true, message: "Data Matriks berhasil dihapus" });
     } else {
       res

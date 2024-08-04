@@ -1,5 +1,5 @@
 const Alternatif = require("../../model/alternatifModel");
-const Kriteria = require("../../model/kriteriaModel");
+const Kategori = require("../../model/kategoriModel");
 const Matriks = require("../../model/matriksModel");
 
 // Fungsi untuk normalisasi matriks keputusan
@@ -127,7 +127,7 @@ function skorPreferensiRelatif(jarakPositif, jarakNegatif) {
 }
 
 // Fungsi utama untuk TOPSIS
-async function topsis(req,res) {
+async function topsis(req, res) {
   try {
     // Ambil data alternatif, kriteria, dan nilai matriks dari database
     const alternatifData = await Alternatif.findAll({

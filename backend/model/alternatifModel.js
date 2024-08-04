@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/Database");
-const Kriteria = require("./kriteriaModel");
 
 const Alternatif = db.define(
   "Alternatif",
@@ -10,23 +9,36 @@ const Alternatif = db.define(
       allowNull: false,
     },
     no_kk: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(16),
       allowNull: false,
     },
-    jenis_kelamin: {
-      type: DataTypes.STRING(15),
+    no_nik: {
+      type: DataTypes.STRING(16),
       allowNull: false,
     },
-    alamat: {
+    tempat_tgl_lahir: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    no_telp: {
-      type: DataTypes.STRING(13),
+    jenis_kelamin: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+    },
+    jalan: {
+      type: DataTypes.STRING(15),
+      allowNull: false,
+    },
+    RT: {
+      type: DataTypes.INTEGER(5),
+      allowNull: false,
+    },
+
+    RW: {
+      type: DataTypes.INTEGER(5),
       allowNull: false,
     },
     pekerjaan: {
-      type: DataTypes.STRING(12),
+      type: DataTypes.STRING(20),
       allowNull: false,
     },
   },
@@ -36,13 +48,8 @@ const Alternatif = db.define(
     freezeTableName: true,
   }
 );
-{
-  async () => {
-    await db.sync();
-  };
-}
+
 // Jika diperlukan, Anda dapat menambahkan hubungan (associations) dengan tabel lain di sini
-Alternatif.hasMany(db.define("Kriteria"));
-Alternatif.hasMany(db.define("Matriks"), { foreignKey: "AlternatifId" });
+Alternatif.hasMany(db.define("Matriks"), { foreignKey: "id_alternatif" });
 
 module.exports = Alternatif;
