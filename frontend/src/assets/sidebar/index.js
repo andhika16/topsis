@@ -4,7 +4,7 @@ import Chart from "./Chart.png";
 import Chat from "./Chat.png";
 import Control from "./control.png";
 import Folder from "./Folder.png";
-import Logo from "./Logo.png";
+import Logo from "./logo.png";
 import Search from "./Search.png";
 import Setting from "./Setting.png";
 import User from "./User.png";
@@ -13,7 +13,6 @@ import fa2 from "./fa2.png";
 import fa3 from "./fa3.png";
 import miskin from "./miskin.png";
 import bantu from "./bantu.png";
-
 
 export {
   Calendar,
