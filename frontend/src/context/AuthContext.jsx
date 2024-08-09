@@ -5,6 +5,7 @@ import React, { createContext, useReducer, useContext, useEffect } from "react";
 // Inisialisasi state awal dari localStorage jika ada
 const initialState = () => {
   const storedAuthState = localStorage.getItem("authState");
+  console.log(storedAuthState);
   return storedAuthState
     ? JSON.parse(storedAuthState)
     : {
